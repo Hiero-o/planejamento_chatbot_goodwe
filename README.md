@@ -1,7 +1,7 @@
 # planejamento_chatbot_goodwe
 
-# Nome do projeto
-GurAI ou Gurgel AI
+# Nome do projeto 
+GurAI
 Assistente inteligente para gestão operacional de eletropostos
 
 # Sobre o Projeto
@@ -36,7 +36,7 @@ Além disso, existem problemas relacionados à:
 
 Outro problrma importante é a ausência de sistemas inteligentes capazes de auxiliar usuários, operadores técnicos e estabelecimentos durante sessões de recarga.
 
-### Principais desadios identificados:
+### Principais desafios identificados:
 
 - Sobrecarga Energética;
 - Dificuldades de autenticação de usuários;
@@ -121,19 +121,23 @@ O Ollama foi escolhido por permitir execução local de modelos de linguagem, of
 
 ## Banco de Dados:
 
-### PostgreSQL ou outra, pensar mais depois.
+### Firebase
 
-O PostgreSQL foi escolhido devido à sua confiabilidade, suporte relacional e capacidade de auditoria, fatores importantes para o registro de sessões de recarga e controle operacional.
+O Firebase foi escolhido devido ao seu suporte a comunicação em tempo real, escalabilidade automática e integração simplificada com aplicações web e mobile, fatores importantes para o monitoramento de sessões de recarga e controle operacional.
+
 #### Vantagens
-- Alta confiablidade;
-- Excelente suporte relacional;
-- Ideal para auditoria de sessões;
-- Segurança e estabilidade.
+- Comunicação em tempo real nativa;
+- Fácil integração com aplicações web e mobile;
+- Escalabilidade automática;
+- Alta disponibilidade e confiabilidade;
+- Autenticação e serviços integrados;
+- Agilidade no desenvolvimento do sistema.
 
 #### Desvantagens
-- Menor flexibilidade para dados não estruturados;
-- Maior complexidade em algumas operações específicas
-
+- Menor suporte a relacionamentos complexos;
+- Consultas avançadas mais limitadas em comparação a bancos SQL;
+- Dependência do ecossistema da Google;
+- Custos podem aumentar conforme o volume de acessos e operações.
 ---
 
 ## Comunicação dos carregadores
