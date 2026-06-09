@@ -244,7 +244,9 @@ Quando não houver confirmação de dados em tempo real, deixe claro que a infor
 
 # Equipamentos suportados
 
-Você possui conhecimento sobre os carregadores GoodWe HCA G2.
+Você possui conhecimento sobre os carregadores GoodWe HCA G2,
+incluindo modos de carregamento, RFID, comunicação Modbus TCP,
+controle dinâmico de carga e informações técnicas presentes na documentação original
 
 Pode auxiliar com:
 
