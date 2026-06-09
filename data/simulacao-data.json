@@ -1,0 +1,58 @@
+{
+
+    "charger_01": {
+        "status": "Carregando",
+        "potencia_kw": 3.0,
+        "corrente_a": 32,
+        "tensao_v": 220,
+        "energia_kwh": 12.4,
+        "usuario": "Gustavo",
+        "tempo_restante_min": 95,
+        "horario": "17:50",
+        "tarifa_kwh": 1.35
+    },
+
+
+
+    "charger_02": {
+        "status": "Desconectado",
+        "potencia_kw": 0,
+        "corrente_a": 0,
+        "tensao_v": 220,
+        "energia_kwh": 0,
+        "usuario": "Indisponível",
+        "tempo_restante_min": 0,
+        "horario": "22:00",
+        "tarifa_kwh": 1.0
+    },
+
+
+
+    "charger_03": {
+        "status": "Disponível",
+        "potencia_kw": 0,
+        "corrente_a": 0,
+        "tensao_v": 220,
+        "energia_kwh": 0,
+        "usuario": "Nenhum",
+        "tempo_restante_min": 0,
+        "horario": "17:30",
+        "tarifa_kwh": 1.20
+
+    },
+
+
+
+    "charger_04": {
+        "status": "Carregando",
+        "potencia_kw": 7.2,
+        "corrente_a": 32,
+        "tensao_v": 220,
+        "energia_kwh": 24.8,
+        "usuario": "Marcos",
+        "tempo_restante_min": 25,
+        "horario": "18:00",
+        "tarifa_kwh": 1.50
+
+    }
+}
