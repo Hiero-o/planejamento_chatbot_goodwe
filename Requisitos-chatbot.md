@@ -36,3 +36,8 @@
 - Consumo
 - Custo Estimado
 
+# Futuramente
+
+- Adicionar Intent;
+- 
+
