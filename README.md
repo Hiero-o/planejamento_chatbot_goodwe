@@ -169,6 +169,19 @@ O protocolo MODBUS será utilizado para comunicação direta com hardware e leit
 
 ---
 
+# Versões
+
+Primeira versão
+- Alucina MUITO;
+- depende de dados simulados;
+- não acessa manuais;
+
+Segunda versão
+- Versão mais estruturada, porém, com alguns resultados sem sentido
+- Limitação de banco de dados ainda presente, provavelmente até o final do projeto
+
+---
+
 # Objetivo Final
 
 O projeto busca melhorar a experiência de usuários de veículos elétricos, otimizar o consumo energético dos eletropostos e automatizar processos operacionais através de um chatbot integrado ao ecossistema de recarga elétrica da GoodWe.
