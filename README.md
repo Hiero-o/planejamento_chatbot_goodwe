@@ -1,8 +1,8 @@
 # planejamento_chatbot_goodwe
 
-# Nome do projeto 
+# GurAI
 GurAI
-Assistente inteligente para gestão operacional de eletropostos
+Assistente inteligente para gestão operacional de eletropostos.
 
 # Sobre o Projeto
 
@@ -36,7 +36,7 @@ Além disso, existem problemas relacionados à:
 
 Outro problrma importante é a ausência de sistemas inteligentes capazes de auxiliar usuários, operadores técnicos e estabelecimentos durante sessões de recarga.
 
-### Principais desafios identificados:
+### Principais desadios identificados:
 
 - Sobrecarga Energética;
 - Dificuldades de autenticação de usuários;
@@ -122,7 +122,6 @@ O Ollama foi escolhido por permitir execução local de modelos de linguagem, of
 ## Banco de Dados:
 
 ### Firebase
-
 O Firebase foi escolhido devido ao seu suporte a comunicação em tempo real, escalabilidade automática e integração simplificada com aplicações web e mobile, fatores importantes para o monitoramento de sessões de recarga e controle operacional.
 
 #### Vantagens
@@ -132,12 +131,12 @@ O Firebase foi escolhido devido ao seu suporte a comunicação em tempo real, es
 - Alta disponibilidade e confiabilidade;
 - Autenticação e serviços integrados;
 - Agilidade no desenvolvimento do sistema.
-
 #### Desvantagens
 - Menor suporte a relacionamentos complexos;
 - Consultas avançadas mais limitadas em comparação a bancos SQL;
 - Dependência do ecossistema da Google;
 - Custos podem aumentar conforme o volume de acessos e operações.
+
 ---
 
 ## Comunicação dos carregadores
