@@ -76,7 +76,7 @@ def get_total_power():
     return total
 
 
-def total_energy():
+def get_total_energy():
     data = load_data()
 
     total = 0

@@ -171,14 +171,27 @@ O protocolo MODBUS será utilizado para comunicação direta com hardware e leit
 
 # Versões
 
-Primeira versão
+## 0.01
 - Alucina MUITO;
 - depende de dados simulados;
 - não acessa manuais;
 
-Segunda versão
-- Versão mais estruturada, porém, com alguns resultados sem sentido
+Porém:
+
+- Responde as perguntas
+- Funciona!
+- bem limitadinho coitado
+
+## 0.02
+- Algumas respostas sem sentido
 - Limitação de banco de dados ainda presente, provavelmente até o final do projeto
+- Normalizar o texto para remoção de acentos e formatações diferentes deverá ser uma prioridade nas próximas versões, deixando o prompt sem acentos, letras maiusculas etc..
+
+Porém:
+
+- A ia está atendendo melhor aos prompts, mas ainda inventa informações quando não sabe.
+- A ia está consehuindo acessar os dados simulados e interpretá-los.
+- A memória de contexto está funcionando bem!
 
 ---
 

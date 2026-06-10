@@ -1,7 +1,7 @@
 from chatbot.llm import ask_model
 from chatbot.memory import Memory
 from chatbot.prompt_loader import load_prompt
-from services.monitoramento import get_charger
+from services.monitoramento import *
 import re
 
 system_prompt = load_prompt()
@@ -57,6 +57,68 @@ while True:
         )
     else:
         memory.add_user_message(question)
+
+
+
+    if "potência total" in question.lower():
+        total = get_total_power()
+
+        memory.add_user_message(
+            f"""
+            Potência total anual da planta: {total} KW
+
+
+            Pergunta:
+            {question}
+            """
+        )
+
+    if "disponíveis" in question.lower():
+        disponiveis = get_available_chargers()
+
+        memory.add_user_message(
+            f"""
+            Caregadores disponíveis:
+
+            {disponiveis}
+
+            Pergunta:
+
+            {question}
+            """
+        )
+
+    if "carregadores em uso" in question.lower():
+        ativos = get_active_chargers()
+
+        memory.add_user_message(
+            f"""
+            Carregadores em uso:
+
+            {ativos}
+
+            Pergunta:
+
+            {question}
+
+            """
+        )
+
+    if "qual a energia total usada?" in question.lower():
+        energia_tot = get_total_energy()
+
+        memory.add_user_message(
+            f"""
+            Total de energia usada: {energia_tot} KWH
+
+            Pergunta:
+
+            {question}
+
+            """
+        )
+
+
 
     answer = ask_model(
         memory.get_messages()
