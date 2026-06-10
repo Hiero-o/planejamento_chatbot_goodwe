@@ -8,6 +8,7 @@ st.title("GurAI")
 
 st.write("Agente de IA especializado em operações de eletropostos.")
 
+conta_pergunta = []
 
 if "memory" not in st.session_state:
 
@@ -19,9 +20,27 @@ if "memory" not in st.session_state:
 
     )
 
+# ------------------------------------------------------------------ #
+
+#                       Histórico do chat.                           #
+
+if "chat_history" not in st.session_state:
+    st.session_state.chat_history = []
+
+
+for message in st.session_state.chat_history:
+
+    with st.chat_message(message["role"]):
+        st.write(message["content"])
+
+# ------------------------------------------------------------------ #
+
+
 question = st.chat_input(
-    "Digite sua pergunta"
+    "Digite sua pergunta",
+    
 )
+
 
 # ------------------------------------------------------------------ #
 
@@ -33,6 +52,13 @@ if question:
 
     with st.chat_message("user"):
         st.write(question)
+    
+    st.session_state.chat_history.append(
+        {
+        "role": "user",
+        "content": question
+        }
+    ) 
 
 
     answer = ask_model(
@@ -44,8 +70,29 @@ if question:
         answer
     )
 
+    st.session_state.chat_history.append(
+        {
+            "role": "assistant",
+            "content": answer
+        }
+    )
+
     with st.chat_message("assistant"):
         st.write(answer)
+
+
+with st.sidebar:
+
+    st.title("Perguntas realizadas")
+
+    for message in st.session_state.chat_history:
+        if message["role"] == "user":
+            st.write(
+                message["content"]
+            )
+        
+
+
 
 
 
