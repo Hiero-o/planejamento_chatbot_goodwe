@@ -2,11 +2,11 @@
 
 * Conhecimento técnico
 
-- Explicar OCPP
+- Explicar OCPP 
 - Explicar MODBUS
 - Explicar RFID
 - Explicar carregamento PV
-- Exokucar carregamento PV + Bateria
+- Explicar carregamento PV + Bateria
 
 * Operacional:
 
