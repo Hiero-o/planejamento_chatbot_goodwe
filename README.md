@@ -221,6 +221,10 @@ Porém:
 - Seleção de conversa
 - Persistência em Firebase
 
+## sidebar
+- selecionar charger_01 > mostrar detalhes do charger_01
+
+
 ---
 
 # Objetivo Final
