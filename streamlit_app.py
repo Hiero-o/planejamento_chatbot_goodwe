@@ -1,8 +1,13 @@
 import streamlit as st
-from chatbot.llm import ask_model
+
 from chatbot.memory import Memory
 from chatbot.prompt_loader import load_prompt
-from services.monitoramento import *
+
+from services.question_processor import process_question
+
+from ui.sidebar import render_sidebar
+from ui.chat import render_chat
+
 
 st.title("GurAI")
 
@@ -35,6 +40,10 @@ for message in st.session_state.chat_history:
 
 # ------------------------------------------------------------------ #
 
+render.sidebar()
+
+render_chat()
+
 
 question = st.chat_input(
     "Digite sua pergunta",
@@ -46,50 +55,33 @@ question = st.chat_input(
 
 if question:
 
-    st.session_state.memory.add_user_message(
-        question
-    )
 
-    with st.chat_message("user"):
-        st.write(question)
+    answer = process_question(
+        question,
+        st.session_state.memory
+    )
     
+
     st.session_state.chat_history.append(
         {
-        "role": "user",
-        "content": question
+            "role": "user",
+            "content": question
         }
-    ) 
-
-
-    answer = ask_model(
-        st.session_state.memory.get_messages()
-        )
-    
-
-    st.session_state.memory.add_assistant_message(
-        answer
     )
 
     st.session_state.chat_history.append(
         {
-            "role": "assistant",
+            "role": "asistant",
             "content": answer
         }
     )
 
-    with st.chat_message("assistant"):
-        st.write(answer)
+    st.rerun()
+
+# ------------------------------------------------------------------ #
 
 
-with st.sidebar:
 
-    st.title("Perguntas realizadas")
-
-    for message in st.session_state.chat_history:
-        if message["role"] == "user":
-            st.write(
-                message["content"]
-            )
         
 
 

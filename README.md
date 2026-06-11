@@ -195,6 +195,15 @@ Porém:
 
 ---
 
+# Implementações futuras?
+
+- Múltiplas conversas
+- Histórico lateral
+- Seleção de conversa
+- Persistência em Firebase
+
+---
+
 # Objetivo Final
 
 O projeto busca melhorar a experiência de usuários de veículos elétricos, otimizar o consumo energético dos eletropostos e automatizar processos operacionais através de um chatbot integrado ao ecossistema de recarga elétrica da GoodWe.
