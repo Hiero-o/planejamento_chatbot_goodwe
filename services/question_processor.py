@@ -2,6 +2,8 @@ import re
 
 from chatbot.llm import ask_model
 from services.monitoramento import *
+from unidecode import unidecode
+
 
 
 
@@ -18,6 +20,8 @@ def process_question(
     contexto = question
 
     texto = question.lower()
+
+    texto = unidecode(question.lower())
 
     if match:
         charger_id = f"charger_{match.group(1).zfill(2)}"
@@ -45,7 +49,7 @@ def process_question(
             
         # Consultas agregadas
 
-    elif "potência total" in texto:
+    elif "potencia total" in texto:
         total = get_total_power()
 
         contexto = f"""
@@ -56,7 +60,7 @@ def process_question(
         """
             
 
-    elif "disponíveis" in texto:
+    elif "disponiveis" in texto:
         disponiveis = get_available_chargers()
 
         contexto = f"""
