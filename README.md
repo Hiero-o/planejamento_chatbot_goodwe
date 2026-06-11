@@ -193,6 +193,34 @@ Porém:
 - A ia está consehuindo acessar os dados simulados e interpretá-los.
 - A memória de contexto está funcionando bem!
 
+## 0.1
+- Versão versão funcional do sistema
+- Aplicação de lógica para leitura de dados simulados
+- Nenhum bug aparente
+- Respostas corretas, sem quebras ou alucinações, quando, dentro do prompt esperado
+- Streamlit implementado e funcionando
+- Regras de segurança testadas e aplicadas
+- Códigos funcionam independete do streamlit, se quisermos trocar e usar REACT ou similar para usar o modelo, será mais fácil.
+
+
+Porém:
+
+- Implementar leitura real de dados
+- Implementar leitura de manuais para o modelo
+- Implementar intent nas perguntas para melhorar o GurAI
+- Melhorar interface gráfica do streamlit (muito básico)
+- Melhorar mais o modelo
+
+
+---
+
+# Implementações futuras?
+
+- Múltiplas conversas
+- Histórico lateral
+- Seleção de conversa
+- Persistência em Firebase
+
 ---
 
 # Objetivo Final
