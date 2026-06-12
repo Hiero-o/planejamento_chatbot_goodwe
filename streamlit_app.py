@@ -25,6 +25,7 @@ if "memory" not in st.session_state:
 
     )
 
+
 # ------------------------------------------------------------------ #
 
 #                       Histórico do chat.                           #
@@ -36,6 +37,14 @@ if "chat_history" not in st.session_state:
 
 
 # ------------------------------------------------------------------ #
+
+#                Guarda página - ui/sidebar.py                       #
+
+if "sidebar_page" not in st.session_state:
+            st.session_state.sidebar_page = "Monitoramento"
+
+# ------------------------------------------------------------------ #
+
 
 render_sidebar()
 
