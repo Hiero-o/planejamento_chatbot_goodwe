@@ -2,8 +2,6 @@
 import streamlit as st
 from services.monitoramento import *
 
-
-
 def linha():
     st.write("----------------------")
 
@@ -13,18 +11,20 @@ energia = get_total_energy()
 carregador_em_uso = get_active_chargers()
 
 
-
-
-
-
 def render_sidebar():
 
-    
-
-    
     with st.sidebar:
 
+        st.title("Painel")
 
+        if st.button("Monitoramento"):
+            st.session_state.sidebar_page = "Monitoramento"
+
+        if st.button ("Carregadores"):
+            st.session_state.sidebar_page = "Carregadores"
+        
+        linha()
+        
         st.title("Perguntas realizadas")
 
         for message in st.session_state.chat_history[-10:]:
@@ -33,16 +33,6 @@ def render_sidebar():
                 st.write(
                     message["content"]
                 )
-
-        linha()
-
-        st.title("Painel")
-
-        if st.button("Monitoramento"):
-            st.session_state.sidebar_page = "Monitoramento"
-        if st.button ("Carregadores"):
-            st.session_state.sidebar_page = "Carregadores"
-        
 
         st.divider()
 
@@ -91,16 +81,24 @@ def render_sidebar():
 
             for charger_id, dados in chargers.items():
                 if dados['status'] == "Disponível":
+
                     st.markdown(
                     f" {charger_id} - {dados['status']} 🟢"
+
                     )
+
                 elif dados['status'] == "Carregando":
                     st.markdown(
+
                         f" {charger_id} - {dados['status']} 🟡"
+
                     )
                 elif dados['status'] == "Desconectado":
+
                     st.markdown(
+
                         f" {charger_id} - {dados['status']} 🔴"
+
                     )
 
             linha()
@@ -120,7 +118,7 @@ def render_sidebar():
             f"""
 
     **Dados do {pagina}**\n
-    Usuário: {dados["usuario"]}\n
+    Usuário: {dados["usuario"]}
     Status: {dados["status"]}
     Potência: {dados["potencia_kw"]} KW
     Corrente: {dados["corrente_a"]} A
@@ -132,4 +130,3 @@ def render_sidebar():
             
             """
             )
-            linha()
