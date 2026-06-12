@@ -211,6 +211,17 @@ Porém:
 - Melhorar interface gráfica do streamlit (muito básico)
 - Melhorar mais o modelo
 
+## 0.2
+
+Todas da 0.1, com implementações:
+- Adição de painéis na sidebar
+- Mostrando detalhes dos chargers na sidebar
+
+Próximas atualizações:
+
+- Consulta PDFs
+- Intent nas perguntas.
+
 
 ---
 
@@ -220,9 +231,6 @@ Porém:
 - Histórico lateral
 - Seleção de conversa
 - Persistência em Firebase
-
-## sidebar
-- selecionar charger_01 > mostrar detalhes do charger_01
 
 
 ---
