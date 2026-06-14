@@ -1,6 +1,10 @@
 
 import streamlit as st
 from services.monitoramento import *
+from chatbot.memory import Memory
+from chatbot.prompt_loader import load_prompt
+
+
 
 def linha():
     st.write("----------------------")
@@ -15,12 +19,28 @@ def render_sidebar():
 
     with st.sidebar:
 
-        st.title("Painel")
+        if st.sidebar.button("Nova Conversa", use_container_width=True):
 
-        if st.button("Monitoramento"):
+            system_prompt = load_prompt()
+
+            st.session_state.memory = Memory(
+
+                system_prompt
+
+            )
+            st.session_state.chat_history = []
+
             st.session_state.sidebar_page = "Monitoramento"
 
-        if st.button ("Carregadores"):
+            st.rerun()
+
+
+        st.title("Painel")
+
+        if st.button("Monitoramento", use_container_width=True):
+            st.session_state.sidebar_page = "Monitoramento"
+
+        if st.button ("Carregadores", use_container_width=True):
             st.session_state.sidebar_page = "Carregadores"
         
         linha()

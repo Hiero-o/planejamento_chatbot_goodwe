@@ -36,7 +36,7 @@ Além disso, existem problemas relacionados à:
 
 Outro problrma importante é a ausência de sistemas inteligentes capazes de auxiliar usuários, operadores técnicos e estabelecimentos durante sessões de recarga.
 
-### Principais desadios identificados:
+### Principais desafios identificados:
 
 - Sobrecarga Energética;
 - Dificuldades de autenticação de usuários;
@@ -225,15 +225,152 @@ Próximas atualizações:
 
 ---
 
-# Implementações futuras?
+## 0.3
 
-- Múltiplas conversas
-- Histórico lateral
-- Seleção de conversa
-- Persistência em Firebase
+Implementações:
+
+- Sidebar operacional
+- Painel de monitoramento
+- Consulta detalhada de carregadores
+- RAG básico utilizando PDFs
+- Intents para interpretação de perguntas
+- Normalização de texto
+- Redução de alucinações
+- Sistema de nova conversa
+- Consulta documental GoodWe
+
+Limitações atuais:
+
+- Dados ainda simulados
+- Sem integração real com OCPP
+- Sem integração real com MODBUS
+- Sem persistência em banco de dados
+
+# Próximos Passos
+
+- Integração real com carregadores GoodWe;
+- Integração com protocolo OCPP;
+- Integração com protocolo MODBUS;
+- Persistência de dados em Firebase;
+- Sistema de múltiplas conversas;
+- Dashboard avançado;
+- Estatísticas históricas;
+- Controle de permissões por usuário;
+- Sistema de Login integrado
 
 
 ---
+
+# Funcionalidades Atuais
+
+Atualmente o GurAI é capaz de:
+
+- Consultar status dos carregadores;
+- Exibir potência total da planta;
+- Exibir energia total consumida;
+- Exibir carregadores disponíveis;
+- Exibir carregadores em uso;
+- Interpretar informações técnicas dos manuais GoodWe;
+- Consultar informações do protocolo MODBUS;
+- Utilizar memória de conversa;
+- Utilizar RAG (Retrieval-Augmented Generation) para consulta documental;
+- Utilizar intents para compreender diferentes formas de perguntas;
+- Operar através de interface gráfica desenvolvida em Streamlit;
+- Reduzir alucinações através de validação documental.
+
+
+
+
+
+# Instalação
+
+## 1. Clonar o projeto
+
+git clone https://github.com/Hiero-o/planejamento_chatbot_goodwe.git
+
+cd planejamento_chatbot_goodwe
+
+## 2. Criar ambiente virtual
+
+TERMINAL
+CMD, POWERSHELL, GIT BASH...
+
+Windows:
+
+python -m venv venv
+
+venv\Scripts\activate
+
+Linux/Mac:
+
+python3 -m venv venv
+
+source venv/bin/activate
+
+## 3. Instalar dependências
+
+terminal
+
+pip install -r requirements.txt
+
+# Instalação do Ollama
+
+O GurAI utiliza modelos em nuvem do ollama.
+
+Vá até o site do Ollama:
+
+https://ollama.com/
+
+Crie sua conta
+
+ícone do canto superior direito > Settings > Keys > Add API key > nome de sua escolha > Generate API Key > copiar
+
+Próximo passo:
+
+Terminal
+
+cd diretótio de instalação do projeto
+
+cd planejamento_chatbot_goodwe
+
+touch .env
+
+code .
+
+abrir o arquivo .env > digitar OLLAMA_API_KEY=sua_api_key
+
+salvar
+
+No terminal novamente:
+
+*#8#*#*#*#*#*HFEHFHEFFE
+
+# Como Executar
+
+Com o ambiente virtual ativo:
+
+terminal
+
+streamlit run streamlit_app.py
+
+# Exemplos de Perguntas
+
+Qual a potência total da planta?
+
+Quais carregadores estão disponíveis?
+
+Quais carregadores estão em uso?
+
+Como está o charger_01?
+
+Qual a energia total utilizada?
+
+O que significa o erro 0x0001?
+
+Qual a potência nominal do carregador HCA G2?
+
+Qual a corrente nominal do modelo GW22K-HCA-20?
+
 
 # Objetivo Final
 
