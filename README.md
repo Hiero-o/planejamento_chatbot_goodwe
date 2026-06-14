@@ -65,7 +65,7 @@ O chatbot utilizará contexto operacional, energético e comercial obtido atrav�
 
 O objetico da utilização desses dados é permitir respostas contextualizadas, maior precisão operacional e suporte inteligente durante as sessões de recarga.
 
-## Dados utilizados pelo modelo
+## Dados que serão utilizados pelo modelo
 - Status do carregador (Disponibilidade e funcionamento);
 - Potência energética disponível;
 - Sessões de recarga ativas;
@@ -121,7 +121,7 @@ O Ollama foi escolhido por permitir execução local de modelos de linguagem, of
 
 ## Banco de Dados:
 
-### Firebase
+### Firebase (Implementação futura)
 O Firebase foi escolhido devido ao seu suporte a comunicação em tempo real, escalabilidade automática e integração simplificada com aplicações web e mobile, fatores importantes para o monitoramento de sessões de recarga e controle operacional.
 
 #### Vantagens
@@ -141,7 +141,7 @@ O Firebase foi escolhido devido ao seu suporte a comunicação em tempo real, es
 
 ## Comunicação dos carregadores
 
-### OCPP
+### OCPP (Integração futura)
 O OCPP (Open Charge Point Protocol) será utilizado como principal protocolo de comunicação entre o sistema e os carregadores.
 
 #### Vantagens
@@ -154,7 +154,7 @@ O OCPP (Open Charge Point Protocol) será utilizado como principal protocolo de 
 - Implementação mais complexa;
 - Maior necessidade de gerenciamento de comunicação.
 
-### MODBUS
+### MODBUS (Integração futura) - (Atualmente = dados simulados)
 
 O protocolo MODBUS será utilizado para comunicação direta com hardware e leitura de sensores elétricos.
 
