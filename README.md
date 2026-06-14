@@ -51,13 +51,111 @@ Outro problrma importante é a ausência de sistemas inteligentes capazes de aux
 
 ## Técnico de campo.
 
-O técnico de campo, especializado em operações de eletropostos.
-
 A escolha dessa persona se deu pela necessidade de oferecer respostas rápidas, técnicas e objetivas para usuários de sessão de recarga, além de auxiliar operadores técnicos e estabelecimento em situações operacionais e comerciais.
 
 O chatbot atua como intermediador entre usuário, sistema e suporte técnico, reduzindo falhas operacionais e melhorando a experiência de utilização dos carregadores.
 
-----
+---
+
+## Persona Principal: Técnico de Campo
+
+O Técnico de Campo é o profissional responsável pela instalação, monitoramento, diagnóstico e manutenção dos carregadores veiculares presentes nos eletropostos.
+
+### Principais responsabilidades
+
+* Verificar disponibilidade dos carregadores;
+* Diagnosticar falhas operacionais;
+* Consultar códigos de erro;
+* Realizar testes de comunicação MODBUS e OCPP;
+* Auxiliar usuários em problemas de autenticação;
+* Monitorar consumo energético da planta.
+
+### Principais dores identificadas
+
+* Dificuldade em localizar rapidamente a causa de falhas;
+* Consulta manual de datasheets e manuais técnicos;
+* Necessidade de acessar múltiplos sistemas para diagnóstico;
+* Alto tempo de resposta para atendimento operacional;
+* Interpretação de códigos de erro e registradores MODBUS.
+
+### Perguntas típicas da persona
+
+* O que significa o erro 0x0001?
+* Qual a potência nominal do GW22K-HCA-20?
+* Quais carregadores estão disponíveis?
+* Qual carregador está apresentando falha?
+* Qual a energia total consumida hoje?
+
+### Personas secundárias
+
+Embora o foco principal seja o Técnico de Campo, o sistema também pode auxiliar:
+
+* Operadores do eletroposto;
+* Estabelecimentos comerciais;
+* Usuários finais dos carregadores.
+
+Esses perfis são considerados secundários e recebem suporte limitado quando comparados ao suporte técnico especializado.
+
+
+---
+
+
+# Contexto Escolhido
+
+## Contexto A — Operação Comercial de Eletropostos
+
+O GurAI foi desenvolvido considerando o Contexto A, voltado para eletropostos comerciais e semi-públicos.
+
+### Justificativas da escolha
+
+1. Grande volume de usuários
+
+Diferentemente de ambientes residenciais ou condominiais, eletropostos comerciais atendem múltiplos usuários diariamente, aumentando a necessidade de suporte automatizado.
+
+2. Complexidade operacional
+
+A operação envolve autenticação, tarifação, monitoramento energético, disponibilidade dos carregadores e resolução de falhas técnicas.
+
+3. Necessidade de suporte técnico rápido
+
+Falhas em carregadores podem impactar diretamente a receita do estabelecimento e a experiência do usuário.
+
+4. Integração com protocolos industriais
+
+O ambiente comercial exige monitoramento utilizando protocolos como MODBUS e OCPP, aumentando a necessidade de ferramentas inteligentes de suporte.
+
+5. Escalabilidade
+
+A solução poderá ser aplicada em redes de eletropostos com dezenas ou centenas de carregadores.
+
+---
+
+## Expansão para Contexto Condominial
+
+Embora o foco principal do GurAI esteja na operação comercial de eletropostos, a arquitetura foi projetada para permitir futura aplicação em ambientes condominiais.
+
+Nesse cenário, moradores poderiam utilizar cartões de autenticação individuais ou coletivos com sistema de login, para identificação durante as sessões de recarga.
+
+A solução permitiria:
+
+- Controle de consumo por morador;
+- Rateio energético atrelado ao apartamento;
+- Histórico individual de utilização;
+- Controle de acesso aos carregadores;
+- Consulta de informações operacionais através do chatbot.
+
+---
+
+## Problema Central
+
+Além das falhas operacionais tradicionais, o ambiente de recarga elétrica apresenta desafios relacionados ao gerenciamento de sessões de recarga, tarifação, autenticação de usuários e monitoramento energético.
+
+Os carregadores GoodWe disponibilizam uma grande quantidade de informações operacionais através de protocolos como MODBUS e OCPP. Entretanto, a interpretação desses dados normalmente exige consulta manual a documentações técnicas, aumentando o tempo necessário para diagnóstico e resolução de problemas.
+
+O GurAI busca reduzir esse tempo através da utilização de Inteligência Artificial, permitindo acesso rápido às informações operacionais e documentais do ecossistema GoodWe.
+
+
+---
 
 # Contexto utilizado pelo modelo.
 
@@ -180,7 +278,9 @@ Porém:
 
 - Responde as perguntas
 - Funciona!
-- bem limitadinho coitado
+- bem limitado
+
+---
 
 ## 0.02
 - Algumas respostas sem sentido
@@ -189,27 +289,28 @@ Porém:
 
 Porém:
 
-- A ia está atendendo melhor aos prompts, mas ainda inventa informações quando não sabe.
-- A ia está consehuindo acessar os dados simulados e interpretá-los.
+- A IA está atendendo melhor aos prompts, mas ainda inventa informações quando não sabe.
+- A IA está conseguindo acessar os dados simulados e interpretá-los.
 - A memória de contexto está funcionando bem!
+
+---
 
 ## 0.1
 - Versão versão funcional do sistema
 - Aplicação de lógica para leitura de dados simulados
-- Nenhum bug aparente
 - Respostas corretas, sem quebras ou alucinações, quando, dentro do prompt esperado
 - Streamlit implementado e funcionando
 - Regras de segurança testadas e aplicadas
 - Códigos funcionam independete do streamlit, se quisermos trocar e usar REACT ou similar para usar o modelo, será mais fácil.
 
-
 Porém:
 
-- Implementar leitura real de dados
+- Implementar leitura real de dados seria um diferencial
 - Implementar leitura de manuais para o modelo
 - Implementar intent nas perguntas para melhorar o GurAI
 - Melhorar interface gráfica do streamlit (muito básico)
-- Melhorar mais o modelo
+
+---
 
 ## 0.2
 
@@ -225,7 +326,7 @@ Próximas atualizações:
 
 ---
 
-## 0.3
+## 0.3 (beta - MVP)
 
 Implementações:
 
@@ -236,7 +337,7 @@ Implementações:
 - Intents para interpretação de perguntas
 - Normalização de texto
 - Redução de alucinações
-- Sistema de nova conversa
+- Sistema de nova conversa (Limpa chat)
 - Consulta documental GoodWe
 
 Limitações atuais:
@@ -245,6 +346,7 @@ Limitações atuais:
 - Sem integração real com OCPP
 - Sem integração real com MODBUS
 - Sem persistência em banco de dados
+- Sem historico real de conversas
 
 # Próximos Passos
 
@@ -283,7 +385,7 @@ Atualmente o GurAI é capaz de:
 
 YouTube: https://youtu.be/IAOqCMTZQ4c
 
-
+---
 
 # Instalação
 
