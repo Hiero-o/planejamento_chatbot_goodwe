@@ -29,9 +29,9 @@ INTENTS = {
     ],
 
     "HELP": [
-        "me ajuda"
-        "help"
-        "o que você faz"
+        "ajuda",
+        "me ajuda",
+        "help",
         "quais perguntas posso fazer"
     ]
 }

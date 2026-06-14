@@ -279,6 +279,9 @@ Atualmente o GurAI é capaz de:
 - Reduzir alucinações através de validação documental.
 
 
+# Link do vídeo de demonstração do GurAI
+
+YouTube: https://youtu.be/IAOqCMTZQ4c
 
 
 
@@ -300,12 +303,6 @@ Windows:
 python -m venv venv
 
 venv\Scripts\activate
-
-Linux/Mac:
-
-python3 -m venv venv
-
-source venv/bin/activate
 
 ## 3. Instalar dependências
 
@@ -329,7 +326,7 @@ Próximo passo:
 
 Terminal
 
-cd diretótio de instalação do projeto
+cd diretório de instalação do projeto
 
 cd planejamento_chatbot_goodwe
 
@@ -337,13 +334,9 @@ touch .env
 
 code .
 
-abrir o arquivo .env > digitar OLLAMA_API_KEY=sua_api_key
+abrir o arquivo .env > digitar OLLAMA_API_KEY=sua_api_key_aqui
 
 salvar
-
-No terminal novamente:
-
-*#8#*#*#*#*#*HFEHFHEFFE
 
 # Como Executar
 
