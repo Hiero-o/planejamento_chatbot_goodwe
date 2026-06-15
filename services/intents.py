@@ -32,7 +32,9 @@ INTENTS = {
         "ajuda",
         "me ajuda",
         "help",
-        "quais perguntas posso fazer"
+        "quais perguntas posso fazer",
+        "o que voce faz",
+        "o que voce pode fazer"
     ]
 }
 
