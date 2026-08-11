@@ -4,3 +4,7 @@ __pycache__/
 .env
 teste.py
 teste.txt
+versões-documentais.md
+teste_rag_loader.py
+arquivados/
+teste_modbus_parser.py

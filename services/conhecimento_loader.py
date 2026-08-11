@@ -24,3 +24,5 @@ def load_all_documents():
         conhecimento += load_pdf(doc)
         conhecimento += "\n\n"
     return conhecimento
+
+#será aposentado
