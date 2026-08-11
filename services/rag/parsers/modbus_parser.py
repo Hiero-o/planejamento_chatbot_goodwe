@@ -1,49 +1,70 @@
 import re 
 
-ADDRESS_PATTERN = re.compile(r"^\s*(\d{4,6})\b") #Objeto de expressão regular, procura numeros de 4 a 6 digitos, no inicio da string, permitindo espaços antes do numero
 
-#re.compile : prepara e traduz a regra de texto para um formato rapido de usar no python
-#r".." : usa uma string crua "raw string" para evitar problemas com barras invertidas
-#^ : exige que a regra comece bem no inicio da linha do texto
-#\s* : aceita zero ou mais espaços vazios no começo
-#(\d{4,6}) : Um grupo que captura apenas numeros (\d), contando de 4 a 6 vezes o tamanho
-#\b : marca o fim da palavra (fronteira de palavra),  garantindo que o numero não continue colado a outros digitos ou letras
+SINGLE_ADDRESS_PATTERN = re.compile(r"^\s*(\d{5,6})\b") #Objeto de expressão regular, procura numeros de 5 a 6 digitos
+# ^ - indica o inicio da linha.
 
-# def - definir funções
-# is_address_start - nome da função
+RANGE_ADDRESS_PATTERN = re.compile(r"^\s*(\d{5,6})\s*-\s*(\d{5,6})\b") # Para aceitar valores após o hífem(-) tipo 12345 - 123456
+#
+#\s* - procura por espaços em branco. o * significa zero ou mais vezes. aceita se tiver espaços antes dos numeros, mas funciona se nao tiver nenhum tbm
+#(\d{5,6}) - grupo de captura, busca por numeros.
+#\d - qualquer numero de 0 a 9
+#{5,6} : quantidade de numeros. sequencias de no minimo 5 r no maximo 6 digitos seguidos (12345 ou 123456).
+#(?!\b) - Negative Lookahead (Olhar para frente negativo). valida uma condição sem "consumir texto"
+#\b - fronteira de palavra, limite onde terminam letras/numeros e começam espaços e pontuações.
+#?! - nega isso, exigindo que o numero de 5 ou 6 digitos NÃO termine em uma fronteira de palavra.
+
+
 # text: - o nome da variável que afunção vai receber
 # str - tipo (string). esperado um texto
-# -> seta para indicar o tipo de dado que a função vai receber, no caso, bool
+# -> seta para indicar o tipo de dado que a função vai receber, no caso, dict ou None se não encontrar nada
 # bool: tipo de dado booleano (true, false)
 #.match() - Comando que testa se a regra de busca encaixa logo no inicio do texto
-#is not none - Se não encontrar nada, devolve None, como None is not None é falso, a expressão se torna falsa
-def is_address_start(text: str) -> bool:
+
+#if range_match: se encontrou padrão, executa
+#range_match.group(1) - pega o primeiro numero encontrado
+#range_match.group(2) - pega o segundo numero encontrado
+#o int antes serve para transformar a string em numero inteiros
+#"address": f"{start} - {end}" - reconstroi o texto formatado, guarda os numeros inteiros separados (star e end) e categoriza eles como "range"
+
+
+
+def detect_address(text: str) -> dict | None:
     """
-    Verifica se uma linha inicia um novo registro MODBUS.
+    Detecta um endereço MODBUS no inicio de uma linha.
     
-    Exemplos: 
-        10020 Reservation Status...
-        10021 Reservation Start Time...
+    Suporta: 
+        10020
+        10021
+        300005
+        10109 - 10112
     """
+    range_match = RANGE_ADDRESS_PATTERN.match(text)
 
-# -> | None : indica que a função devolve int ou None
-# match.group(1) - Quando a expressão encontra o padrão, o group(1) pega especificamente o numero que vai ficar dentro do primeiro par de parenteses 
-# da regra (\d{4,6}). Ignora os espaços do começo (\s*) e isola apenas o texto dos digitos.
-# como o group(1) devolve o numero em str (string), o int() transforma o texto em um numero inteiro real.
+    if range_match:
+        start = int(range_match.group(1))
+        end = int(range_match.group(2))
 
-    return ADDRESS_PATTERN.match(text) is not None
 
-def extract_address(text: str) -> int | None:
-    """
-    Extrai o endereço MODBUS do início da linha.
-    """
+        return {
+            "address": f"{start} - {end}",
+            "address_start": start,
+            "address_end": end,
+            "address_type": "range",
+        }
 
-    match = ADDRESS_PATTERN.match(text)
+    single_match = SINGLE_ADDRESS_PATTERN.match(text)
 
-    if not match:
-        return None
+    if single_match:
+        address = int(single_match.group(1))
 
-    return int(match.group(1))
+        return{
+            "address": str(address),
+            "address_start": address,
+            "address_end": address,
+            "address_type": "single"
+        }
+    return None
 
 
 # lines = page["texto"].splitlines() : Acessa o texto bruto da página e usa o .splitlines() para quebrar esse textão em uma lista de linhas individuais, separando onde quer que haja uma quebra de linha (\n).
@@ -63,13 +84,11 @@ def extract_address(text: str) -> int | None:
 #elif current_record is not None: se a linha atual nao começa com um endereço MODBUS, o python para. Ele verifica se já existe um bloco aberto (current_record is not None)
 # current_record["texto"] += "\n" + line: se hpouver bloco aberto, significa que essa linha é a continuação do registro anterior (por exemplo, a descrição do registrador MODBUS que quebrou em duas ou mais linhas). o operador += junta a nova linha ao texto que já estava guardado, separando por um \n.
 
-def parse_modbus_page(page: dict) -> list[dict]:
+def parse_register_page(page: dict) -> list[dict]:
     """
     Agrupa o conteúdo de uma página MODBUS em registros.
     
-    Um novo registro começa quando encontramos um novo endereço MODBUS no início de uma linha.
-    
-    Neste primeiro estágio, não interpretamos as colunas. Apenas preservamos o texto original.
+    Um novo registro começa quando encontramos um novo endereço MODBUS no início de uma linha com um endereço modbus válido.
     """
 
     lines = page["texto"].splitlines()
@@ -81,8 +100,10 @@ def parse_modbus_page(page: dict) -> list[dict]:
 
         if not line:
             continue
+        address = detect_address(line)
 
-        if is_address_start(line):
+        if address is not None:
+
             if current_record is not None:
                 records.append(current_record)
 
@@ -90,7 +111,10 @@ def parse_modbus_page(page: dict) -> list[dict]:
                 "tipo": "modbus_register",
                 "documento": page["documento"],
                 "pagina": page["pagina"],
-                "address": extract_address(line),
+                "address": address["address"],
+                "address_start": address["address_start"],
+                "address_end": address["address_end"],
+                "address_type": address["address_type"],
                 "texto": line,
                 }
             
@@ -101,3 +125,49 @@ def parse_modbus_page(page: dict) -> list[dict]:
         records.append(current_record)
 
     return records
+
+
+def parse_modbus_page(page:dict) -> dict:
+    """
+    Classifica uma página do documento MODBUS.
+    
+    Página 1:
+        Histórico de versões.
+    
+    Página 2:
+        Referência do protocolo e informações sobre erros.
+        
+    Página 3 em diante:
+        Registro MODBUS.
+    """
+    page_number = page["pagina"]
+
+    if page_number == 1:
+        return {
+            "tipo": "modbus_version_history",
+            "documento": page["documento"],
+            "pagina": page_number,
+            "texto": page["texto"],
+            "registros": [],
+        }
+
+    if page_number == 2:
+
+        return {
+            "tipo": "modbus_protocol_reference",
+            "documento": page["documento"],
+            "pagina": page_number,
+            "texto": page["texto"],
+            "registros": [],
+        }
+
+    records = parse_register_page(page)
+    return {
+        "tipo": "modbus_register_table",
+        "documento": page["documento"],
+        "pagina": page_number,
+        "texto": page["texto"],
+        "registros": records,
+
+    }
+
