@@ -15,6 +15,7 @@ energia = get_total_energy()
 carregador_em_uso = get_active_chargers()
 
 
+
 def render_sidebar():
 
     with st.sidebar:
@@ -37,11 +38,17 @@ def render_sidebar():
 
         st.title("Painel")
 
+        st.title("Registros únicos")
+
+
+
         if st.button("Monitoramento", use_container_width=True):
             st.session_state.sidebar_page = "Monitoramento"
 
         if st.button ("Carregadores", use_container_width=True):
             st.session_state.sidebar_page = "Carregadores"
+        if st.button("Registro Pessoal", use_container_width=True):
+            st.session_state_sidebar_page = "Registro Pessoal"
         
         linha()
         
@@ -57,12 +64,6 @@ def render_sidebar():
         st.divider()
 
         if st.session_state.sidebar_page == "Monitoramento":
-
-
-
-            st.title("Monitoramento")
-
-            
 
             st.metric(
                 label="Potência Total",
@@ -83,8 +84,6 @@ def render_sidebar():
                 value=len(ativos)
             )
 
-            
-
 
             st.metric(
                 label="Total de energia usada",
@@ -92,7 +91,6 @@ def render_sidebar():
             )
 
             
-
         elif st.session_state.sidebar_page == "Carregadores":
         
             chargers = get_all_chargers()
@@ -121,6 +119,9 @@ def render_sidebar():
 
                     )
 
+        elif st.session_state_sidebar_page == "Registro Pessoal":
+
+              
             linha()
 
             pagina = st.radio(

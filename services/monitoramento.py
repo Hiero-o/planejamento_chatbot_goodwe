@@ -23,8 +23,10 @@ def get_all_chargers():
     return load_data()
 
 
+ 
+
 def get_status(charger_id):
-    charger = get_charger(charger_id)
+    return load_data()
 
     if not charger:
         return None
@@ -39,6 +41,8 @@ def get_field(charger_id, field):
     if not charger:
         return None
     return charger.get(field)
+
+
 
 # --------------
 
@@ -74,6 +78,7 @@ def get_total_power():
 
         total += charger["potencia_kw"]
     return total
+
 
 
 def get_total_energy():
