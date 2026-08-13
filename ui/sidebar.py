@@ -136,6 +136,7 @@ def render_sidebar():
 
         
             st.markdown(
+            
             f"""
 
     **Dados do {pagina}**\n

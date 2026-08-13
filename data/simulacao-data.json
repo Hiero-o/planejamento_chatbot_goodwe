@@ -54,19 +54,8 @@
         "horario": "18:00",
         "tarifa_kwh": 1.50
 
-    },
-
-    "charger_05": {
-        "status": "Carregando",
-        "potencia_kw": 3.0,
-        "corrente_a": 32,
-        "tensao_v": 220,
-        "energia_kwh": 13,
-        "usuario": "Gustavo",
-        "tempo_restante_min": 90,
-        "horario": "20:30",
-        "tarifa_kwh": 1.35
-        
     }
+
+   
 }
 
