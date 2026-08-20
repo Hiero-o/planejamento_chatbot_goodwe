@@ -13,6 +13,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import ContainerChat from "../ContainerChat";
+import ContainerMonitoring from "../ContainerMonitoring"
 
 export function AppSidebar() {
     return (
@@ -63,7 +64,6 @@ export function AppSidebar() {
                         <ContainerChat content="Erro MODBUS 0x0001"/>
                         <ContainerChat content="Erro de tupla"/>
                     </main>
-                    
                 </SidebarContent>
             </Sidebar>
         </>
