@@ -15,7 +15,7 @@ def load_all_documents():
 
     documents = [
         "conhecimento/manuais/GW_HCA-G2_Datasheet-PT.pdf",
-        "conhecimento/manuais/Mapa MODBUS_HCA G2.pdf",
+        "conhecimento/manuais/Mapa-MODBUS_HCA-G2.pdf",
         "conhecimento/manuais/GW_HCA-G2_User-Manual-PT.pdf"
     ]
     conhecimento = ""
