@@ -1,4 +1,7 @@
+import random
 import re
+from datetime import datetime, timedelta
+from decimal import Decimal
 
 from chatbot.llm import ask_model
 from services.monitoramento import *
@@ -26,9 +29,76 @@ termos_tecnicos = [
 ]
 
 
+def _create_random_tariff_session(
+        question,
+        tarifacao_calculator,
+        sessoes_repository,
+):
+    normalized = unidecode(question.lower())
+    match = re.search(
+        r"crie um usuario\s+(?:com o nome|chamado)\s*\"?([^\",]+)\"?\s*"
+        r"(?:,?\s*e que tenha o carro|,?\s*com o carro|"
+        r"\s*que use o veiculo)\s*\"?([^\",]+)\"?",
+        normalized,
+    )
+    if not match or "aleatori" not in normalized or "tarif" not in normalized:
+        return None
+
+    usuario_id = match.group(1).strip().title()
+    veiculo_id = match.group(2).strip().title()
+    establishment = tarifacao_calculator.repository.get_establishment(
+        "estabelecimento_01"
+    )
+    generator = random.Random()
+    charger = generator.choice(establishment.carregadores)
+    inicio = datetime.now().replace(
+        hour=generator.choice([8, 10, 13, 17, 18, 19, 20]),
+        minute=generator.choice([0, 15, 30, 45]),
+        second=0,
+        microsecond=0,
+    ) - timedelta(days=generator.randint(0, 7))
+    duracao = generator.choice([20, 30, 40, 45, 60, 75, 90])
+    potencia = generator.choice([
+        charger.potencia_kw,
+        charger.potencia_kw * Decimal("0.8"),
+        charger.potencia_kw * Decimal("0.9"),
+    ])
+    bandeira = generator.choice(["verde", "verde", "amarela", "vermelha_1"])
+    resultado = tarifacao_calculator.simulate(
+        "estabelecimento_01",
+        charger.charger_id,
+        inicio,
+        duracao,
+        potencia,
+        bandeira,
+        usuario_id,
+        veiculo_id,
+    )
+    registro = sessoes_repository.save(resultado)
+    return (
+        "Usuário e sessão criados com sucesso.\n\n"
+        f"- Usuário: {usuario_id}\n"
+        f"- Veículo: {veiculo_id}\n"
+        f"- Estabelecimento: {establishment.nome}\n"
+        f"- Sessão: {registro['session_id']}\n"
+        f"- Carregador: {registro['charger_id']}\n"
+        f"- Horário: {registro['inicio']}\n"
+        f"- Duração: {registro['duracao_minutos']} minutos\n"
+        f"- Potência: {registro['potencia_kw']} kW\n"
+        f"- Energia estimada: {registro['energia_kwh']} kWh\n"
+        f"- Bandeira: {registro['bandeira']}\n"
+        f"- Período: {registro['periodo']}\n"
+        f"- Custo total: R$ {registro['custo_total']:.2f}\n\n"
+        "A sessão foi armazenada no histórico de tarifação desse usuário e veículo."
+    )
+
+
 def process_question(
         question,
-        memory
+    memory,
+    historico_tarifacao=None,
+    tarifacao_calculator=None,
+    sessoes_repository=None,
 ):
     
     contexto = None
@@ -50,6 +120,17 @@ def process_question(
     )
 
     intent = detect_intent(texto)
+
+    if tarifacao_calculator and sessoes_repository:
+        tariff_result = _create_random_tariff_session(
+            question,
+            tarifacao_calculator,
+            sessoes_repository,
+        )
+        if tariff_result:
+            memory.add_user_message(question)
+            memory.add_assistant_message(tariff_result)
+            return tariff_result
 
     if "0x0001" in texto:
 
@@ -243,9 +324,10 @@ def process_question(
         
     
 
-    memory.add_user_message(
-        contexto
-    )
+    if historico_tarifacao:
+        contexto = f"{historico_tarifacao}\n\nPergunta atual:\n{contexto}"
+
+    memory.add_user_message(contexto)
 
     answer = ask_model(
         memory.get_messages()

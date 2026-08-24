@@ -1,0 +1,48 @@
+{
+  "configuracao": {
+    "bandeiras": {
+      "verde": 0.0,
+      "amarela": 0.01885,
+      "vermelha_1": 0.04463,
+      "vermelha_2": 0.07877
+    },
+    "periodos": [
+      {"nome": "fora_ponta", "inicio": "00:00", "fim": "17:00", "adicional_percentual": 0},
+      {"nome": "ponta", "inicio": "17:00", "fim": "20:00", "adicional_percentual": 25},
+      {"nome": "fora_ponta", "inicio": "20:00", "fim": "24:00", "adicional_percentual": 0}
+    ],
+    "impostos": {
+      "icms": 0.0,
+      "pis": 0.0,
+      "cofins": 0.0
+    },
+    "margem_depois_dos_impostos": true
+  },
+  "estabelecimentos": [
+    {
+      "estabelecimento_id": "estabelecimento_01",
+      "nome": "FIAP",
+      "endereco": "Sao Paulo - SP",
+      "tarifa_kwh": 1.35,
+      "margem_percentual": 10,
+      "carregadores": [
+        {
+          "charger_id": "charger_01",
+          "status": "Disponivel",
+          "potencia_kw": 7.2,
+          "corrente_a": 32,
+          "tensao_v": 220,
+          "estabelecimento_id": "estabelecimento_01"
+        },
+        {
+          "charger_id": "charger_02",
+          "status": "Disponivel",
+          "potencia_kw": 7.2,
+          "corrente_a": 32,
+          "tensao_v": 220,
+          "estabelecimento_id": "estabelecimento_01"
+        }
+      ]
+    }
+  ]
+}
