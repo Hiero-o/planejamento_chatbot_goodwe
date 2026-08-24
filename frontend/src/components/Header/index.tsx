@@ -9,7 +9,7 @@ export default function Header() {
           <ItemNav label="Planos" />
           <ItemNav label="Dashboard" />
           <ItemNav label="Suporte" />
-          <button className="rounded-[8px] py-[5px] px-[15px] text-[14px] bg-[#ECFF00] text-[#070707] font-medium cursor-pointer transition-[0.2s] hover:bg-[#a5af11]">
+          <button onClick={() => window.location.href = '/auth/login'} className="rounded-[8px] py-[5px] px-[15px] text-[14px] bg-[#ECFF00] text-[#070707] font-medium cursor-pointer transition-[0.2s] hover:bg-[#89920d]">
             Acessar
           </button>
         </nav>
