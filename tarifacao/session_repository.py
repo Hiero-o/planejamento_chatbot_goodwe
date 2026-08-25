@@ -31,6 +31,11 @@ class SessionRepository:
             encoding="utf-8",
         )
 
+    def clear(self) -> None:
+        """Remove todas as sessões persistidas e reinicia o repositório vazio."""
+        self.data = {"estabelecimentos": {}}
+        self._save()
+
     @staticmethod
     def _serialize(result: PriceBreakdown) -> dict[str, Any]:
         return {

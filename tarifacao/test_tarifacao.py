@@ -75,6 +75,20 @@ class PricingTests(unittest.TestCase):
             self.assertIn("Energia total: 3.600 kWh", summary)
             self.assertIn("Custo total registrado:", summary)
 
+    def test_clear_removes_persisted_sessions(self):
+        with tempfile.TemporaryDirectory() as folder:
+            session_path = Path(folder) / "sessoes.json"
+            repository = SessionRepository(session_path)
+            result = PricingCalculator().simulate(
+                "estabelecimento_01", "charger_01", datetime(2026, 8, 23, 9), 30, 7.2,
+            )
+            repository.save(result)
+
+            repository.clear()
+
+            reloaded_repository = SessionRepository(session_path)
+            self.assertEqual(reloaded_repository.find("estabelecimento_01"), [])
+
     def test_demo_generation_is_reproducible_in_shape(self):
         with tempfile.TemporaryDirectory() as folder:
             repository = SessionRepository(Path(folder) / "sessoes.json")

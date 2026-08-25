@@ -10,6 +10,15 @@ from tarifacao import EstablishmentRepository, PricingCalculator, SessionReposit
 def linha():
     st.write("----------------------")
 
+
+def formatar_kwh(valor: float) -> str:
+    """Exibe energia no padrão brasileiro, sem casas decimais desnecessárias."""
+    parte_inteira, parte_decimal = f"{valor:,.3f}".split(".")
+    parte_decimal = parte_decimal.rstrip("0")
+    parte_inteira = parte_inteira.replace(",", ".")
+    return f"{parte_inteira},{parte_decimal}" if parte_decimal else parte_inteira
+
+
 def render_sidebar(
     tarifacao_repository: EstablishmentRepository,
     tarifacao_calculator: PricingCalculator,
@@ -92,13 +101,13 @@ def render_sidebar(
                 metrics = st.columns(2)
                 metrics[0].metric("Recargas", len(sessoes))
                 metrics[1].metric("Custo acumulado", f"R$ {total_cost:.2f}")
-                st.caption(f"Energia acumulada: {total_energy:.3f} kWh")
+                st.caption(f"Energia acumulada: {formatar_kwh(total_energy)} kWh")
 
                 if sessoes:
                     ultima = sessoes[0]
                     st.info(
                         f"Última recarga: {ultima['inicio']} | "
-                        f"{ultima['energia_kwh']} kWh | R$ {ultima['custo_total']}"
+                        f"{formatar_kwh(ultima['energia_kwh'])} kWh | R$ {ultima['custo_total']}"
                     )
                     with st.expander("Recargas recentes"):
                         st.dataframe(
@@ -106,7 +115,7 @@ def render_sidebar(
                                 {
                                     "Data": sessao["inicio"],
                                     "Duração": f"{sessao['duracao_minutos']} min",
-                                    "Energia": f"{sessao['energia_kwh']} kWh",
+                                    "Energia": f"{formatar_kwh(sessao['energia_kwh'])} kWh",
                                     "Custo": f"R$ {sessao['custo_total']}",
                                 }
                                 for sessao in sessoes[:5]
@@ -161,7 +170,7 @@ def render_sidebar(
                 total_cost = sum(sessao["custo_total"] for sessao in sessoes)
                 total_energy = sum(sessao["energia_kwh"] for sessao in sessoes)
                 st.metric("Custo acumulado", f"R$ {total_cost:.2f}")
-                st.metric("Energia acumulada", f"{total_energy:.3f} kWh")
+                st.metric("Energia acumulada", f"{formatar_kwh(total_energy)} kWh")
 
             with st.expander("Sessões registradas", expanded=True):
                 if sessoes:
@@ -172,7 +181,7 @@ def render_sidebar(
                                 "Data": sessao["inicio"],
                                 "Carregador": sessao["charger_id"],
                                 "Minutos": sessao["duracao_minutos"],
-                                "kWh": sessao["energia_kwh"],
+                                "kWh": formatar_kwh(sessao["energia_kwh"]),
                                 "Bandeira": sessao["bandeira"],
                                 "Custo (R$)": sessao["custo_total"],
                             }

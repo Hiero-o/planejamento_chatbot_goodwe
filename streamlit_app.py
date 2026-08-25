@@ -9,6 +9,14 @@ from ui.sidebar import render_sidebar
 from ui.chat import render_chat
 
 
+@st.cache_resource
+def get_sessoes_repository() -> SessionRepository:
+    """Cria o repositório vazio uma vez a cada inicialização do servidor."""
+    repository = SessionRepository()
+    repository.clear()
+    return repository
+
+
 st.title("GurAI")
 
 st.write("Agente de IA especializado em operações de eletropostos.")
@@ -46,7 +54,7 @@ if "tarifacao_repository" not in st.session_state:
     st.session_state.tarifacao_calculator = PricingCalculator(
         st.session_state.tarifacao_repository
     )
-    st.session_state.sessoes_repository = SessionRepository()
+    st.session_state.sessoes_repository = get_sessoes_repository()
 
 if "tarifacao_notice" in st.session_state:
     st.success(st.session_state.pop("tarifacao_notice"))
@@ -56,8 +64,7 @@ if "tarifacao_notice" in st.session_state:
 
 tarifacao_repository = st.session_state.tarifacao_repository
 tarifacao_calculator = st.session_state.tarifacao_calculator
-sessoes_repository = SessionRepository()
-st.session_state.sessoes_repository = sessoes_repository
+sessoes_repository = st.session_state.sessoes_repository
 historico_tarifacao = render_sidebar(
     tarifacao_repository,
     tarifacao_calculator,
