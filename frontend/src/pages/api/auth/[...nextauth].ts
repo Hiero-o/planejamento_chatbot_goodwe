@@ -2,12 +2,17 @@ import NextAuth from "next-auth/next";
 import { getAuth } from "firebase/auth";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { db } from "@/service/firebaseConnection";
+import { db } from "@/services/firebaseConnection";
 import { doc, getDoc } from "firebase/firestore";
+import GoogleProvider from 'next-auth/providers/google'
 
 export default NextAuth({
     debug: true,
     providers: [
+        GoogleProvider({
+            clientId: process.env.GOOGLE_CLIENT_ID as string,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+        }),
         CredentialsProvider({
             name: "Credentials",
             credentials: {
