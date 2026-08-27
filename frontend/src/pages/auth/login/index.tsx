@@ -113,7 +113,7 @@ export default function Login() {
                         <p className="leading-[1.2] text-[#5f5f5f]">ou</p>
                         <div className="w-full p-[0.5px] h-[0.5px] bg-[#5f5f5f]"></div>
                     </div>
-                    <button type="button" className="w-full flex items-center justify-center rounded-[8px] py-[6px] px-[15px] text-[14px] border border-[#27272A] bg-[#070707] text-[#bebebe] font-semibold cursor-pointer transition-[0.2s] hover:bg-[#27272A]">
+                    <button onClick={() => signIn('google')} type="button" className="w-full flex items-center justify-center rounded-[8px] py-[6px] px-[15px] text-[14px] border border-[#27272A] bg-[#070707] text-[#bebebe] font-semibold cursor-pointer transition-[0.2s] hover:bg-[#27272A]">
                         <img src="/icongoogle.webp" alt="Google icon" className="h-[18px] w-[18px] mr-[15px]" />
                         Continuar com Google
                     </button>

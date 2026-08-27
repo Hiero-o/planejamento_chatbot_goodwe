@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import ContainerChat from "../ContainerChat";
 import ContainerMonitoring from "../ContainerMonitoring";
+import { Zap, BatteryCharging, Battery, Gauge } from "lucide-react";
 
 export function AppSidebar() {
   return (
@@ -69,8 +70,8 @@ export function AppSidebar() {
               </DropdownMenuGroup>
             </DropdownMenuContent>
           </DropdownMenu>
-          <main className="p-[5px] w-full border-b border-[#1f1f1f]">
-            <p className="text-[#b3b3b3] text-[12px] px-[14px] mb-[5px]">
+          <main className="p-[5px] w-full">
+            <p className="text-[#b3b3b3] text-[12px] px-[14px] mb-[5px] mt-[6px]">
               Conversas
             </p>
             <ContainerChat content="Carregador nao funciona" />
@@ -78,6 +79,12 @@ export function AppSidebar() {
             <ContainerChat content="Erro MODBUS 0x0001" />
             <ContainerChat content="Erro de tupla" />
           </main>
+          <div className=" w-full flex flex-col items-center justify-center">
+            <ContainerMonitoring label="Potência total" value={5} icon={<Zap size={20}/>} />
+            <ContainerMonitoring label="Carregadores em uso" value={5} icon={<BatteryCharging size={20}/>} />
+            <ContainerMonitoring label="Carregadores livres" value={5} icon={<Battery size={20}/>} />
+            <ContainerMonitoring label="Energia acumulada" value={5} icon={<Gauge size={20}/>} />
+          </div>
         </SidebarContent>
       </Sidebar>
     </>
