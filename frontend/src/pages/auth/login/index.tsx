@@ -101,7 +101,7 @@ export default function Login() {
                             maxLength={4}
                         />
                     )}
-                    <button disabled={loading} type='submit' style={loading ? { backgroundColor: '#89920d', } : {}} className="mb-[15px] w-full rounded-[8px] py-[6px] px-[15px] text-[14px] bg-[#ECFF00] text-[#070707] font-semibold cursor-pointer transition-[0.2s] hover:bg-[#89920d]">
+                    <button disabled={loading} type='submit' style={loading ? { backgroundColor: '#89920d', } : {}} className="mb-[15px] w-full rounded-[8px] py-[6px] px-[15px] text-[14px] bg-[#f0d941] text-[#070707] font-semibold cursor-pointer transition-[0.2s] hover:bg-[#a3921f]">
                         {loading ? (
                             <>
                                 Carregando

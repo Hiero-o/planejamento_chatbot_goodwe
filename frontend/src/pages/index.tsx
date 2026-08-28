@@ -133,7 +133,7 @@ export default function Home() {
               Eletropostos públicos e semi-públicos enfrentam novos desafios com a mobilidade elétrica: energia, autenticação, tarifação dinâmica e suporte.
             </p>
             <div className="flex items-center justify-center gap-[10px] flex-row">
-              <button className="rounded-[8px] py-[6px] px-[15px] text-[14px] bg-[#ECFF00] text-[#070707] font-semibold cursor-pointer transition-[0.2s] hover:bg-[#89920d]">
+              <button className="rounded-[8px] py-[6px] px-[15px] text-[14px] bg-[#f0d941] text-[#070707] font-semibold cursor-pointer transition-[0.2s] hover:bg-[#a3921f]">
                 Experimentar
               </button>
               <button className="flex items-center justify-center rounded-[8px] py-[6px] px-[15px] text-[14px] border border-[#27272A] bg-[#070707] text-[#bebebe] font-semibold cursor-pointer transition-[0.2s] hover:bg-[#27272A]">
@@ -190,7 +190,7 @@ export default function Home() {
               alt="Image Dashboard"
             />
           </div>
-          <span className="text-[13px] text-[#ECFF00] mt-[15px]">
+          <span className="text-[13px] text-[#f0d941] mt-[15px]">
             Plataforma
           </span>
           <h1 className="text-[35px] font-semibold mb-[4px]">
