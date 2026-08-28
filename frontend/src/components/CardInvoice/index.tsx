@@ -6,12 +6,13 @@ interface CardInvoiceProps {
     linkPDFInvoice: string,
     sizeArchivePDFInvoice: string,
     idInvoice: string,
-    price: number
+    price: number,
+    onClick?: () => void
 }
 
-export default function CardInvoice({ date, namePDFInvoice, linkPDFInvoice, sizeArchivePDFInvoice, idInvoice, price }: CardInvoiceProps) {
+export default function CardInvoice({ date, namePDFInvoice, linkPDFInvoice, sizeArchivePDFInvoice, idInvoice, price, onClick = () => {} }: CardInvoiceProps) {
     return(
-        <article className="rounded-[8px] p-[10px] border border-[#1f1f1f] flex items-start justify-center flex-col w-full mb-[8px] cursor-pointer hover:bg-[#1f1f1f77] transition-[0.2s]">
+        <article onClick={onClick} className="rounded-[8px] p-[10px] border border-[#1f1f1f] flex items-start justify-center flex-col w-full mb-[8px] cursor-pointer hover:bg-[#1f1f1f77] transition-[0.2s]">
             <h1 className="mb-[10px]">Fatura - {date}</h1>
             <div className="rounded-[8px] border border-[#1f1f1f] bg-[#1f1f1f] flex items-center justify-start flex-row w-full p-[10px] mb-[10px]">
                 <File size={40} className="mr-[10px]"/>
