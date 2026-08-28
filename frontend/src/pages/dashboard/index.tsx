@@ -77,9 +77,11 @@ export default function Dashboard() {
               </TooltipContent>
             </Tooltip>
           </div>
+
           {page === 'monitoramento' && (
             <MonitoringPage />
           )}
+
         </main>
       </TooltipProvider>
     </SidebarProvider>
