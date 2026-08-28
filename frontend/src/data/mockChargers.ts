@@ -12,6 +12,7 @@ export interface Charger {
     connectors: number;
 
     establishment: {
+        tarifa: string;
         id: string;
         name: string;
         address: string;
@@ -29,6 +30,7 @@ export const mockChargers: Charger[] = [
         connectors: 4,
 
         establishment: {
+            tarifa: "10%",
             id: "shopping-gurgel",
             name: "Shopping Gurgel",
             address: "São Paulo - SP",
@@ -45,6 +47,7 @@ export const mockChargers: Charger[] = [
         connectors: 2,
 
         establishment: {
+            tarifa: "15%",
             id: "posto-central",
             name: "Posto Central",
             address: "São Paulo - SP",
@@ -61,6 +64,7 @@ export const mockChargers: Charger[] = [
         connectors: 3,
 
         establishment: {
+            tarifa: "9%",
             id: "mercado-central",
             name: "Mercado Central",
             address: "São Paulo - SP",
@@ -77,6 +81,7 @@ export const mockChargers: Charger[] = [
         connectors: 6,
 
         establishment: {
+            tarifa: "7%",
             id: "estacionamento-gurgel",
             name: "Estacionamento Gurgel",
             address: "São Paulo - SP",
