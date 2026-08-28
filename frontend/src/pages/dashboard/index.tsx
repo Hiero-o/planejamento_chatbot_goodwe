@@ -24,6 +24,9 @@ import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
 import ContainerMonitoring from "@/components/ContainerMonitoring";
 
+//gustavo modificações\\
+import ChargerMap from "@/components/ChargerMap";
+
 export default function Dashboard() {
 
   return (
@@ -79,6 +82,8 @@ export default function Dashboard() {
             <header className="p-[12px] border-b border-[#1f1f1f] w-full">
               <h1 className="text-[14px]">Monitoramento</h1>
             </header>
+ 
+            <ChargerMap />
           </main>
         </main>
       </TooltipProvider>
