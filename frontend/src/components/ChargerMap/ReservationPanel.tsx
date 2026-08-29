@@ -50,7 +50,10 @@ export default function ReservationPanel({
 
           <button
             type="button"
-            onClick={onClose}
+            onClick={(event) => {
+              event.stopPropagation();
+              onClose();
+            }}
             className="mt-4 w-full rounded-md bg-[#ECFF00] px-4 py-2 text-sm font-medium text-black"
           >
             Fechar
@@ -137,7 +140,7 @@ export default function ReservationPanel({
         type="button"
         onClick={handleReservation}
         disabled={!date || !time}
-       className="rounded-[8px] py-[6px] px-[15px] mb-[8px] text-[14px] bg-[#f0d941] w-full text-[#070707] font-semibold cursor-pointer transition-[0.2s] hover:bg-[#a3921f] disabled:bg-[#a3921f]"
+        className="rounded-[8px] py-[6px] px-[15px] mb-[8px] text-[14px] bg-[#f0d941] w-full text-[#070707] font-semibold cursor-pointer transition-[0.2s] hover:bg-[#a3921f] disabled:bg-[#a3921f]"
       >
         Confirmar reserva
       </button>

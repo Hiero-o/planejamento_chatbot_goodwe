@@ -18,19 +18,19 @@ function getStatusInfo(status: Charger["status"]) {
     case "available":
       return {
         label: "Disponível",
-        icon: <Circle size={15} color="#2dcf3d"/>,
+        icon: <Circle size={15} color="#2dcf3d" />,
       };
 
     case "occupied":
       return {
         label: "Em uso",
-        icon: <CircleDashed size={15} color="#f0d941"/>,
+        icon: <CircleDashed size={15} color="#f0d941" />,
       };
 
     case "offline":
       return {
         label: "Offline",
-        icon: <CircleOff size={15} color="#e01f53"/>,
+        icon: <CircleOff size={15} color="#e01f53" />,
       };
   }
 }
@@ -66,7 +66,7 @@ export default function ChargerPopup({
 
         <div className="mt-3 space-y-1 text-sm">
           <p>
-             {charger.power} kW
+            {charger.power} kW
           </p>
 
           <p>
@@ -95,7 +95,10 @@ export default function ChargerPopup({
         <div className="mt-4">
           <button
             type="button"
-            onClick={() => setReservationOpen(true)}
+            onClick={(event) => {
+              event.stopPropagation();
+              setReservationOpen(true);
+            }}
             disabled={charger.status !== "available"}
             className="rounded-[8px] mb-[8px] py-[6px] px-[15px] text-[14px] bg-[#f0d941] w-full text-[#070707] font-semibold cursor-pointer transition-[0.2s] hover:bg-[#a3921f] disabled:bg-[#a3921f]"
           >

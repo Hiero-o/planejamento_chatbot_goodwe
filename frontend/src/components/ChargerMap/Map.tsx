@@ -104,7 +104,7 @@ export default function Map() {
             ]}
             icon={getChargerIcon(charger.status)} // 3. Aplicando o novo ícone aqui
           >
-            <Popup>
+            <Popup closeOnClick={false}>
               <ChargerPopup charger={charger} />
             </Popup>
           </Marker>
