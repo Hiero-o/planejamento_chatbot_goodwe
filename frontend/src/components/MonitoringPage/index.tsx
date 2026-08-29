@@ -6,7 +6,9 @@ export default function MonitoringPage() {
             <header className="p-[12px] border-b border-[#1f1f1f] w-full">
                 <h1 className="text-[14px]">Monitoramento</h1>
             </header>
-            <ChargerMap />
+            <div className="p-[10px] w-full">
+                <ChargerMap />
+            </div>
         </main>
     )
 }

@@ -5,6 +5,8 @@ import Link from "next/link";
 
 import type { Charger } from "@/data/mockChargers";
 
+import { Circle, CircleDashed, CircleOff } from 'lucide-react'
+
 import ReservationPanel from "./ReservationPanel";
 
 interface ChargerPopupProps {
@@ -16,19 +18,19 @@ function getStatusInfo(status: Charger["status"]) {
     case "available":
       return {
         label: "Disponível",
-        icon: "🟢",
+        icon: <Circle size={15} color="#2dcf3d"/>,
       };
 
     case "occupied":
       return {
         label: "Em uso",
-        icon: "🟡",
+        icon: <CircleDashed size={15} color="#f0d941"/>,
       };
 
     case "offline":
       return {
         label: "Offline",
-        icon: "🔴",
+        icon: <CircleOff size={15} color="#e01f53"/>,
       };
   }
 }
@@ -51,60 +53,78 @@ export default function ChargerPopup({
   }
 
   return (
-    <div className="min-w-[280px] p-2">
-      <h3 className="text-base font-semibold">
-        {charger.name}
-      </h3>
+    <>
+      <div className="min-w-[280px] p-2">
+        <h3 className="text-base font-semibold">
+          {charger.name}
+        </h3>
 
-      <p className="mt-2 text-sm">
-        {status.icon} {status.label}
-      </p>
-
-      <div className="mt-3 space-y-1 text-sm">
-        <p>
-          ⚡ {charger.power} kW
+        <p className="mt-2 text-sm flex items-center justify-start flex-row">
+          {status.icon}
+          <span className="ml-[5px]">{status.label}</span>
         </p>
 
-        <p>
-          🔌 {charger.connectors} conectores
-        </p>
+        <div className="mt-3 space-y-1 text-sm">
+          <p>
+             {charger.power} kW
+          </p>
 
-        <p>
-            💰 Tarifa: {charger.establishment.tarifa}
-        </p>
-        
-      </div>
+          <p>
+            {charger.connectors} conectores
+          </p>
 
-      <div className="my-3 border-t border-gray-200" />
+          <p>
+            Tarifa: {charger.establishment.tarifa}
+          </p>
 
-      <Link
-        href={`/establishments/${charger.establishment.id}`}
-        className="font-medium text-blue-600 hover:underline"
-      >
-        {charger.establishment.name}
-      </Link>
+        </div>
 
-      <p className="text-sm text-gray-500">
-        {charger.establishment.address}
-      </p>
-
-      <div className="mt-4 space-y-2">
-        <button
-          type="button"
-          onClick={() => setReservationOpen(true)}
-          disabled={charger.status !== "available"}
-          className="w-full rounded-md bg-[#ECFF00] px-4 py-2 text-sm font-semibold text-black disabled:cursor-not-allowed disabled:opacity-50"
-        >
-          ⚡ Reservar carregador
-        </button>
+        <div className="my-3 border-t border-[#1f1f1f]" />
 
         <Link
           href={`/establishments/${charger.establishment.id}`}
-          className="block w-full rounded-md border border-gray-300 px-4 py-2 text-center text-sm font-medium hover:bg-gray-100"
+          className="font-medium text-blue-600 hover:underline"
         >
-          🏢 Ver estabelecimento
+          {charger.establishment.name}
         </Link>
+
+        <p className="text-sm text-gray-500">
+          {charger.establishment.address}
+        </p>
+
+        <div className="mt-4">
+          <button
+            type="button"
+            onClick={() => setReservationOpen(true)}
+            disabled={charger.status !== "available"}
+            className="rounded-[8px] mb-[8px] py-[6px] px-[15px] text-[14px] bg-[#f0d941] w-full text-[#070707] font-semibold cursor-pointer transition-[0.2s] hover:bg-[#a3921f] disabled:bg-[#a3921f]"
+          >
+            Reservar carregador
+          </button>
+
+          <Link
+            style={{ color: "#fff" }}
+            href={`/establishments/${charger.establishment.id}`}
+            className="flex items-center justify-center rounded-[8px] py-[6px] px-[15px] text-[#fff] text-[14px] border border-[#27272A] bg-[#070707] text-[#bebebe] font-semibold cursor-pointer transition-[0.2s] hover:bg-[#27272A] disabled:bg-[#a3921f] "
+          >
+            Ver estabelecimento
+          </Link>
+        </div>
       </div>
-    </div>
+      <style jsx global>{`
+        .leaflet-popup-content-wrapper {
+          background: #0a0a0a;
+          color: white;
+        }
+
+        .leaflet-popup-tip {
+          background: #0a0a0a;
+        }
+
+        .leaflet-popup-close-button {
+          color: white !important;
+        }
+      `}</style>
+    </>
   );
 }

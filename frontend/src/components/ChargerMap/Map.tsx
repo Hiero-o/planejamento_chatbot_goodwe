@@ -81,7 +81,7 @@ function getChargerIcon(status: Charger["status"]) {
 
 export default function Map() {
   return (
-    <div className="relative w-[80%] h-[500px] rounded-[8px] overflow-hidden">
+    <div className="relative w-full h-[500px] rounded-[8px] overflow-hidden">
       <MapContainer
         center={[-23.5505, -46.6333]}
         zoom={13}
