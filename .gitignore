@@ -11,3 +11,30 @@ arquivados/
 teste_modbus_parser.py
 anotacoes.md
 teste_manual_parser.py
+
+#precauções:
+
+# Dependencies
+node_modules/
+
+# Next.js
+.next/
+out/
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+*.log
+
+# Build
+dist/
+build/
+
+# OS
+.DS_Store
+Thumbs.db
