@@ -15,6 +15,20 @@ def load_eval():
         return json.load(arquivo)
 
 
+def save_results(resultados):
+    caminho = Path(__file__).parent / "baseline_results.json"
+
+    dados = {
+        "tipo": "baseline",
+        "testes": resultados
+    }
+
+    with open(caminho, "w", encoding="utf-8") as arquivo:
+        json.dump(dados, arquivo, ensure_ascii=False, indent=4)
+
+    print(f"\n Resultados salvos em: {caminho}")
+
+
 def run_memory_test(teste):
     system_prompt = load_prompt()
     memory = Memory(system_prompt)
@@ -40,6 +54,7 @@ def run_memory_test(teste):
         "criterio": teste["criterio"],
         "latencia_seg": fim - inicio
     }
+
 
 def test(testes):
     system_prompt = load_prompt()
@@ -96,6 +111,9 @@ if __name__ == "__main__":
         print(f"Resposta: {resultado["resposta"]}")
         print(f"Latencia: {resultado["latencia_seg"]:.2f} segundos")
         print(f"\nQuantidade de execuções: {len(resultados)}\n")
+
+        save_results(resultados)
+
 
 
    
