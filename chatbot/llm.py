@@ -15,10 +15,10 @@ client = Client(
     }
 )
 
-def ask_model(messages):
+def ask_model(messages, retornar_metricas=False):
 
     response = client.chat(
-        model="gpt-oss:120b",
+        model="gemma4:31b-cloud",
         messages=messages,
         options={
             "temperature": 0.3,
@@ -26,4 +26,13 @@ def ask_model(messages):
         }
     )
 
-    return response["message"]["content"]
+    resposta = response["message"]["content"]
+
+    if not retornar_metricas:
+        return resposta
+    return {
+        "resposta": resposta,
+        "input_tokens": response.get("prompt_eval_count", 0),
+        "output_tokens": response.get("eval_count", 0)
+    }
+

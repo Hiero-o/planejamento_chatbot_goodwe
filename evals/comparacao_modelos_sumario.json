@@ -1,0 +1,23 @@
+{
+    "gpt-oss:120b": {
+        "quantidade_testes": 7,
+        "latencia_media": 1.265,
+        "input_tokens_medio": 1971.40,
+        "output_tokens_medio": 202.18,
+        "total_tokens_medio": 2173.59,
+        "testes_com_modelo": 37
+    },
+    "gemma:31b-cloud": {
+        "quantidade_testes": 7,
+        "latencia_media": 0.85,
+        "input_tokens_medio": 2182.02,
+        "output_tokens_medio": 86.64,
+        "total_tokens_medio": 2268.67,
+        "testes_com_modelo": 37
+    },
+    "diferencas_percentuais": {
+        "output_tokens": 57.14,
+        "total_tokens": -4.37,
+        "latency_tokens": 32.48
+    }
+}

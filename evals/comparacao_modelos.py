@@ -16,10 +16,10 @@ def load_eval():
 
 
 def save_results(resultados):
-    caminho = Path(__file__).parent / "baseline_results.json"
+    caminho = Path(__file__).parent / "comparacao_modelos_results.json"
 
     dados = {
-        "tipo": "baseline",
+        "tipo": "comparacao_modelos",
         "testes": resultados
     }
 
@@ -57,19 +57,39 @@ def run_memory_test(teste):
 
 
 def test(testes):
+
     system_prompt = load_prompt()
     memory = Memory(system_prompt)
     pergunta = testes["pergunta"]
     inicio = time.perf_counter()
-    resposta = process_question(pergunta, memory)
+
+    resultado = process_question(pergunta, memory, retornar_metricas=True)
+
+    print("TIPO DO RESULTADO:", type(resultado))
+    print("RESULTADO:", resultado)
+
     fim = time.perf_counter()
     latencia = fim - inicio
 
+    if isinstance(resultado, dict):
+        input_tokens = resultado["input_tokens"]
+        output_tokens = resultado["output_tokens"]
+        total_tokens = input_tokens + output_tokens
+        resposta = resultado["resposta"]
+
+    else:
+        input_tokens = 0
+        output_tokens = 0
+        total_tokens = 0
+        resposta = resultado
 
     return {
         "id": testes["id"],
         "pergunta": pergunta,
-        "resposta": resposta,
+        "resposta": resultado,
+        "input_tokens": input_tokens,
+        "output_tokens": output_tokens,
+        "total_tokens": total_tokens,
         "latencia_seg": latencia
     }
 
@@ -107,8 +127,11 @@ if __name__ == "__main__":
 
         resultados.append(resultado)
 
-        print(f"Resposta: {resultado["resposta"]}")
-        print(f"Latencia: {resultado["latencia_seg"]:.2f} segundos")
+        print(f"Resposta: {resultado['resposta']}")
+        print(f"Input tokens: {resultado['input_tokens']}")
+        print(f"Output tokens: {resultado['output_tokens']}")
+        print(f"Total tokens: {resultado['total_tokens']}")
+        print(f"Latência: {resultado['latencia_seg']:.2f} segundos")
         print(f"\nQuantidade de execuções: {len(resultados)}\n")
 
         save_results(resultados)

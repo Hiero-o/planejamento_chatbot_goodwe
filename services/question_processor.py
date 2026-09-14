@@ -11,14 +11,14 @@ from services.dynamic_queries import (
     get_total_energy_context
 )
 from services.help import get_help_message
-import streamlit as st
 
 from services.intents import detect_intent
 
 
 def process_question(
         question,
-        memory
+        memory,
+        retornar_metricas=False
 ):
     
     contexto = None
@@ -37,7 +37,6 @@ def process_question(
     )
 
     intent = detect_intent(texto)
-    print("intent detectada:", intent)
 
     if "0x0001" in texto:
 
@@ -144,7 +143,8 @@ def process_question(
     )
 
     answer = ask_model(
-    memory.get_messages()
+    memory.get_messages(),
+    retornar_metricas=retornar_metricas
     )
 
     return answer
