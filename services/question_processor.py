@@ -1,29 +1,19 @@
 import re
 
 from chatbot.llm import ask_model
-from services.monitoramento import *
 from unidecode import unidecode
-from services.conhecimento_search import search_conhecimento
-from services.conhecimento_loader import load_all_documents
+from services.conhecimento_queries import search_conhecimento
+from services.dynamic_queries import (
+    get_charger_context,
+    get_total_power_context,
+    get_available_charger_context,
+    get_active_charger_context,
+    get_total_energy_context
+)
+from services.help import get_help_message
 import streamlit as st
 
 from services.intents import detect_intent
-
-conhecimento = load_all_documents()
-
-termos_tecnicos = [
-
-    "erro",
-    "modbus",
-    "potencia",
-    "corrente",
-    "tensao",
-    "rfid",
-    "ocpp",
-    "charger",
-    "carregador",
-    "energia"
-]
 
 
 def process_question(
@@ -38,9 +28,6 @@ def process_question(
         question.lower()
     )
 
-
-    texto = question.lower()
-
     texto = unidecode(question.lower())
 
     texto = re.sub(
@@ -50,6 +37,7 @@ def process_question(
     )
 
     intent = detect_intent(texto)
+    print("intent detectada:", intent)
 
     if "0x0001" in texto:
 
@@ -92,123 +80,29 @@ def process_question(
     if match:
         charger_id = f"charger_{match.group(1).zfill(2)}"
 
-        charger = get_charger(charger_id)
-        
-        if charger:
-            contexto = f"""
-
-            Dados atuais do carregador:
-
-            Usuário: {charger["usuario"]}"
-            Status: {charger["status"]}"
-            Potência: {charger["potencia_kw"]} KW"
-            Corrente: {charger["corrente_a"]} A"
-            Tensão: {charger["tensao_v"]} V"
-            Energia: {charger["energia_kwh"]} KWH"
-            Tempo Restante: {charger["tempo_restante_min"]} Min"
-            Horario: {charger["horario"]}"
-            Tarifa: {charger["tarifa_kwh"]} KWH\n\n"
-
-            Pergunta:
-            {question}
-            """
+        contexto = get_charger_context(charger_id)      
             
-        # Consultas agregadas
+    # Consultas agregadas
 
     elif intent == "TOTAL_POWER":
-        total = get_total_power()
-
-        contexto = f"""
-        Potência total da planta: {total} KW
-
-        Pergunta:
-        {question}
-        """
-            
+        contexto = get_total_power_context()
 
     elif intent ==  "AVAILABLE_CHARGERS":
-        disponiveis = get_available_chargers()
-
-        contexto = f"""
-        Caregadores disponíveis:
-
-        {disponiveis}
-
-        Pergunta:
-
-        {question}
-        """
+        contexto = get_available_charger_context()
         
-
     elif intent == "ACTIVE_CHARGERS":
-        ativos = get_active_chargers()
-
-        
-        contexto = f"""
-            Carregadores em uso:
-
-            {ativos}
-
-            Pergunta:
-
-            {question}
-
-        """
-    
+        contexto = get_active_charger_context()
 
     elif intent == "TOTAL_ENERGY":
-        energia_tot = get_total_energy()
+        contexto = get_total_energy_context()
 
-        contexto= f"""
-            Total de energia usada: {energia_tot} KWH
-
-            Pergunta:
-
-            {question}
-
-        """
     
     elif intent == "HELP":
-        return """
-        Posso ajudar com:
+        get_help_message()
 
-        ⚡ Status dos carregadores
-        ⚡ Potência total da planta
-        ⚡ Energia consumida
-        ⚡ Carregadores disponíveis
-        ⚡ Códigos de erro
-        ⚡ Informações dos manuais
-        ⚡ Informações Modbus
-
-        Exemplos:
-
-        • Como está o charger_01?
-
-        • Qual a potência total da planta?
-
-        • Quais carregadores estão disponíveis?
-
-        • Qual a energia total utilizada?
-
-        • O que significa o erro 0x0001?
-
-        • Qual a potência nominal do GW22K-HCA-20?
-        
-        """
-
-    pergunta_tecnica = any(
-        termo in texto
-        for termo in termos_tecnicos
-    )
-
-    
     if contexto is None:
 
-        trecho = search_conhecimento(
-            question,
-            conhecimento
-        )
-
+        trecho = search_conhecimento(question)
         if trecho:
             contexto = f"""
             Você é um assistente técnico especializado.
@@ -232,29 +126,25 @@ def process_question(
             Pergunta:
 
             {question}
-            """
-            
-        elif pergunta_tecnica:
-            return """Não encontrei essa informação na documentação disponível"""
+            """       
         else:
             contexto = question
         
     
-        
-    
-
     memory.add_user_message(
-        contexto
+        f"""
+    Contexto dos dados:
+
+    {contexto}
+
+    Pergunta do usuário:
+
+    {question}
+    """
     )
 
     answer = ask_model(
-        memory.get_messages()
+    memory.get_messages()
     )
-
-    memory.add_assistant_message(
-        answer
-    )
-
-    
 
     return answer

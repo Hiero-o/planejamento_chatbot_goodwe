@@ -2,6 +2,7 @@ INTENTS = {
 
     "TOTAL_POWER": [
         "potencia total",
+        "potência total",
         "consumo total",
         "potencia da planta"
     ],
