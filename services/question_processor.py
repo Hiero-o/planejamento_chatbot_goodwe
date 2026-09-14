@@ -2,7 +2,7 @@ import re
 
 from chatbot.llm import ask_model
 from unidecode import unidecode
-from services.conhecimento_queries import search_conhecimento
+from services.conhecimento_queries import search_conhecimento_context
 from services.dynamic_queries import (
     get_charger_context,
     get_total_power_context,
@@ -102,7 +102,7 @@ def process_question(
 
     if contexto is None:
 
-        trecho = search_conhecimento(question)
+        trecho = search_conhecimento_context(question)
         if trecho:
             contexto = f"""
             Você é um assistente técnico especializado.

@@ -4,5 +4,5 @@ from services.conhecimento_search import search_conhecimento
 conhecimento = load_all_documents()
 
 
-def search_conhecimento(question):
+def search_conhecimento_context(question):
     return search_conhecimento(question, conhecimento)
