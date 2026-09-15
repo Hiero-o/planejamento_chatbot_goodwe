@@ -1,6 +1,6 @@
 import re
 
-from chatbot.llm import ask_model
+from services.charger_parser import extract_charger_id
 from unidecode import unidecode
 from services.conhecimento_queries import search_conhecimento_context
 from services.dynamic_queries import (
@@ -11,22 +11,83 @@ from services.dynamic_queries import (
     get_total_energy_context
 )
 from services.help import get_help_message
-
 from services.intents import detect_intent
+from src.chain.builder import build_chain, build_structured_chain
+
+from src.schemas.consultas import (
+    ConsultaRecarga,
+    ConsultaPotenciaTotal,
+    ConsultaCarregadoresDisponiveis,
+    ConsultaCarregadoresAtivos,
+    ConsultaEnergiaTotal,
+)
+
+chain = build_chain()
+
+structured_recarga = build_structured_chain(
+    ConsultaRecarga,
+    """Use exatamente os nomes dos campos do schema.
+
+    Mapeamentos:
+    - potência → potencia_kw
+    - corrente → corrente_a
+    - tensão → tensao_v
+    - energia → energia_kwh
+    - tempo restante → tempo_restante_min
+    - tarifa → tarifa_kwh
+    - usuário → usuario
+    - status → status
+    - carregador → carregador
+
+    Extraia somente os campos necessários para responder à pergunta.
+    Não invente valores."""
+)
+
+structured_potencia = build_structured_chain(
+    ConsultaPotenciaTotal,
+    "Extraia a potência total atual da planta em kW. O campo potencia_total_kw deve receber somente o valor numérico."
+)
+
+structured_ativos = build_structured_chain(
+    ConsultaCarregadoresAtivos,
+    """
+    Extraia a lista de identificadores dos carregadores que estão atualmente em uso.
+
+    O campo OBRIGATÓRIO do resultado deve se chamar exatamente:
+    carregadores_ativos
+
+    Não use:
+    - chargers_in_use
+    - chargers_active
+    - active_chargers
+    - qualquer outro nome.
+
+    Exemplo:
+    {"carregadores_ativos": ["charger_01", "charger_04"]}
+    """
+)
+
+structured_ativos = build_structured_chain(
+    ConsultaCarregadoresAtivos,
+    "Extraia a lista de identificadores dos carregadores que estão atualmente em uso."
+)
+
+structured_energia = build_structured_chain(
+    ConsultaEnergiaTotal,
+    "Extraia a energia total utilizada pela planta em kWh. O campo energia_total_kwh deve receber somente o valor numérico."
+)
+
 
 
 def process_question(
         question,
-        memory,
+        session_id,
         retornar_metricas=False
 ):
     
     contexto = None
 
-    match = re.search(
-        r"charger_(\d+)",
-        question.lower()
-    )
+    charger_id = extract_charger_id(question)
 
     texto = unidecode(question.lower())
 
@@ -35,8 +96,11 @@ def process_question(
         "",
         texto
     )
+    
 
     intent = detect_intent(texto)
+
+    print("intent detectada:", intent)
 
     if "0x0001" in texto:
 
@@ -76,24 +140,35 @@ def process_question(
         O carregador encontrou uma falha interna ao processar a solicitação Modbus.
 
         """
-    if match:
-        charger_id = f"charger_{match.group(1).zfill(2)}"
 
-        contexto = get_charger_context(charger_id)      
+    structured_chain = None
+    
+    if charger_id:
+        contexto = get_charger_context(charger_id)   
+        structured_chain = structured_recarga   
             
     # Consultas agregadas
 
     elif intent == "TOTAL_POWER":
         contexto = get_total_power_context()
+        structured_chain = structured_potencia
+
 
     elif intent ==  "AVAILABLE_CHARGERS":
         contexto = get_available_charger_context()
+        structured_chain = structured_disponiveis
+
         
     elif intent == "ACTIVE_CHARGERS":
         contexto = get_active_charger_context()
+        structured_chain = structured_ativos
+
 
     elif intent == "TOTAL_ENERGY":
         contexto = get_total_energy_context()
+        structured_chain = structured_energia
+
+    
 
     
     elif intent == "HELP":
@@ -128,23 +203,31 @@ def process_question(
             """       
         else:
             contexto = question
+
         
     
-    memory.add_user_message(
-        f"""
-    Contexto dos dados:
+    if structured_chain:
 
-    {contexto}
+        dados = structured_chain.invoke({
+            "context": contexto,
+            "question": question
+        })
+        print("\n===== STRUCTURED OUTPUT =====")
+        print(dados)
+        print(dados.model_dump())
+        print("==============================\n")
 
-    Pergunta do usuário:
+        answer = chain.invoke(
+            {
+                "context": dados.model_dump_json(),
+                "question": question
+            },
+            config={
+                "configurable": {
+                    "session_id": session_id
+                }
+            }
+        )
 
-    {question}
-    """
-    )
 
-    answer = ask_model(
-    memory.get_messages(),
-    retornar_metricas=retornar_metricas
-    )
-
-    return answer
+        return answer

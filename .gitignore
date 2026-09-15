@@ -13,6 +13,9 @@ anotacoes.md
 teste_manual_parser.py
 test_chain.py
 test_memoria.py
+test_consulta_recarga.py
+
+test_structured.py
 
 #precauções:
 

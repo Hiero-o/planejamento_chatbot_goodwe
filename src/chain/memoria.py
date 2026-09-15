@@ -25,3 +25,11 @@ def criar_memoria():
         max_token_limit=1000,
         return_messages=True
     )
+
+memorias = {}
+
+def get_session_history(session_id):
+    if session_id not in memorias:
+        memorias[session_id] = criar_memoria()
+
+    return memorias[session_id].chat_memory
