@@ -48,6 +48,19 @@ structured_potencia = build_structured_chain(
     "Extraia a potência total atual da planta em kW. O campo potencia_total_kw deve receber somente o valor numérico."
 )
 
+structured_disponiveis = build_structured_chain(
+    ConsultaCarregadoresDisponiveis,
+    """
+    Extraia a lista de identificadores dos carregadores que estão atualmente disponíveis.
+
+    O campo OBRIGATÓRIO do resultado deve se chamar exatamente:
+    carregadores_disponiveis
+
+    Exemplo:
+    {"carregadores_disponiveis": ["charger_02", "charger_03"]}
+    """
+)
+
 structured_ativos = build_structured_chain(
     ConsultaCarregadoresAtivos,
     """
@@ -56,20 +69,9 @@ structured_ativos = build_structured_chain(
     O campo OBRIGATÓRIO do resultado deve se chamar exatamente:
     carregadores_ativos
 
-    Não use:
-    - chargers_in_use
-    - chargers_active
-    - active_chargers
-    - qualquer outro nome.
-
     Exemplo:
     {"carregadores_ativos": ["charger_01", "charger_04"]}
     """
-)
-
-structured_ativos = build_structured_chain(
-    ConsultaCarregadoresAtivos,
-    "Extraia a lista de identificadores dos carregadores que estão atualmente em uso."
 )
 
 structured_energia = build_structured_chain(
@@ -142,7 +144,7 @@ def process_question(
         """
 
     structured_chain = None
-    
+
     if charger_id:
         contexto = get_charger_context(charger_id)   
         structured_chain = structured_recarga   
