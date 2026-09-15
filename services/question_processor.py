@@ -1,5 +1,6 @@
 import re
 
+from src.guardrails.scope_validator import validar_escopo
 from services.charger_parser import extract_charger_id
 from unidecode import unidecode
 from services.conhecimento_queries import search_conhecimento_context
@@ -22,7 +23,7 @@ from src.schemas.consultas import (
     ConsultaEnergiaTotal,
 )
 
-chain = build_chain()
+chain, chain_completa = build_chain()
 
 structured_recarga = build_structured_chain(
     ConsultaRecarga,
@@ -89,7 +90,6 @@ def process_question(
     
     contexto = None
 
-    charger_id = extract_charger_id(question)
 
     texto = unidecode(question.lower())
 
@@ -99,6 +99,16 @@ def process_question(
         texto
     )
     
+    resultado_escopo = validar_escopo(question)
+
+    if not resultado_escopo["permitido"]:
+        return (
+            "Essa solicitação está fora do escopo de atuação do GurAI. "
+            "Posso ajudar com informações sobre os carregadores, "
+            "monitoramento e equipamentos GoodWe disponíveis na base."
+        )
+    
+    charger_id = extract_charger_id(question)
 
     intent = detect_intent(texto)
 
@@ -145,40 +155,33 @@ def process_question(
 
     structured_chain = None
 
-    if charger_id:
+    if charger_id and intent == "CHARGER_INFO":
         contexto = get_charger_context(charger_id)   
         structured_chain = structured_recarga   
-            
-    # Consultas agregadas
 
     elif intent == "TOTAL_POWER":
         contexto = get_total_power_context()
         structured_chain = structured_potencia
 
-
     elif intent ==  "AVAILABLE_CHARGERS":
         contexto = get_available_charger_context()
         structured_chain = structured_disponiveis
 
-        
     elif intent == "ACTIVE_CHARGERS":
         contexto = get_active_charger_context()
         structured_chain = structured_ativos
-
 
     elif intent == "TOTAL_ENERGY":
         contexto = get_total_energy_context()
         structured_chain = structured_energia
 
-    
-
-    
     elif intent == "HELP":
-        get_help_message()
+        return get_help_message()
 
     if contexto is None:
 
         trecho = search_conhecimento_context(question)
+        
         if trecho:
             contexto = f"""
             Você é um assistente técnico especializado.
@@ -214,12 +217,30 @@ def process_question(
             "context": contexto,
             "question": question
         })
-        print("\n===== STRUCTURED OUTPUT =====")
-        print(dados)
-        print(dados.model_dump())
-        print("==============================\n")
 
-        answer = chain.invoke(
+        if retornar_metricas:
+            resposta_llm = chain_completa.invoke(
+                {
+                    "context": dados.model_dump_json(),
+                    "question": question
+                },
+                config={
+                    "configurable": {
+                        "session_id": session_id
+                    }
+                }
+            )
+
+            metricas = resposta_llm.usage_metadata
+
+            return {
+                "resposta": resposta_llm.content,
+                "input_tokens": metricas["input_tokens"],
+                "output_tokens": metricas["output_tokens"],
+                "total_tokens": metricas["total_tokens"]
+            }
+
+        response = chain.invoke(
             {
                 "context": dados.model_dump_json(),
                 "question": question
@@ -231,5 +252,42 @@ def process_question(
             }
         )
 
+        return response
 
-        return answer
+    else:
+
+        if retornar_metricas:
+            resposta_llm = chain_completa.invoke(
+                {
+                    "context": contexto,
+                    "question": question
+                },
+                config={
+                    "configurable": {
+                        "session_id": session_id
+                    }
+                }
+            )
+
+            metricas = resposta_llm.usage_metadata
+
+            return {
+                "resposta": resposta_llm.content,
+                "input_tokens": metricas["input_tokens"],
+                "output_tokens": metricas["output_tokens"],
+                "total_tokens": metricas["total_tokens"]
+            }
+
+        response = chain.invoke(
+            {
+                "context": contexto,
+                "question": question
+            },
+            config={
+                "configurable": {
+                    "session_id": session_id
+                }
+            }
+        )
+
+        return response

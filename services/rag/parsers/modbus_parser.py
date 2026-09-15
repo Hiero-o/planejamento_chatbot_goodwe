@@ -271,5 +271,3 @@ def parse_modbus_page(page:dict) -> dict:
         "registros": records,
 
     }
-
-

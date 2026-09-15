@@ -23,10 +23,11 @@ def load_system_prompt():
         "..",
         "..",
         "prompts",
-        "system_prompt.md"
+        "system_prompt_v2.md"
     )
     with open(caminho, "r", encoding="utf-8") as arquivo:
         return arquivo.read()
+
 
 def build_chain():
 
@@ -67,6 +68,8 @@ def build_chain():
 
     parser = StrOutputParser()
 
+    chain_completa = prompt | llm
+
     chain = prompt | llm | parser
 
     chain_com_memoria = RunnableWithMessageHistory(
@@ -76,7 +79,14 @@ def build_chain():
         history_messages_key="history"
     )
 
-    return chain_com_memoria
+    chain_completa_com_memoria = RunnableWithMessageHistory(
+            chain_completa,
+            get_session_history,
+            input_messages_key="question",
+            history_messages_key="history"
+        )
+
+    return chain_com_memoria, chain_completa_com_memoria
 
 
 def build_structured_chain(schema, instrucoes):

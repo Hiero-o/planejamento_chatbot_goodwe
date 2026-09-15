@@ -1,8 +1,6 @@
 INTENTS = {
-
     "TOTAL_POWER": [
         "potencia total",
-        "potência total",
         "consumo total",
         "potencia da planta"
     ],
@@ -16,9 +14,7 @@ INTENTS = {
     "ACTIVE_CHARGERS": [
         "em uso",
         "ativos",
-        "carregando",
-        "estão em uso"
-        
+        "carregando"
     ],
 
     "TOTAL_ENERGY": [
@@ -26,7 +22,6 @@ INTENTS = {
         "energia total",
         "consumo de energia",
         "energia total da planta"
-        
     ],
 
     "HELP": [
@@ -39,14 +34,52 @@ INTENTS = {
     ]
 }
 
+
+CAMPOS_OPERACIONAIS = [
+    "potencia",
+    "corrente",
+    "tensao",
+    "energia",
+    "status",
+    "tempo",
+    "tarifa",
+    "usuario",
+    "horario"
+]
+
+
+EXPRESSOES_ESTADO = [
+    "como esta",
+    "funcionando",
+    "situacao",
+    "estado"
+]
+
+
+TERMOS_TECNICOS = [
+    "nominal",
+    "capacidade",
+    "temperatura",
+    "especificacao"
+]
+
+
 def detect_intent(texto):
 
     for intent, exemplos in INTENTS.items():
-
         for exemplo in exemplos:
-
             if exemplo in texto:
-
                 return intent
+
+    if "charger" in texto:
+
+        if any(termo in texto for termo in TERMOS_TECNICOS):
+            return None
+
+        if any(campo in texto for campo in CAMPOS_OPERACIONAIS):
+            return "CHARGER_INFO"
+
+        if any(expressao in texto for expressao in EXPRESSOES_ESTADO):
+            return "CHARGER_INFO"
 
     return None

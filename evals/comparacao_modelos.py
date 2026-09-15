@@ -1,11 +1,11 @@
-# ESSE CODIGO TESTARÁ TODAS AS PERGUNTAS DO EVALS_SET.JSON NO MODELO DO GURAI, ARMAZENANDO TUDO DE FORMA ESTRUTURADA NO BASELINE_RESULTS.JSON.
+# Este código testa as perguntas do evals_set.json no GurAI
+# refatorado para o Sprint 3 e armazena os resultados
+# de forma estruturada no sprint3_results.json.
 
 import json
 import time
 from pathlib import Path
 
-from chatbot.memory import Memory
-from chatbot.prompt_loader import load_prompt
 from services.question_processor import process_question
 
 def load_eval():
@@ -16,10 +16,10 @@ def load_eval():
 
 
 def save_results(resultados):
-    caminho = Path(__file__).parent / "comparacao_modelos_results.json"
+    caminho = Path(__file__).parent / "sprint3_results.json"
 
     dados = {
-        "tipo": "comparacao_modelos",
+        "tipo": "sprint3",
         "testes": resultados
     }
 
@@ -30,15 +30,17 @@ def save_results(resultados):
 
 
 def run_memory_test(teste):
-    system_prompt = load_prompt()
-    memory = Memory(system_prompt)
+    session_id = f"eval_memory_{teste['id']}"
 
     inicio = time.perf_counter()
 
     respostas = []
 
     for pergunta in teste["turnos"]:
-        resposta = process_question(pergunta, memory)
+        resposta = process_question(
+            pergunta,
+            session_id
+        )
 
         respostas.append({
             "pergunta": pergunta,
@@ -57,13 +59,23 @@ def run_memory_test(teste):
 
 
 def test(testes):
-
-    system_prompt = load_prompt()
-    memory = Memory(system_prompt)
     pergunta = testes["pergunta"]
+
+    session_id = f"eval_{testes['id']}"
+
     inicio = time.perf_counter()
 
-    resultado = process_question(pergunta, memory, retornar_metricas=True)
+    resultado = process_question(
+        pergunta,
+        session_id,
+        retornar_metricas=True
+    )
+
+    resultado = process_question(
+    pergunta,
+    "eval_session",
+    retornar_metricas=True
+    )
 
     print("TIPO DO RESULTADO:", type(resultado))
     print("RESULTADO:", resultado)
@@ -86,7 +98,7 @@ def test(testes):
     return {
         "id": testes["id"],
         "pergunta": pergunta,
-        "resposta": resultado,
+        "resposta": resposta,
         "input_tokens": input_tokens,
         "output_tokens": output_tokens,
         "total_tokens": total_tokens,
