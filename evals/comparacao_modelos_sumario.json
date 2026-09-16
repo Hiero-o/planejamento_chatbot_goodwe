@@ -1,23 +1,23 @@
 {
     "gpt-oss:120b": {
         "quantidade_testes": 7,
-        "latencia_media": 1.265,
-        "input_tokens_medio": 1971.40,
-        "output_tokens_medio": 202.18,
-        "total_tokens_medio": 2173.59,
-        "testes_com_modelo": 37
+        "latencia_media": 1.108099605127884,
+        "input_tokens_medio": 2905.409090909091,
+        "output_tokens_medio": 183.9090909090909,
+        "total_tokens_medio": 3089.318181818182,
+        "testes_com_modelo": 22
     },
     "gemma:31b-cloud": {
         "quantidade_testes": 7,
-        "latencia_media": 0.85,
-        "input_tokens_medio": 2182.02,
-        "output_tokens_medio": 86.64,
-        "total_tokens_medio": 2268.67,
-        "testes_com_modelo": 37
+        "latencia_media": 1.7952086538464824,
+        "input_tokens_medio": 4054.478260869565,
+        "output_tokens_medio": 58.34782608695652,
+        "total_tokens_medio": 4112.826086956522,
+        "testes_com_modelo": 23
     },
     "diferencas_percentuais": {
-        "output_tokens": 57.14,
-        "total_tokens": -4.37,
-        "latency_tokens": 32.48
+        "output_tokens": 68.27354982913882,
+        "total_tokens": -33.130543534235976,
+        "latency_tokens": -62.00787777009453
     }
 }

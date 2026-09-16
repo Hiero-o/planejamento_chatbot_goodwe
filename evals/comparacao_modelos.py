@@ -16,10 +16,10 @@ def load_eval():
 
 
 def save_results(resultados):
-    caminho = Path(__file__).parent / "sprint3_results.json"
+    caminho = Path(__file__).parent / "gpt_oss_results.json"
 
     dados = {
-        "tipo": "sprint3",
+        "tipo": "teste_modelo_gpt-oss:120b",
         "testes": resultados
     }
 
@@ -60,50 +60,64 @@ def run_memory_test(teste):
 
 def test(testes):
     pergunta = testes["pergunta"]
-
     session_id = f"eval_{testes['id']}"
 
     inicio = time.perf_counter()
 
-    resultado = process_question(
-        pergunta,
-        session_id,
-        retornar_metricas=True
-    )
+    try:
+        resultado = process_question(
+            pergunta,
+            session_id,
+            retornar_metricas=True
+        )
 
-    resultado = process_question(
-    pergunta,
-    "eval_session",
-    retornar_metricas=True
-    )
+        fim = time.perf_counter()
+        latencia = fim - inicio
 
-    print("TIPO DO RESULTADO:", type(resultado))
-    print("RESULTADO:", resultado)
+        if isinstance(resultado, dict):
+            input_tokens = resultado.get("input_tokens", 0)
+            output_tokens = resultado.get("output_tokens", 0)
+            total_tokens = input_tokens + output_tokens
+            resposta = resultado.get("resposta", "")
 
-    fim = time.perf_counter()
-    latencia = fim - inicio
+        else:
+            input_tokens = 0
+            output_tokens = 0
+            total_tokens = 0
+            resposta = resultado
 
-    if isinstance(resultado, dict):
-        input_tokens = resultado["input_tokens"]
-        output_tokens = resultado["output_tokens"]
-        total_tokens = input_tokens + output_tokens
-        resposta = resultado["resposta"]
+        return {
+            "id": testes["id"],
+            "pergunta": pergunta,
+            "resposta": resposta,
+            "input_tokens": input_tokens,
+            "output_tokens": output_tokens,
+            "total_tokens": total_tokens,
+            "latencia_seg": latencia
+        }
 
-    else:
-        input_tokens = 0
-        output_tokens = 0
-        total_tokens = 0
-        resposta = resultado
+    except Exception as e:
+        fim = time.perf_counter()
+        latencia = fim - inicio
 
-    return {
-        "id": testes["id"],
-        "pergunta": pergunta,
-        "resposta": resposta,
-        "input_tokens": input_tokens,
-        "output_tokens": output_tokens,
-        "total_tokens": total_tokens,
-        "latencia_seg": latencia
-    }
+        erro = str(e)
+
+        print(f"\nERRO no teste {testes['id']}:")
+        print(erro)
+
+        return {
+            "id": testes["id"],
+            "pergunta": pergunta,
+            "resposta": f"ERRO: {erro}",
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "total_tokens": 0,
+            "latencia_seg": latencia,
+            "avaliacao": {
+                "status": "reprovado",
+                "observacao": "O teste falhou durante a execução devido a uma exceção do modelo ou da validação do Structured Output."
+            }
+        }
 
 if __name__ == "__main__":
 
@@ -140,6 +154,10 @@ if __name__ == "__main__":
         resultados.append(resultado)
 
         print(f"Resposta: {resultado['resposta']}")
+
+        if resultado.get("avaliacao", {}).get("status") == "reprovado":
+            print("⚠️ Teste falhou, mas a execução continuará.")        
+        
         print(f"Input tokens: {resultado['input_tokens']}")
         print(f"Output tokens: {resultado['output_tokens']}")
         print(f"Total tokens: {resultado['total_tokens']}")

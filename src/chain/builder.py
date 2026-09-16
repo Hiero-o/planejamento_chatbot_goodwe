@@ -63,7 +63,8 @@ def build_chain():
             }
         },
         temperature=0.3,
-        num_predict=1200
+        num_predict=1200,
+        top_p=0.9
     )
 
     parser = StrOutputParser()
@@ -140,6 +141,7 @@ def build_structured_chain(schema, instrucoes):
         },
         temperature=0.3,
         num_predict=1200,
+        top_p=0.9
     )
 
     structured_llm = llm.with_structured_output(schema)
