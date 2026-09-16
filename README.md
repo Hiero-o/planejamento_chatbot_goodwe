@@ -1,365 +1,508 @@
 # planejamento_chatbot_goodwe
 
-# GurAI
-GurAI
-Assistente inteligente para gestão operacional de eletropostos.
-
-# Sobre o Projeto
-
-O crescimento da mobilidade elétrica troiuxe novos desafios para eletropostos públicos e semi-públicos, principalmente relacionados ao controle energético, autenticação de usuários, tarifação dinâmica e suporte operacional.
-O projeto consiste na elaboração de um Chatbot voltado para auxiliar usuários, estabelecimentos comerciais e operadores técnicos durante o processo de recarga, oferecendo suporte aos usários finais, ao suporte operacional, análise de consumo energético e recomendações inteligentes de uso.
-
 # Integrantes
 
-569089 - JÚLIA LEMOS SOUZA
-570021 - VICTOR HENRIQUE NOGUEIRA BEZERRA
-573334 - CARLOS HENRIQUE SANTOS DIAS
-572131 - ERICK BANHOS DE CASTRO
-569305 - ERICK YU XIANG LI
-574156 - GUSTAVO ARAUJO RAMOS DA SILVA
+* 569089 - JÚLIA LEMOS SOUZA
+* 570021 - VICTOR HENRIQUE NOGUEIRA BEZERRA 
+* 573334 -CARLOS HENRIQUE SANTOS DIAS 
+* 572131 -ERICK BANHOS DE CASTRO 
+* 569305 - ERICK YU XIANG LI 
+* 574156 - GUSTAVO ARAUJO RAMOS DA SILVA
 
+# GurAI
 
-## Problema:
+Assistente inteligente para gestão operacional de eletropostos.
 
-Durante as últimas décadas, carros elétricos ganharam espaço no setor automobilístico mundial. Entre 2020 e os dias atuais, a busca pela redução do uso de fontes não renováveis de energia ganhou grande destaque.
+## Sobre o Projeto
 
-O crescimento de veículos elétricos, trouxe desafios relacionados à infraestrutura energética no Brasil, já que muitos estabelecimentos ainda não estão preparados para suportar a alta demana elétrica necessária para operações de recarga.
+O GurAI é um assistente conversacional especializado em operações de eletropostos e infraestrutura de recarga elétrica, com foco no ecossistema GoodWe.
 
-Além disso, existem problemas relacionados à:
+O projeto busca auxiliar operadores, técnicos de campo e usuários durante atividades relacionadas à recarga, monitoramento de equipamentos, consulta documental, análise de informações operacionais e suporte técnico.
 
-- Autenticação de usuários;
-- Utilização dos carregadores;
-- Tarifação aplicada;
-- Suporte operacional;
+A Sprint 3 evoluiu o núcleo conversacional do projeto com LangChain LCEL, memória por sessão, Structured Output com Pydantic v2, Context Engineering, versionamento do System Prompt e uma camada de guardrails para segurança e controle de escopo.
+
+## Problema
+
+O crescimento da mobilidade elétrica trouxe novos desafios para eletropostos públicos e semi-públicos, principalmente relacionados a:
+
+- Utilização e disponibilidade dos carregadores;
+- Monitoramento operacional;
 - Gestão energética;
-- cobrança automatizada.
+- Autenticação de usuários;
+- Tarifação e cobrança;
+- Diagnóstico de falhas;
+- Consulta de documentação técnica;
+- Suporte operacional.
 
-Outro problrma importante é a ausência de sistemas inteligentes capazes de auxiliar usuários, operadores técnicos e estabelecimentos durante sessões de recarga.
+Além disso, informações de carregadores podem estar distribuídas em manuais, datasheets, mapas MODBUS e dados operacionais, tornando a consulta manual mais lenta e sujeita a erros.
 
-### Principais desafios identificados:
+O GurAI busca reduzir esse tempo por meio de uma interface conversacional capaz de consultar dados operacionais e documentação técnica, mantendo regras de escopo e prevenção de alucinação.
 
-- Sobrecarga Energética;
-- Dificuldades de autenticação de usuários;
-- Suporte insuficiente;
+### Principais desafios identificados
+
+- Sobrecarga energética;
+- Dificuldades de autenticação;
+- Suporte operacional insuficiente;
 - Gestão manual dos carregadores;
-- Cobranças complexas;
-- Horários de pico energético.
+- Consulta manual de documentação técnica;
+- Interpretação de códigos de erro e registradores MODBUS;
+- Necessidade de respostas rápidas e contextualizadas.
 
 ---
 
 # Persona Utilizada
 
-## Técnico de campo.
+## Técnico de Campo
 
-A escolha dessa persona se deu pela necessidade de oferecer respostas rápidas, técnicas e objetivas para usuários de sessão de recarga, além de auxiliar operadores técnicos e estabelecimento em situações operacionais e comerciais.
-
-O chatbot atua como intermediador entre usuário, sistema e suporte técnico, reduzindo falhas operacionais e melhorando a experiência de utilização dos carregadores.
-
----
-
-## Persona Principal: Técnico de Campo
-
-O Técnico de Campo é o profissional responsável pela instalação, monitoramento, diagnóstico e manutenção dos carregadores veiculares presentes nos eletropostos.
+A persona principal do GurAI é o Técnico de Campo, profissional que necessita consultar rapidamente informações operacionais e técnicas dos carregadores.
 
 ### Principais responsabilidades
 
-* Verificar disponibilidade dos carregadores;
-* Diagnosticar falhas operacionais;
-* Consultar códigos de erro;
-* Realizar testes de comunicação MODBUS e OCPP;
-* Auxiliar usuários em problemas de autenticação;
-* Monitorar consumo energético da planta.
+- Verificar disponibilidade dos carregadores;
+- Consultar status de equipamentos;
+- Diagnosticar falhas operacionais;
+- Consultar códigos de erro;
+- Consultar manuais e datasheets;
+- Interpretar informações MODBUS;
+- Monitorar consumo energético da planta;
+- Encaminhar situações que exigem intervenção humana especializada.
 
 ### Principais dores identificadas
 
-* Dificuldade em localizar rapidamente a causa de falhas;
-* Consulta manual de datasheets e manuais técnicos;
-* Necessidade de acessar múltiplos sistemas para diagnóstico;
-* Alto tempo de resposta para atendimento operacional;
-* Interpretação de códigos de erro e registradores MODBUS.
+- Dificuldade em localizar rapidamente a causa de falhas;
+- Consulta manual de datasheets e manuais técnicos;
+- Necessidade de acessar múltiplas fontes para diagnóstico;
+- Tempo elevado de resposta para problemas operacionais;
+- Interpretação de códigos de erro e registradores MODBUS.
 
 ### Perguntas típicas da persona
 
-* O que significa o erro 0x0001?
-* Qual a potência nominal do GW22K-HCA-20?
-* Quais carregadores estão disponíveis?
-* Qual carregador está apresentando falha?
-* Qual a energia total consumida hoje?
+- O que significa o erro 0x0001?
+- Qual a potência nominal do GW22K-HCA-20?
+- Quais carregadores estão disponíveis?
+- Como está o charger_01?
+- Qual a energia total utilizada?
 
 ### Personas secundárias
 
 Embora o foco principal seja o Técnico de Campo, o sistema também pode auxiliar:
 
-* Operadores do eletroposto;
-* Estabelecimentos comerciais;
-* Usuários finais dos carregadores.
+- Operadores do eletroposto;
+- Estabelecimentos comerciais;
+- Usuários finais dos carregadores.
 
-Esses perfis são considerados secundários e recebem suporte limitado quando comparados ao suporte técnico especializado.
-
+Esses perfis são secundários em relação ao suporte técnico e operacional especializado.
 
 ---
-
 
 # Contexto Escolhido
 
 ## Contexto A — Operação Comercial de Eletropostos
 
-O GurAI foi desenvolvido considerando o Contexto A, voltado para eletropostos comerciais e semi-públicos.
+O GurAI foi desenvolvido considerando o contexto de eletropostos comerciais e semi-públicos.
 
 ### Justificativas da escolha
 
-1. Grande volume de usuários
+1. **Grande volume de usuários**
 
-Diferentemente de ambientes residenciais ou condominiais, eletropostos comerciais atendem múltiplos usuários diariamente, aumentando a necessidade de suporte automatizado.
+Eletropostos comerciais podem atender múltiplos usuários diariamente, aumentando a necessidade de suporte automatizado.
 
-2. Complexidade operacional
+2. **Complexidade operacional**
 
-A operação envolve autenticação, tarifação, monitoramento energético, disponibilidade dos carregadores e resolução de falhas técnicas.
+A operação envolve disponibilidade dos carregadores, monitoramento energético, autenticação, consulta técnica e resolução de falhas.
 
-3. Necessidade de suporte técnico rápido
+3. **Necessidade de suporte rápido**
 
-Falhas em carregadores podem impactar diretamente a receita do estabelecimento e a experiência do usuário.
+Falhas em carregadores podem impactar a operação do estabelecimento e a experiência do usuário.
 
-4. Integração com protocolos industriais
+4. **Integração com protocolos industriais**
 
-O ambiente comercial exige monitoramento utilizando protocolos como MODBUS e OCPP, aumentando a necessidade de ferramentas inteligentes de suporte.
+O ambiente utiliza tecnologias e protocolos voltados ao monitoramento e controle de equipamentos, como MODBUS e OCPP.
 
-5. Escalabilidade
+5. **Escalabilidade**
 
-A solução poderá ser aplicada em redes de eletropostos com dezenas ou centenas de carregadores.
-
----
+A solução pode futuramente ser aplicada a redes com dezenas ou centenas de carregadores.
 
 ## Expansão para Contexto Condominial
 
-Embora o foco principal do GurAI esteja na operação comercial de eletropostos, a arquitetura foi projetada para permitir futura aplicação em ambientes condominiais.
+Embora o foco principal esteja na operação comercial, a arquitetura pode ser expandida futuramente para ambientes condominiais.
 
-Nesse cenário, moradores poderiam utilizar cartões de autenticação individuais ou coletivos com sistema de login, para identificação durante as sessões de recarga.
+Nesse cenário, moradores poderiam utilizar autenticação individual ou coletiva para identificação durante sessões de recarga.
 
-A solução permitiria:
+A solução poderia permitir:
 
 - Controle de consumo por morador;
-- Rateio energético atrelado ao apartamento;
+- Rateio energético;
 - Histórico individual de utilização;
-- Controle de acesso aos carregadores;
-- Consulta de informações operacionais através do chatbot.
+- Controle de acesso;
+- Consulta de informações operacionais.
 
 ---
 
-## Problema Central
+# Problema Central
 
-Além das falhas operacionais tradicionais, o ambiente de recarga elétrica apresenta desafios relacionados ao gerenciamento de sessões de recarga, tarifação, autenticação de usuários e monitoramento energético.
+Os carregadores GoodWe disponibilizam diversas informações operacionais e técnicas. Entretanto, a interpretação dessas informações pode exigir consulta manual a diferentes documentos e sistemas.
 
-Os carregadores GoodWe disponibilizam uma grande quantidade de informações operacionais através de protocolos como MODBUS e OCPP. Entretanto, a interpretação desses dados normalmente exige consulta manual a documentações técnicas, aumentando o tempo necessário para diagnóstico e resolução de problemas.
+O GurAI busca reduzir esse tempo através de uma interface conversacional capaz de:
 
-O GurAI busca reduzir esse tempo através da utilização de Inteligência Artificial, permitindo acesso rápido às informações operacionais e documentais do ecossistema GoodWe.
-
-
----
-
-# Contexto utilizado pelo modelo.
-
-O chatbot utilizará contexto operacional, energético e comercial obtido através de integração com banco de dados, APIs, protolo MODBUS e OCPP.
-
-O objetico da utilização desses dados é permitir respostas contextualizadas, maior precisão operacional e suporte inteligente durante as sessões de recarga.
-
-## Dados que serão utilizados pelo modelo
-- Status do carregador (Disponibilidade e funcionamento);
-- Potência energética disponível;
-- Sessões de recarga ativas;
-- Demanda energética do estabelecimento;
-- Horários de pico de consumo;
-- Tarifação dinâmica;
-- Logs operacionais e falhas operacionais;
-- Autenticação de usuários;
-- Validação de recargas;
-- Histórico de sessão e consumo energético.
-
-A utilização dessas informações permitirá que o chatbot realize recomendações inteligentes de horários de recarga, reduza riscos de sobrecarga energética e ofereça suporte operacional mais eficiente aos usuários e operadores técnicos.
+- Consultar dados operacionais;
+- Consultar manuais e datasheets;
+- Interpretar informações MODBUS;
+- Recuperar informações de contexto conversacional;
+- Responder de forma estruturada quando necessário;
+- Evitar a invenção de especificações ausentes na documentação.
 
 ---
 
-# Tecnologias escolhidas
+# Contexto utilizado pelo modelo
 
-## backend:
+O GurAI trabalha com contexto operacional, documental e conversacional.
+
+Atualmente, o sistema utiliza dados operacionais simulados e documentação técnica GoodWe. Integrações reais com infraestrutura de carregadores permanecem como evolução futura.
+
+## Dados utilizados
+
+- Status do carregador;
+- Potência e variáveis elétricas;
+- Sessões de recarga;
+- Energia consumida;
+- Disponibilidade dos carregadores;
+- Informações técnicas dos modelos GoodWe;
+- Códigos e informações MODBUS;
+- Histórico conversacional;
+- Regras de escopo e segurança.
+
+A arquitetura foi preparada para futuras integrações com fontes operacionais reais.
+
+---
+
+# Tecnologias
+
+## Backend
 
 ### Python
 
-O Python foi escolhido como linguagem principal do backend devido à sua excelente integração com ferramentas de Inteligência Artificial, ampla quantidade de bibliotecas robustas e facilidade de prototipação.
+Python é utilizado como linguagem principal do backend devido à integração com bibliotecas de IA, facilidade de desenvolvimento e capacidade de prototipação.
 
-#### Vantagens
-- Ótima integração com IA;
-- Desenvolvimento rápido;
-- grande comunidade;
-- Facilidade de manutenção.
+### LangChain
 
-#### Desvantagens
-- Menor desempenho bruto quando comparado a linguagens como Rust ou GO
-- Maior consumo de recursos em aplicações altamente escaláveis.
+O núcleo conversacional foi refatorado utilizando LangChain LCEL.
+
+A cadeia principal segue o conceito:
+
+```text
+ChatPromptTemplate → ChatOllama → Output Parser
+```
+
+A Sprint 3 utiliza também:
+
+- `RunnableWithMessageHistory`;
+- Structured Output;
+- Pydantic v2;
+- Context Engineering.
+
+## IA
+
+### Ollama Cloud
+
+O projeto utiliza `ChatOllama` com acesso ao Ollama Cloud.
+
+Modelo atualmente utilizado pelo GurAI:
+
+```text
+gemma4:31b-cloud
+```
+
+Durante a Sprint 3, também foi realizado comparativo com:
+
+```text
+gpt-oss:120b
+```
+
+### Parâmetros atuais
+
+```text
+temperature = 0.3
+top_p = 0.9
+num_predict = 1200
+```
+
+O valor baixo de `temperature` favorece respostas mais consistentes, enquanto `top_p` controla o conjunto de tokens mais prováveis considerados durante a geração.
+
+## Memória Conversacional
+
+A Sprint 3 utiliza memória por sessão com:
+
+```python
+ConversationTokenBufferMemory(
+    llm=llm,
+    max_token_limit=1000,
+    return_messages=True
+)
+```
+
+A memória é associada a um `session_id` por meio de `RunnableWithMessageHistory`.
+
+O limite de `1000` tokens controla a quantidade de histórico mantida no contexto da memória.
+
+## Structured Output
+
+O sistema utiliza schemas Pydantic v2 para estruturar informações do domínio de recarga.
+
+Principais schemas:
+
+- `ConsultaRecarga`;
+- `ConsultaPotenciaTotal`;
+- `ConsultaCarregadoresDisponiveis`;
+- `ConsultaCarregadoresAtivos`;
+- `ConsultaEnergiaTotal`.
+
+Foram utilizados `field_validator` para validar identificadores, valores numéricos e estruturas específicas.
+
+## Context Engineering
+
+O System Prompt foi versionado durante a Sprint 3:
+
+```text
+prompts/system_prompt_v1.md
+prompts/system_prompt_v2.md
+```
+
+A versão 2 utiliza organização estruturada com XML tags e regras explícitas de:
+
+- Escopo;
+- Segurança;
+- Prevenção de alucinação;
+- Uso da documentação;
+- Controle do contexto.
+
+Medição atual:
+
+```text
+System Prompt v1: 1724 tokens
+System Prompt v2: 2715 tokens
+Diferença: +991 tokens
+```
+
+## RAG e documentação
+
+O GurAI utiliza documentação GoodWe para consultas técnicas.
+
+Documentos principais:
+
+- `GW_HCA-G2_Datasheet-PT.pdf`;
+- `Mapa-MODBUS_HCA-G2.pdf`;
+- `GW_HCA-G2_User-Manual-PT.pdf`.
+
+A recuperação documental é utilizada para evitar a geração de especificações que não estejam presentes na documentação disponível.
+
+## Guardrails e segurança
+
+A Sprint 3 introduziu uma camada dedicada de controle de segurança:
+
+```text
+src/guardrails/
+├── scope_validator.py
+└── moderation.py
+```
+
+Os guardrails incluem:
+
+- Controle de escopo;
+- Detecção de jailbreak;
+- Proteção contra prompt injection;
+- Bloqueio de instruções de instalação ou intervenção elétrica;
+- Prevenção de associações não documentadas entre `charger_XX` e modelos;
+- Recusa de informações fora do domínio operacional.
+
+Detecções como jailbreak e determinadas intervenções elétricas podem ser realizadas de forma determinística antes da chamada ao modelo, reduzindo consumo de tokens e latência.
 
 ---
 
-## IA:
+# Avaliação da Sprint 3
 
-### Ollama
+A Sprint 3 foi avaliada utilizando um conjunto de **39 testes** envolvendo:
 
-O Ollama foi escolhido por permitir execução local de modelos de linguagem, oferecendo maior flexibilidade, personalização e redução de custos operacionais relacionados ao uso de APIs externas.
+- Operação;
+- Consulta documental;
+- Conversação;
+- Memória;
+- Structured Output;
+- Jailbreak;
+- Prompt injection;
+- Segurança elétrica;
+- Escopo;
+- Jurídico;
+- Financeiro;
+- Suporte;
+- Prevenção de alucinação.
 
-#### Vantagens
-- Execução local;
-- Menor dependência de serviços externos;
-- Boa personalização de modelos;
-- Redução de custos.
+Na execução final do modelo atualmente utilizado:
 
-#### Desvantagens
-- Necessidade de hardware mais robusto;
-- Modelos locais podem possuir desempenho inferior quando comparados a modelos proprietários maiores.
+```text
+gemma4:31b-cloud
+39 testes avaliados
+39 aprovados
+0 reprovados
+```
 
----
+Também foi realizado um comparativo com `gpt-oss:120b` utilizando o mesmo conjunto de testes e os mesmos parâmetros de geração.
 
-## Banco de Dados:
+No comparativo:
 
-### Firebase (Implementação futura)
-O Firebase foi escolhido devido ao seu suporte a comunicação em tempo real, escalabilidade automática e integração simplificada com aplicações web e mobile, fatores importantes para o monitoramento de sessões de recarga e controle operacional.
+```text
+GPT-OSS 120B
+37 aprovados
+2 reprovados
 
-#### Vantagens
-- Comunicação em tempo real nativa;
-- Fácil integração com aplicações web e mobile;
-- Escalabilidade automática;
-- Alta disponibilidade e confiabilidade;
-- Autenticação e serviços integrados;
-- Agilidade no desenvolvimento do sistema.
-#### Desvantagens
-- Menor suporte a relacionamentos complexos;
-- Consultas avançadas mais limitadas em comparação a bancos SQL;
-- Dependência do ecossistema da Google;
-- Custos podem aumentar conforme o volume de acessos e operações.
+Gemma 4 31B
+39 aprovados
+0 reprovados
+```
 
----
+Os dois modelos foram avaliados sob:
 
-## Comunicação dos carregadores
-
-### OCPP (Integração futura)
-O OCPP (Open Charge Point Protocol) será utilizado como principal protocolo de comunicação entre o sistema e os carregadores.
-
-#### Vantagens
-- Padrão mundial para eletropostos;
-- Monitoramento remoto;
-- interoperabilidade entre fabricantes;
-- controle operacional avançado.
-
-#### Desvantagens
-- Implementação mais complexa;
-- Maior necessidade de gerenciamento de comunicação.
-
-### MODBUS (Integração futura) - (Atualmente = dados simulados)
-
-O protocolo MODBUS será utilizado para comunicação direta com hardware e leitura de sensores elétricos.
-
-#### Vantagens
-- Simples implementação;
-- Amplamente utilizado na indústria;
-- Eficiência na leitura de sensores e variáveis elétricas.
-
-#### Desvantagens
-- Menos adequado para gerenciamento completo de sessões de recarga;
-- Menor flexibilidade para aplicações modernas na rede.
+```text
+temperature = 0.3
+top_p = 0.9
+num_predict = 1200
+```
 
 ---
 
-# Versões
+# Versões do Projeto
 
 ## 0.01
-- Alucina MUITO;
-- depende de dados simulados;
-- não acessa manuais;
+
+- Alucinações frequentes;
+- Dependência de dados simulados;
+- Sem consulta aos manuais;
+- Funcionalidade conversacional básica.
 
 Porém:
 
-- Responde as perguntas
-- Funciona!
-- bem limitado
+- Respondia às perguntas;
+- Funcionava como protótipo;
+- Apresentava arquitetura inicial funcional.
 
 ---
 
 ## 0.02
-- Algumas respostas sem sentido
-- Limitação de banco de dados ainda presente, provavelmente até o final do projeto
-- Normalizar o texto para remoção de acentos e formatações diferentes deverá ser uma prioridade nas próximas versões, deixando o prompt sem acentos, letras maiusculas etc..
+
+- Algumas respostas sem sentido;
+- Limitações na camada de dados;
+- Necessidade de normalização textual;
+- Alucinações ainda presentes.
 
 Porém:
 
-- A IA está atendendo melhor aos prompts, mas ainda inventa informações quando não sabe.
-- A IA está conseguindo acessar os dados simulados e interpretá-los.
-- A memória de contexto está funcionando bem!
+- Melhor atendimento aos prompts;
+- Interpretação dos dados simulados;
+- Memória de contexto funcionando.
 
 ---
 
 ## 0.1
-- Versão versão funcional do sistema
-- Aplicação de lógica para leitura de dados simulados
-- Respostas corretas, sem quebras ou alucinações, quando, dentro do prompt esperado
-- Streamlit implementado e funcionando
-- Regras de segurança testadas e aplicadas
-- Códigos funcionam independete do streamlit, se quisermos trocar e usar REACT ou similar para usar o modelo, será mais fácil.
 
-Porém:
+- Versão funcional do sistema;
+- Lógica para leitura de dados simulados;
+- Streamlit implementado;
+- Regras de segurança;
+- Código desacoplado da interface.
 
-- Implementar leitura real de dados seria um diferencial
-- Implementar leitura de manuais para o modelo
-- Implementar intent nas perguntas para melhorar o GurAI
-- Melhorar interface gráfica do streamlit (muito básico)
+Próximos objetivos:
+
+- Leitura real dos dados;
+- Consulta aos manuais;
+- Intents;
+- Melhoria da interface.
 
 ---
 
 ## 0.2
 
-Todas da 0.1, com implementações:
-- Adição de painéis na sidebar
-- Mostrando detalhes dos chargers na sidebar
+Implementações:
+
+- Painéis na sidebar;
+- Detalhes dos carregadores;
+- Informações operacionais na interface.
 
 Próximas atualizações:
 
-- Consulta PDFs
-- Intent nas perguntas.
-
+- Consulta de PDFs;
+- Intents.
 
 ---
 
-## 0.3 (beta - MVP)
+## 0.3 (beta — MVP)
 
 Implementações:
 
-- Sidebar operacional
-- Painel de monitoramento
-- Consulta detalhada de carregadores
-- RAG básico utilizando PDFs
-- Intents para interpretação de perguntas
-- Normalização de texto
-- Redução de alucinações
-- Sistema de nova conversa (Limpa chat)
-- Consulta documental GoodWe
+- Sidebar operacional;
+- Painel de monitoramento;
+- Consulta detalhada de carregadores;
+- RAG básico utilizando PDFs;
+- Intents;
+- Normalização de texto;
+- Redução de alucinações;
+- Sistema de nova conversa;
+- Consulta documental GoodWe.
 
-Limitações atuais:
+Limitações:
 
-- Dados ainda simulados
-- Sem integração real com OCPP
-- Sem integração real com MODBUS
-- Sem persistência em banco de dados
-- Sem historico real de conversas
+- Dados ainda simulados;
+- Sem integração real com OCPP;
+- Sem integração real com MODBUS;
+- Sem persistência em banco de dados;
+- Sem histórico persistente de conversas.
+
+---
+
+# Sprint 3
+
+A Sprint 3 teve como objetivo reconstruir o núcleo conversacional utilizando recursos estudados no Módulo 1.
+
+### Implementações
+
+- Refatoração do núcleo para LangChain LCEL;
+- `ChatPromptTemplate`;
+- `ChatOllama`;
+- Output Parser;
+- Memória por sessão;
+- `RunnableWithMessageHistory`;
+- `ConversationTokenBufferMemory`;
+- Structured Output;
+- Pydantic v2;
+- `field_validator`;
+- Context Engineering;
+- System Prompt versionado;
+- XML tagging;
+- Medição de tokens com `tiktoken`;
+- Guardrails de escopo;
+- Proteção contra jailbreak;
+- Proteção contra prompt injection;
+- Segurança para intervenções elétricas;
+- Prevenção de alucinações;
+- Avaliação quantitativa da solução.
+
+### Resultado
+
+A versão da Sprint 3 possui um núcleo conversacional mais estruturado, com validação de dados, memória por sessão, regras explícitas de contexto e mecanismos de segurança antes e durante a geração.
+
+---
 
 # Próximos Passos
 
 - Integração real com carregadores GoodWe;
-- Integração com protocolo OCPP;
-- Integração com protocolo MODBUS;
-- Persistência de dados em Firebase;
+- Integração com OCPP;
+- Integração com MODBUS;
+- Persistência de dados;
 - Sistema de múltiplas conversas;
 - Dashboard avançado;
 - Estatísticas históricas;
-- Controle de permissões por usuário;
-- Sistema de Login integrado
-
+- Controle de permissões;
+- Sistema de login;
+- Evolução da integração com fontes operacionais reais.
 
 ---
 
@@ -372,18 +515,23 @@ Atualmente o GurAI é capaz de:
 - Exibir energia total consumida;
 - Exibir carregadores disponíveis;
 - Exibir carregadores em uso;
-- Interpretar informações técnicas dos manuais GoodWe;
-- Consultar informações do protocolo MODBUS;
-- Utilizar memória de conversa;
-- Utilizar RAG (Retrieval-Augmented Generation) para consulta documental;
-- Utilizar intents para compreender diferentes formas de perguntas;
-- Operar através de interface gráfica desenvolvida em Streamlit;
-- Reduzir alucinações através de validação documental.
+- Consultar informações técnicas dos manuais GoodWe;
+- Consultar informações MODBUS;
+- Utilizar memória conversacional por sessão;
+- Utilizar RAG para consulta documental;
+- Utilizar intents para interpretar diferentes formas de perguntas;
+- Produzir Structured Output com Pydantic;
+- Operar através do Streamlit;
+- Aplicar guardrails de escopo e segurança;
+- Reduzir alucinações por meio de validação documental.
 
+---
 
 # Link do vídeo de demonstração do GurAI
 
-YouTube: https://youtu.be/IAOqCMTZQ4c
+YouTube:
+
+https://youtu.be/IAOqCMTZQ4c
 
 ---
 
@@ -391,65 +539,67 @@ YouTube: https://youtu.be/IAOqCMTZQ4c
 
 ## 1. Clonar o projeto
 
+```bash
 git clone https://github.com/Hiero-o/planejamento_chatbot_goodwe.git
-
 cd planejamento_chatbot_goodwe
+```
 
 ## 2. Criar ambiente virtual
 
-TERMINAL
-CMD, POWERSHELL, GIT BASH...
-
 Windows:
 
+```bash
 python -m venv venv
-
 venv\Scripts\activate
+```
 
 ## 3. Instalar dependências
 
-terminal
-
+```bash
 pip install -r requirements.txt
+```
 
-# Instalação do Ollama
+---
 
-O GurAI utiliza modelos em nuvem do ollama.
+# Configuração do Ollama Cloud
 
-Vá até o site do Ollama:
+O GurAI utiliza modelos disponibilizados pelo Ollama Cloud.
+
+1. Acesse:
 
 https://ollama.com/
 
-Crie sua conta
+2. Crie ou acesse sua conta.
 
-ícone do canto superior direito > Settings > Keys > Add API key > nome de sua escolha > Generate API Key > copiar
+3. Acesse **Settings → Keys**.
 
-Próximo passo:
+4. Crie uma API Key.
 
-Terminal
+5. Crie um arquivo `.env` na raiz do projeto.
 
-cd diretório de instalação do projeto
+6. entre em .env.example, mude o nome do arquivo para apenas .env e:
 
-cd planejamento_chatbot_goodwe
+```env
+OLLAMA_API_KEY=sua_api_key_aqui
+```
 
-touch .env
+**Nunca publique a API key no repositório.**
 
-code .
-
-abrir o arquivo .env > digitar OLLAMA_API_KEY=sua_api_key_aqui
-
-salvar
+---
 
 # Como Executar
 
 Com o ambiente virtual ativo:
 
-terminal
-
+```bash
 streamlit run streamlit_app.py
+```
+
+---
 
 # Exemplos de Perguntas
 
+```text
 Qual a potência total da planta?
 
 Quais carregadores estão disponíveis?
@@ -465,9 +615,13 @@ O que significa o erro 0x0001?
 Qual a potência nominal do carregador HCA G2?
 
 Qual a corrente nominal do modelo GW22K-HCA-20?
+```
+
+---
 
 
 # Objetivo Final
 
-O projeto busca melhorar a experiência de usuários de veículos elétricos, otimizar o consumo energético dos eletropostos e automatizar processos operacionais através de um chatbot integrado ao ecossistema de recarga elétrica da GoodWe.
-Além disso, a solução planeja reduzir falhas operacionais, melhorar o suporte técnico aos usuários e contribuir para gestão energética mais eficiente e sustentável.
+O GurAI busca melhorar a experiência de operação de eletropostos, reduzir o tempo de consulta técnica e apoiar o gerenciamento de informações operacionais por meio de IA.
+
+A evolução planejada inclui integração com infraestrutura real de recarga, protocolos de comunicação, persistência de dados e ferramentas avançadas de monitoramento, mantendo como princípios a segurança, o controle de escopo e a utilização de informações documentadas.
