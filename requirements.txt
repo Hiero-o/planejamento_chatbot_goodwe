@@ -11,7 +11,7 @@ python-dotenv==1.0.1
 rich==14.0.0
 streamlit==1.58.0
 Unidecode==1.4.0
-
+langchain-classic==1.0.8
 langchain==1.4.0
 langchain-ollama==1.1.0
 tiktoken==0.14.0
