@@ -123,20 +123,6 @@ O ambiente utiliza tecnologias e protocolos voltados ao monitoramento e controle
 
 A solução pode futuramente ser aplicada a redes com dezenas ou centenas de carregadores.
 
-## Expansão para Contexto Condominial
-
-Embora o foco principal esteja na operação comercial, a arquitetura pode ser expandida futuramente para ambientes condominiais.
-
-Nesse cenário, moradores poderiam utilizar autenticação individual ou coletiva para identificação durante sessões de recarga.
-
-A solução poderia permitir:
-
-- Controle de consumo por morador;
-- Rateio energético;
-- Histórico individual de utilização;
-- Controle de acesso;
-- Consulta de informações operacionais.
-
 ---
 
 # Problema Central
@@ -233,13 +219,13 @@ O valor baixo de `temperature` favorece respostas mais consistentes, enquanto `t
 
 A Sprint 3 utiliza memória por sessão com:
 
-```python
+* python
 ConversationTokenBufferMemory(
     llm=llm,
     max_token_limit=1000,
     return_messages=True
 )
-```
+
 
 A memória é associada a um `session_id` por meio de `RunnableWithMessageHistory`.
 
@@ -460,7 +446,7 @@ Limitações:
 
 # Sprint 3
 
-A Sprint 3 teve como objetivo reconstruir o núcleo conversacional utilizando recursos estudados no Módulo 1.
+A Sprint 3 teve como objetivo reconstruir o núcleo conversacional utilizando recursos referente ao Módulo 1.
 
 ### Implementações
 
