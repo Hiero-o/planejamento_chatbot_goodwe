@@ -18,6 +18,15 @@ test_structured.py
 test.txt
 teste_conhecimento_search.py
 teste_regressao_pymupdf.py
+teste_chunking.py
+teste_embeddings_cloud.py
+teste_embeddings.py
+teste_vector_store.py
+
+
+# Bancos vetoriais locais gerados pelo GurAI
+/data/chroma_db/
+/data/chroma_test/
 
 #precauções:
 
