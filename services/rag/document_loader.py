@@ -1,30 +1,29 @@
 from pathlib import Path
 
-from pypdf import PdfReader
+import pymupdf
 
 DOCUMENTS_DIR = Path("conhecimento/manuais")
 
 def load_pdf(path: Path) -> list[dict]:
-    reader = PdfReader (str(path))
-
+    
     pages = []
 
-    for page_number, page in enumerate(reader.pages, start=1):
-        text = page.extract_text() or ""
+    with pymupdf.open(str(path)) as pdf:
+        for page_number, page in enumerate(pdf, start=1):
+            text = page.get_text("text") or ""
+            text = text.strip()
 
-        text = text.strip()
+            if not text:
+                continue
 
-        if not text:
-            continue
-
-        pages.append(
-            {
-                "documento": path.name,
-                "caminho": str(path),
-                "pagina": page_number,
-                "texto": text,
-            }
-        )
+            pages.append(
+                {
+                    "documento": path.name,
+                    "caminho": str(path),
+                    "pagina": page_number,
+                    "texto": text,
+                }
+            )
 
     return pages
 
