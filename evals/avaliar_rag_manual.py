@@ -14,11 +14,61 @@ from services.question_processor import process_question
 from src.rag.context_builder import build_documentation_context
 
 
-ARQUIVO_TESTES = RAIZ / "evals" / "rag_evals_set.json"
+# Locais possíveis do conjunto fixo de perguntas.
+ARQUIVO_TESTES = [
+    RAIZ / "evals" / "rag_evals_set.json",
+    RAIZ / "evals" / "resultados" / "rag_evals_set.json",
+]
+
+
+def carregar_testes():
+    """Carrega e valida o conjunto de avaliação."""
+
+    caminho_testes = next(
+        (
+            caminho
+            for caminho in ARQUIVO_TESTES
+            if caminho.exists()
+        ),
+        None,
+    )
+
+    if caminho_testes is None:
+        locais = "\n".join(
+            f"- {caminho}"
+            for caminho in ARQUIVO_TESTES
+        )
+        raise FileNotFoundError(
+            "Arquivo de testes não encontrado. "
+            f"Locais verificados:\n{locais}"
+        )
+
+    with caminho_testes.open("r", encoding="utf-8") as arquivo:
+        testes = json.load(arquivo)
+
+    if not isinstance(testes, list) or not testes:
+        raise ValueError(
+            "O conjunto de avaliação está vazio ou inválido."
+        )
+
+    for teste in testes:
+        for campo in (
+            "id",
+            "tipo",
+            "pergunta",
+            "resposta_esperada",
+        ):
+            if campo not in teste:
+                raise ValueError(
+                    f"Teste sem o campo obrigatório '{campo}': {teste}"
+                )
+
+    print(f"Conjunto de avaliação carregado: {caminho_testes}")
+    return testes
 
 
 def extrair_fontes(contexto):
-    """Extrai os nomes dos documentos e as páginas do contexto."""
+    """Extrai nomes dos documentos e páginas do contexto."""
     if not contexto:
         return []
 
@@ -46,29 +96,6 @@ def extrair_fontes(contexto):
     return fontes
 
 
-def carregar_testes():
-    """Carrega e valida o conjunto fixo de perguntas."""
-    if not ARQUIVO_TESTES.exists():
-        raise FileNotFoundError(
-            f"Arquivo de testes não encontrado: {ARQUIVO_TESTES}"
-        )
-
-    with ARQUIVO_TESTES.open("r", encoding="utf-8") as arquivo:
-        testes = json.load(arquivo)
-
-    if not isinstance(testes, list) or not testes:
-        raise ValueError("O conjunto de avaliação está vazio ou inválido.")
-
-    for teste in testes:
-        for campo in ("id", "tipo", "pergunta", "resposta_esperada"):
-            if campo not in teste:
-                raise ValueError(
-                    f"Teste sem o campo obrigatório '{campo}': {teste}"
-                )
-
-    return testes
-
-
 def avaliar_teste(teste):
     """Executa a recuperação documental e a resposta do GurAI."""
     pergunta = teste["pergunta"]
@@ -93,8 +120,7 @@ def avaliar_teste(teste):
     print(f"Teste: {identificador}")
     print(f"Pergunta: {pergunta}")
 
-    # Recupera o contexto para que possamos inspecionar
-    # as evidências utilizadas na avaliação.
+    # Recupera o contexto para inspeção das evidências.
     try:
         contexto = build_documentation_context(pergunta)
 
@@ -120,8 +146,7 @@ def avaliar_teste(teste):
         )
         print("Erro ao recuperar contexto:", resultado["erro_contexto"])
 
-    # Cada pergunta recebe uma sessão independente para reduzir
-    # a influência do histórico de outras perguntas.
+    # Cada pergunta recebe uma sessão independente.
     try:
         resposta = process_question(
             question=pergunta,
@@ -132,6 +157,7 @@ def avaliar_teste(teste):
             resposta = str(resposta)
 
         resultado["resposta_gerada"] = resposta.strip()
+
         print("Resposta gerada:")
         print(resultado["resposta_gerada"])
 
@@ -148,11 +174,13 @@ def main():
     parser = argparse.ArgumentParser(
         description="Executa a avaliação documental do GurAI."
     )
+
     parser.add_argument(
         "--saida",
-        default="evals/resultados_rag_iteracao_1.json",
+        default="evals/resultados/resultados_rag_iteracao_1.json",
         help="Caminho do arquivo JSON que armazenará os resultados.",
     )
+
     args = parser.parse_args()
 
     testes = carregar_testes()

@@ -1,0 +1,23 @@
+{
+  "metodo": "avaliação manual",
+  "quantidade_testes_por_versao": 10,
+  "versoes": [
+    {
+      "versao": "v2",
+      "iteracao": 1,
+      "faithfulness_media": 1.0,
+      "answer_relevancy_media": 1.0,
+      "arquivo_avaliado": "prompt_v2_retriever_corrigido_avaliado.json"
+    },
+    {
+      "versao": "v3",
+      "iteracao": 2,
+      "faithfulness_media": 1.0,
+      "answer_relevancy_media": 1.0,
+      "arquivo_avaliado": "prompt_v3_retriever_corrigido_avaliado.json"
+    }
+  ],
+  "variacao_faithfulness_v3_menos_v2": 0.0,
+  "variacao_answer_relevancy_v3_menos_v2": 0.0,
+  "observacao": "O ganho preliminar após o ajuste do ranking do retriever não deve ser atribuído exclusivamente à versão do prompt."
+}

@@ -165,6 +165,38 @@ class GurAIHybridRetriever:
             self.idf.get(term, 0.0)
             for term in matched_terms
         )
+        
+    
+    def _is_relevant_charging_limit_context(
+        self,
+        record_id: str,
+        query_tokens: set[str],
+    ) -> bool:
+        """Prioriza trechos sobre potência máxima e limitação pelo OBC."""
+
+        asks_about_charging_limit = (
+            {"potencia", "maxima", "carregamento"}.issubset(
+                query_tokens
+            )
+            or {"obc", "potencia"}.issubset(query_tokens)
+        )
+
+        if not asks_about_charging_limit:
+            return False
+
+        document_tokens = set(
+            _tokenize(
+                self.documents[record_id].page_content
+            )
+        )
+
+        return (
+            "obc" in document_tokens
+            and "potencia" in document_tokens
+            and "carregamento" in document_tokens
+            and bool({"maxima", "real"} & document_tokens)
+        )
+
 
     def _is_relevant_table_context(
     self,
@@ -285,9 +317,14 @@ class GurAIHybridRetriever:
 
             return score
 
+        
         ordered_ids = sorted(
             candidate_ids,
             key=lambda record_id: (
+                not self._is_relevant_charging_limit_context(
+                    record_id,
+                    query_tokens,
+                ),
                 record_id not in exact_identifier_ids,
                 not self._is_relevant_table_context(
                     record_id,
@@ -302,6 +339,7 @@ class GurAIHybridRetriever:
                 record_id,
             ),
         )
+
 
         return [
             self.documents[record_id]

@@ -1,0 +1,22 @@
+{
+  "metodo": "fallback manual",
+  "quantidade_testes_por_versao": 10,
+  "versoes": [
+    {
+      "versao": "v2",
+      "iteracao": 1,
+      "faithfulness_media": 0.95,
+      "answer_relevancy_media": 0.95,
+      "arquivo_avaliado": "resultados_prompt_v2_10_avaliado.json"
+    },
+    {
+      "versao": "v3",
+      "iteracao": 2,
+      "faithfulness_media": 0.95,
+      "answer_relevancy_media": 0.95,
+      "arquivo_avaliado": "resultados_prompt_v3_10_avaliado.json"
+    }
+  ],
+  "variacao_faithfulness": 0.0,
+  "variacao_answer_relevancy": 0.0
+}
