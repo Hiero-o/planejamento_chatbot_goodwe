@@ -1,4 +1,5 @@
 import re
+
 from unidecode import unidecode
 
 
@@ -52,44 +53,47 @@ TERMOS_SEGURANCA_ELETRICA = [
 ]
 
 
-def normalizar(texto):
+def normalizar(texto: str) -> str:
+    """Normaliza acentos, caixa e pontuação."""
     texto = unidecode(texto.lower())
     texto = re.sub(r"[^\w\s]", " ", texto)
     return re.sub(r"\s+", " ", texto).strip()
 
 
-def validar_escopo(question):
+def _contem_termo(texto: str, termo: str) -> bool:
+    """
+    Verifica a ocorrência de um termo ou expressão completa.
+
+    Exemplo:
+        'processado' não deve corresponder a 'processador'.
+    """
+    termo_normalizado = normalizar(termo)
+
+    padrao = rf"\b{re.escape(termo_normalizado)}\b"
+
+    return re.search(padrao, texto) is not None
+
+
+def validar_escopo(question: str) -> dict:
+    """Determina se a pergunta pode prosseguir pelos guardrails."""
     texto = normalizar(question)
 
-    for termo in TERMOS_JURIDICOS:
-        if termo in texto:
-            return {
-                "permitido": False,
-                "motivo": "juridico"
-            }
+    grupos_de_termos = [
+        (TERMOS_JURIDICOS, "juridico"),
+        (TERMOS_FINANCEIROS, "financeiro"),
+        (TERMOS_SEGURANCA_ELETRICA, "seguranca_eletrica"),
+        (TERMOS_FORA_DO_ESCOPO, "fora_do_escopo"),
+    ]
 
-    for termo in TERMOS_FINANCEIROS:
-        if termo in texto:
-            return {
-                "permitido": False,
-                "motivo": "financeiro"
-            }
-
-    for termo in TERMOS_SEGURANCA_ELETRICA:
-        if termo in texto:
-            return {
-                "permitido": False,
-                "motivo": "seguranca_eletrica"
-            }
-
-    for termo in TERMOS_FORA_DO_ESCOPO:
-        if termo in texto:
-            return {
-                "permitido": False,
-                "motivo": "fora_do_escopo"
-            }
+    for termos, motivo in grupos_de_termos:
+        for termo in termos:
+            if _contem_termo(texto, termo):
+                return {
+                    "permitido": False,
+                    "motivo": motivo,
+                }
 
     return {
         "permitido": True,
-        "motivo": None
+        "motivo": None,
     }

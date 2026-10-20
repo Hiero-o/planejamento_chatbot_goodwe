@@ -5,7 +5,7 @@ import time
 from src.guardrails.scope_validator import validar_escopo
 from services.charger_parser import extract_charger_id
 from unidecode import unidecode
-from services.conhecimento_queries import search_conhecimento_context
+from src.rag.context_builder import build_documentation_context
 from services.dynamic_queries import (
     get_charger_context,
     get_total_power_context,
@@ -240,34 +240,19 @@ def process_question(question, session_id, retornar_metricas=False):
     # ---------------------------------------------------------
 
     if contexto is None:
-        trecho = search_conhecimento_context(question)
+        trecho = build_documentation_context(question)
 
         if trecho:
-            contexto = f"""
-            Você é um assistente técnico especializado.
-
-            Utilize prioritariamente o contexto fornecido.
-
-            Quando houver uma descrição técnica no contexto,
-            explique-a de forma simples e profissional.
-
-            Não invente informações que não estejam no contexto.
-
-            Se o contexto não possuir informações suficientes,
-            responda:
-
-            "Não encontrei essa informação na documentação disponível."
-
-            Contexto:
-
-            {trecho}
-
-            Pergunta:
-
-            {question}
-            """
+            contexto = trecho
         else:
-            contexto = question
+            contexto= (
+                "Nenhum trecho relavante na documentação "
+                "foi recuperado para esta pergunta. "
+                "Não invente informações sem fontes. "
+                "Se não houver evidências suficiente no contexto "
+                "ou no histórico relevante, informe que a informação "
+                "não foi encointrada na documentação disponível."
+            )
     
     if dados_estruturados:
         resposta = formatar_resposta_estruturada(dados_estruturados)
