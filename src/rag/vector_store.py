@@ -7,7 +7,7 @@ from typing import Any
 from langchain_core.documents import Document
 from langchain_chroma import Chroma
 
-from src.rag.embeddings import create_embeddings
+from src.rag.embeddings import create_embeddings, _uses_nomic_prefixes
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -29,6 +29,11 @@ def _model_fragment(model_name: str) -> str:
 
     return fragment or "default"
 
+def _embedding_profile(model_name: str) -> str:
+    """Identifica a estratégia utilizada para gerar os vetores"""
+    if _uses_nomic_prefixes(model_name):
+        return "nomic_search_prefix_v1"
+
 
 def create_vector_store(
     *,
@@ -39,7 +44,7 @@ def create_vector_store(
     """
     Cria ou abre uma coleção persistente no ChromaDB.
 
-    O provedor é escolhido pelo módulo embeddings.py.
+    O provider é escolhido pelo módulo embeddings.py.
     A coleção varia conforme provedor e modelo, evitando
     misturar vetores de configurações diferentes.
     """
@@ -50,6 +55,8 @@ def create_vector_store(
         "RAG_EMBEDDING_MODEL",
         "nomic-embed-text",
     ).strip()
+    
+    profile = _embedding_profile(model_name)
 
     if persist_directory is None:
         db_path = DEFAULT_PERSIST_DIRECTORY
@@ -65,9 +72,15 @@ def create_vector_store(
     if collection_name is None:
         collection_name = (
             f"{DEFAULT_COLLECTION_PREFIX}_"
+            f"{profile}_"
             f"{selected_provider}_"
             f"{_model_fragment(model_name)}"
         )
+    else:
+        suffix = f"_{profile}"
+        
+        if not collection_name.endswith(suffix):
+            collection_name = f"{collection_name}{suffix}"
 
     # O índice vetorial usará distância cosseno.
     # Os metadados documentam qual configuração foi utilizada.

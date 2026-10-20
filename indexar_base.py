@@ -11,49 +11,60 @@ def main() -> None:
     print("=" * 60)
     print("INDEXAÇÃO COMPLETA — GURAI SPRINT 04")
     print("=" * 60)
-    
+
     pages = load_documents()
-    
+
     if not pages:
         raise AssertionError(
-            "Nenhuma página foi carregada"
-            "A indexação foi interrompida"
+            "Nenhuma página foi carregada. "
+            "A indexação foi interrompida."
         )
-        
+
     print(f"Páginas carregadas: {len(pages)}")
-    
-    
+
+    # Configuração escolhida após os testes experimentais.
     chunks = split_pages_into_chunks(
         pages,
-        chunk_size=128,
-        chunk_overlap=24,
+        chunk_size=512,
+        chunk_overlap=80,
     )
-    
+
     if not chunks:
         raise AssertionError(
             "Nenhum chunk foi gerado. "
             "A indexação foi interrompida."
         )
-    
-    print(f"chunks gerados: {len(chunks)}")
-    
-    
-    vector_store, provider = create_vector_store(provider="local")
-    
+
+    derived_chunks = [
+        chunk
+        for chunk in chunks
+        if str(
+            chunk.metadata.get("content_type", "")
+        ).startswith("derived_table_")
+    ]
+
+    print(f"Chunks gerados: {len(chunks)}")
+    print(f"Contextos técnicos especiais: {len(derived_chunks)}")
+
+    vector_store, provider = create_vector_store(
+        provider="local",
+    )
+
     print(f"Provedor de embeddings: {provider}")
     print(
         "Diretório do ChromaDB:",
         DEFAULT_PERSIST_DIRECTORY,
     )
-    
+
+    # Sincroniza a coleção definitiva com a configuração escolhida.
     stats = index_chunks(vector_store, chunks)
-    
+
     print("\nResultado da indexação:")
-    
-    
+
     for field, value in stats.items():
         print(f"{field}: {value}")
-        
+
+    # Confirma que a coleção contém exatamente os IDs esperados.
     stored_data = vector_store.get(
         include=["metadatas"],
     )
@@ -85,5 +96,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()    
-
+    main()

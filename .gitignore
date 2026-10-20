@@ -22,6 +22,11 @@ teste_chunking.py
 teste_embeddings_cloud.py
 teste_embeddings.py
 teste_vector_store.py
+teste_retriever.py
+teste_chunks_especificacao.py
+teste_diagnostico_contexto_potencias.py
+teste_debug_tabela_potencia.py
+teste_avaliacao_base_principal.py
 
 
 # Bancos vetoriais locais gerados pelo GurAI
