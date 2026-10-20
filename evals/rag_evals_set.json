@@ -1,0 +1,98 @@
+
+[
+  {
+    "id": "rag_01",
+    "tipo": "respondível",
+    "pergunta": "Qual é a potência nominal do GW22K-HCA-20?",
+    "resposta_esperada": "22.000 W (22 kW)",
+    "criterio_fidelidade": "A potência informada deve estar sustentada pela documentação recuperada, sem acrescentar especificações não comprovadas.",
+    "criterio_relevancia": "A resposta deve informar diretamente a potência nominal e incluir citação de fonte.",
+    "fontes_esperadas": ["GW_HCA-G2_Datasheet-PT.pdf", "GW_HCA-G2_User-Manual-PT.pdf"]
+  },
+  {
+    "id": "rag_02",
+    "tipo": "respondível",
+    "pergunta": "Qual é a potência nominal do GW11K-HCA-20?",
+    "resposta_esperada": "11.000 W (11 kW)",
+    "criterio_fidelidade": "A potência informada deve corresponder à documentação recuperada.",
+    "criterio_relevancia": "A resposta deve informar diretamente a potência nominal e incluir citação de fonte.",
+    "fontes_esperadas": ["GW_HCA-G2_Datasheet-PT.pdf", "GW_HCA-G2_User-Manual-PT.pdf"]
+  },
+  {
+    "id": "rag_03",
+    "tipo": "respondível",
+    "pergunta": "Qual é a tensão de saída do GW22K-HCA-20?",
+    "resposta_esperada": "400 V",
+    "criterio_fidelidade": "A tensão de saída deve estar comprovada no contexto recuperado.",
+    "criterio_relevancia": "A resposta deve apresentar a tensão solicitada e citar a fonte documental.",
+    "fontes_esperadas": ["GW_HCA-G2_Datasheet-PT.pdf", "GW_HCA-G2_User-Manual-PT.pdf"]
+  },
+  {
+    "id": "rag_04",
+    "tipo": "respondível",
+    "pergunta": "Qual é a corrente nominal de saída do GW22K-HCA-20?",
+    "resposta_esperada": "32 A",
+    "criterio_fidelidade": "A corrente informada deve estar sustentada pelo contexto recuperado.",
+    "criterio_relevancia": "A resposta deve informar diretamente a corrente e citar a fonte.",
+    "fontes_esperadas": ["GW_HCA-G2_Datasheet-PT.pdf", "GW_HCA-G2_User-Manual-PT.pdf"]
+  },
+  {
+    "id": "rag_05",
+    "tipo": "respondível",
+    "pergunta": "Qual protocolo de comunicação é indicado na documentação do carregador?",
+    "resposta_esperada": "Modbus TCP",
+    "criterio_fidelidade": "O protocolo informado deve estar explicitamente sustentado pela documentação recuperada.",
+    "criterio_relevancia": "A resposta deve identificar o protocolo e citar o documento e a página correspondente.",
+    "fontes_esperadas": ["GW_HCA-G2_User-Manual-PT.pdf", "Mapa-MODBUS_HCA-G2.pdf"]
+  },
+  {
+    "id": "rag_06",
+    "tipo": "não_respondível",
+    "pergunta": "Qual é a velocidade de clock do processador interno do carregador GW22K-HCA-20?",
+    "resposta_esperada": "Informar que a informação não foi encontrada na documentação disponível.",
+    "criterio_fidelidade": "Não inventar uma frequência nem apresentar conhecimento externo como se estivesse documentado.",
+    "criterio_relevancia": "A resposta deve tratar da ausência da informação solicitada, sem desviar do assunto.",
+    "fontes_esperadas": []
+  },
+  {
+    "id": "rag_07",
+    "tipo": "não_respondível",
+    "pergunta": "Qual é a potência nominal do modelo GW99K-HCA-20?",
+    "resposta_esperada": "Informar que não há informação suficiente na base documental disponível.",
+    "criterio_fidelidade": "Não atribuir potência ao modelo sem evidência documental.",
+    "criterio_relevancia": "A resposta deve explicar que não foi possível confirmar a potência do modelo solicitado.",
+    "fontes_esperadas": []
+  },
+  {
+    "id": "rag_08",
+    "tipo": "não_respondível",
+    "pergunta": "O que significa o código de erro 999999?",
+    "resposta_esperada": "Informar que o significado do código não foi encontrado na documentação disponível.",
+    "criterio_fidelidade": "Não inventar um significado para o código de erro.",
+    "criterio_relevancia": "A resposta deve abordar diretamente a indisponibilidade da informação.",
+    "fontes_esperadas": []
+  },
+  
+  {
+    "id": "rag_09",
+    "tipo": "respondível",
+    "pergunta": "Qual é a potência máxima de carregamento do GW22K-HCA-20? Ela é necessariamente igual à potência nominal de saída?",
+    "resposta_esperada": "A potência nominal de saída é de 22.000 W. Entretanto, a documentação informa que a potência máxima de carregamento também é limitada pela potência máxima de carregamento do carregador interno (OBC) do veículo. Não se deve afirmar que os dois valores são necessariamente iguais.",
+    "criterio_fidelidade": "Distinguir potência nominal de saída de potência máxima de carregamento e sustentar a explicação no contexto recuperado.",
+    "criterio_relevancia": "Responder às duas partes da pergunta e citar as fontes pertinentes.",
+    "fontes_esperadas": [
+      "GW_HCA-G2_Datasheet-PT.pdf",
+      "GW_HCA-G2_User-Manual-PT.pdf"
+    ]
+  },
+  {
+    "id": "rag_10",
+    "tipo": "não_respondível",
+    "pergunta": "Qual é a potência nominal de saída do charger_01?",
+    "resposta_esperada": "Informar que não é possível confirmar a potência sem uma associação documentada entre charger_01 e um modelo GoodWe.",
+    "criterio_fidelidade": "Não associar charger_01 a um modelo sem evidência explícita.",
+    "criterio_relevancia": "Explicar diretamente por que não é possível confirmar a potência solicitada.",
+    "fontes_esperadas": []
+  }
+
+]

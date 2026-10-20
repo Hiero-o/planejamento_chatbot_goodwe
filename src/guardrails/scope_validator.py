@@ -74,9 +74,24 @@ def _contem_termo(texto: str, termo: str) -> bool:
     return re.search(padrao, texto) is not None
 
 
-def validar_escopo(question: str) -> dict:
-    """Determina se a pergunta pode prosseguir pelos guardrails."""
+
+def validar_escopo(question: str):
     texto = normalizar(question)
+
+    # Perguntas sobre códigos de erro dos equipamentos fazem
+    # parte do domínio do GurAI e devem chegar ao RAG.
+    pergunta_sobre_codigo_de_erro = re.search(
+        r"\b(o que significa|qual o significado|"
+        r"significado de|como interpretar|"
+        r"explique|explica)\b.*\bcodigo de erro\b",
+        texto,
+    )
+
+    if pergunta_sobre_codigo_de_erro:
+        return {
+            "permitido": True,
+            "motivo": None,
+        }
 
     grupos_de_termos = [
         (TERMOS_JURIDICOS, "juridico"),

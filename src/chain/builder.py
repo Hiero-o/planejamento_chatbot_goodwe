@@ -17,16 +17,24 @@ from src.schemas.consultas import (
 
 load_dotenv()
 
+
 def load_system_prompt():
+    nome_arquivo = os.getenv(
+        "GURAI_SYSTEM_PROMPT",
+        "system_prompt_v2.md",
+    )
+
     caminho = os.path.join(
         os.path.dirname(__file__),
         "..",
         "..",
         "prompts",
-        "system_prompt_v2.md"
+        nome_arquivo,
     )
+
     with open(caminho, "r", encoding="utf-8") as arquivo:
         return arquivo.read()
+
 
 
 def build_chain():

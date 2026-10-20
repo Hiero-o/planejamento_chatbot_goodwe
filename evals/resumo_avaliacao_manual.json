@@ -1,0 +1,21 @@
+{
+  "metodo": "fallback manual",
+  "iteracoes": [
+    {
+      "iteracao": 1,
+      "quantidade_testes": 8,
+      "faithfulness_media": 0.875,
+      "answer_relevancy_media": 0.875,
+      "arquivo_avaliado": "resultados_rag_iteracao_1_avaliado.json"
+    },
+    {
+      "iteracao": 2,
+      "quantidade_testes": 8,
+      "faithfulness_media": 1.0,
+      "answer_relevancy_media": 1.0,
+      "arquivo_avaliado": "resultados_rag_iteracao_2_avaliado.json"
+    }
+  ],
+  "ganho_faithfulness": 0.125,
+  "ganho_answer_relevancy": 0.125
+}
