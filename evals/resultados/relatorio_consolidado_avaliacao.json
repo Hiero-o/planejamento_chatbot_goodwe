@@ -1,0 +1,166 @@
+{
+  "titulo": "Avaliação consolidada do RAG GurAI — Sprint 04",
+  "metodo": {
+    "avaliacao_automatica": "RAGAS 0.4.3 com Llama 3 e nomic-embed-text locais.",
+    "testes_respondiveis": "Faithfulness e Answer Relevancy calculadas automaticamente nos seis casos respondíveis.",
+    "testes_nao_respondiveis": "Revisão manual da correção das recusas, mantendo as quatro perguntas na contagem geral.",
+    "citacoes": "Checagem determinística da presença de documento e página citados nos contextos recuperados."
+  },
+  "comparacao_v2_v3": {
+    "faithfulness": {
+      "nome": "Faithfulness",
+      "media_v2": 0.9166666666666666,
+      "media_v3": 0.9666666666666667,
+      "diferenca_v3_menos_v2": 0.050000000000000044
+    },
+    "answer_relevancy": {
+      "nome": "Answer Relevancy",
+      "media_v2": 0.6762149649,
+      "media_v3": 0.6757057343666666,
+      "diferenca_v3_menos_v2": -0.0005092305333334046
+    }
+  },
+  "versoes": {
+    "v2": {
+      "total_testes": 10,
+      "testes_respondiveis": 6,
+      "testes_nao_respondiveis": 4,
+      "metricas_ragas_respondiveis": {
+        "faithfulness": {
+          "nome": "Faithfulness",
+          "media": 0.9166666666666666,
+          "notas_validas": 6,
+          "total_testes": 6
+        },
+        "answer_relevancy": {
+          "nome": "Answer Relevancy",
+          "media": 0.6762149649,
+          "notas_validas": 6,
+          "total_testes": 6
+        }
+      },
+      "verificacao_citacoes": {
+        "respostas_com_citacoes": 6,
+        "respostas_sem_citacoes": 0,
+        "total_citacoes": 10,
+        "citacoes_presentes_nos_contextos": 10,
+        "precisao_micro_citacoes": 1.0,
+        "precisao_media_por_resposta": 1.0,
+        "observacao": "Verifica se documento e página citados aparecem nos contextos recuperados. Não comprova, isoladamente, que todo o conteúdo da resposta é sustentado pela fonte."
+      },
+      "recusas_avaliadas_manualmente": [
+        {
+          "id": "rag_06",
+          "pergunta": "Qual é a velocidade de clock do processador interno do carregador GW22K-HCA-20?",
+          "resposta": "A informação sobre a velocidade de clock do processador interno do carregador GW22K-HCA-20 não foi encontrada na documentação disponível.",
+          "avaliacao_manual": "Correta",
+          "justificativa": "A resposta informa que a velocidade de clock não foi encontrada na documentação."
+        },
+        {
+          "id": "rag_07",
+          "pergunta": "Qual é a potência nominal do modelo GW99K-HCA-20?",
+          "resposta": "A informação sobre a potência nominal do modelo GW99K-HCA-20 não foi encontrada na documentação disponível.",
+          "avaliacao_manual": "Correta",
+          "justificativa": "A resposta não inventa uma potência para o modelo GW99K-HCA-20, que não está documentado na base."
+        },
+        {
+          "id": "rag_08",
+          "pergunta": "O que significa o código de erro 999999?",
+          "resposta": "A informação referente ao código de erro 999999 não foi encontrada na documentação disponível.",
+          "avaliacao_manual": "Correta",
+          "justificativa": "A resposta informa que o significado do código de erro 999999 não foi encontrado."
+        },
+        {
+          "id": "rag_10",
+          "pergunta": "Qual é a potência nominal de saída do charger_01?",
+          "resposta": "A associação entre o `charger_01` e um modelo específico de carregador não está disponível na documentação fornecida. Portanto, não é possível informar a potência nominal de saída para este carregador específico.",
+          "avaliacao_manual": "Correta",
+          "justificativa": "A resposta não associa charger_01 a um modelo específico sem uma relação documentada."
+        }
+      ],
+      "total_recusas_corretas": 4,
+      "taxa_recusas_corretas": 1.0,
+      "rodada_exploratoria_dez_testes": {
+        "faithfulness_media": 0.68,
+        "faithfulness_notas_validas": 10,
+        "answer_relevancy_media": 0.40752568224999997,
+        "answer_relevancy_notas_validas": 10,
+        "observacao": "Rodada exploratória com os dez testes misturados. Não é a métrica principal da comparação por combinar respostas factuais e recusas."
+      }
+    },
+    "v3": {
+      "total_testes": 10,
+      "testes_respondiveis": 6,
+      "testes_nao_respondiveis": 4,
+      "metricas_ragas_respondiveis": {
+        "faithfulness": {
+          "nome": "Faithfulness",
+          "media": 0.9666666666666667,
+          "notas_validas": 6,
+          "total_testes": 6
+        },
+        "answer_relevancy": {
+          "nome": "Answer Relevancy",
+          "media": 0.6757057343666666,
+          "notas_validas": 6,
+          "total_testes": 6
+        }
+      },
+      "verificacao_citacoes": {
+        "respostas_com_citacoes": 6,
+        "respostas_sem_citacoes": 0,
+        "total_citacoes": 11,
+        "citacoes_presentes_nos_contextos": 11,
+        "precisao_micro_citacoes": 1.0,
+        "precisao_media_por_resposta": 1.0,
+        "observacao": "Verifica se documento e página citados aparecem nos contextos recuperados. Não comprova, isoladamente, que todo o conteúdo da resposta é sustentado pela fonte."
+      },
+      "recusas_avaliadas_manualmente": [
+        {
+          "id": "rag_06",
+          "pergunta": "Qual é a velocidade de clock do processador interno do carregador GW22K-HCA-20?",
+          "resposta": "A informação sobre a velocidade de clock do processador interno do carregador GW22K-HCA-20 não foi encontrada na documentação disponível.",
+          "avaliacao_manual": "Correta",
+          "justificativa": "A resposta informa que a velocidade de clock não foi encontrada na documentação."
+        },
+        {
+          "id": "rag_07",
+          "pergunta": "Qual é a potência nominal do modelo GW99K-HCA-20?",
+          "resposta": "A informação sobre a potência nominal do modelo GW99K-HCA-20 não foi encontrada na documentação disponível.",
+          "avaliacao_manual": "Correta",
+          "justificativa": "A resposta não inventa uma potência para o modelo GW99K-HCA-20, que não está documentado na base."
+        },
+        {
+          "id": "rag_08",
+          "pergunta": "O que significa o código de erro 999999?",
+          "resposta": "A informação referente ao código de erro 999999 não foi encontrada na documentação disponível.",
+          "avaliacao_manual": "Correta",
+          "justificativa": "A resposta informa que o significado do código de erro 999999 não foi encontrado."
+        },
+        {
+          "id": "rag_10",
+          "pergunta": "Qual é a potência nominal de saída do charger_01?",
+          "resposta": "A associação entre o identificador `charger_01` e um modelo específico de carregador não está disponível na documentação fornecida. Portanto, não é possível informar a potência nominal de saída para este equipamento.",
+          "avaliacao_manual": "Correta",
+          "justificativa": "A resposta não associa charger_01 a um modelo específico sem uma relação documentada."
+        }
+      ],
+      "total_recusas_corretas": 4,
+      "taxa_recusas_corretas": 1.0,
+      "rodada_exploratoria_dez_testes": {
+        "faithfulness_media": 0.5370370370333333,
+        "faithfulness_notas_validas": 9,
+        "answer_relevancy_media": 0.41021720783,
+        "answer_relevancy_notas_validas": 10,
+        "observacao": "Rodada exploratória com os dez testes misturados. Não é a métrica principal da comparação por combinar respostas factuais e recusas."
+      }
+    }
+  },
+  "limitacoes": [
+    "O conjunto contém dez perguntas e é pequeno.",
+    "O Llama 3 usado como avaliador pode cometer erros.",
+    "A presença de uma citação no contexto não comprova automaticamente todas as afirmações da resposta.",
+    "A revisão das recusas é manual e não constitui uma métrica automática RAGAS.",
+    "A comparação não prova generalização para perguntas fora do conjunto avaliado."
+  ]
+}

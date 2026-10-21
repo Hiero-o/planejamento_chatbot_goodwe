@@ -1,0 +1,237 @@
+{
+  "framework": "RAGAS",
+  "versao_ragas": "0.4.3",
+  "versao_prompt": "v2",
+  "arquivo_entrada": "prompt_v2_retriever_corrigido.json",
+  "modelo_avaliador": "llama3:latest",
+  "modelo_embeddings_avaliador": "nomic-embed-text:latest",
+  "provedor_avaliador": "Ollama local",
+  "temperature_avaliador": 0.0,
+  "max_workers": 1,
+  "seed": 42,
+  "quantidade_testes_original": 10,
+  "quantidade_testes_ragas": 6,
+  "quantidade_nao_respondiveis_separados": 4,
+  "quantidade_faithfulness_validas": 6,
+  "quantidade_answer_relevancy_validas": 6,
+  "faithfulness_media_respondiveis": 0.9166666666666666,
+  "answer_relevancy_media_respondiveis": 0.6762149649,
+  "precisao_media_citacoes_presentes_no_contexto": 1.0,
+  "metodo": "Métricas RAGAS calculadas somente nas perguntas respondíveis, utilizando respostas sem blocos de citação. Referências documentais verificadas separadamente por presença de documento e página nos contextos recuperados. Perguntas não respondíveis ficam fora destas médias.",
+  "ids_nao_respondiveis_separados": [
+    "rag_06",
+    "rag_07",
+    "rag_08",
+    "rag_10"
+  ],
+  "resultados": [
+    {
+      "id": "rag_01",
+      "tipo": "respondível",
+      "pergunta": "Qual é a potência nominal do GW22K-HCA-20?",
+      "resposta_original": "A potência nominal de saída do modelo GoodWe GW22K-HCA-20 é de 22000W.\n\n[Fonte: GW_HCA-G2_Datasheet-PT.pdf, p. 2]",
+      "resposta_sem_citacoes": "A potência nominal de saída do modelo GoodWe GW22K-HCA-20 é de 22000W.",
+      "avaliacao_citacoes": {
+        "quantidade_citacoes": 1,
+        "quantidade_citacoes_presentes_no_contexto": 1,
+        "precisao_referencias": 1.0,
+        "citacoes": [
+          {
+            "documento": "gw_hca-g2_datasheet-pt.pdf",
+            "pagina": 2
+          }
+        ],
+        "fontes_contexto": [
+          {
+            "documento": "gw_hca-g2_datasheet-pt.pdf",
+            "pagina": 2
+          },
+          {
+            "documento": "gw_hca-g2_user-manual-pt.pdf",
+            "pagina": 67
+          }
+        ]
+      },
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.7863983934
+    },
+    {
+      "id": "rag_02",
+      "tipo": "respondível",
+      "pergunta": "Qual é a potência nominal do GW11K-HCA-20?",
+      "resposta_original": "A potência nominal de saída do modelo GoodWe GW11K-HCA-20 é de 11000W.\n\n[Fonte: GW_HCA-G2_Datasheet-PT.pdf, p. 2]",
+      "resposta_sem_citacoes": "A potência nominal de saída do modelo GoodWe GW11K-HCA-20 é de 11000W.",
+      "avaliacao_citacoes": {
+        "quantidade_citacoes": 1,
+        "quantidade_citacoes_presentes_no_contexto": 1,
+        "precisao_referencias": 1.0,
+        "citacoes": [
+          {
+            "documento": "gw_hca-g2_datasheet-pt.pdf",
+            "pagina": 2
+          }
+        ],
+        "fontes_contexto": [
+          {
+            "documento": "gw_hca-g2_datasheet-pt.pdf",
+            "pagina": 2
+          },
+          {
+            "documento": "gw_hca-g2_user-manual-pt.pdf",
+            "pagina": 67
+          }
+        ]
+      },
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.7863983934
+    },
+    {
+      "id": "rag_03",
+      "tipo": "respondível",
+      "pergunta": "Qual é a tensão de saída do GW22K-HCA-20?",
+      "resposta_original": "A tensão nominal de saída do modelo GoodWe GW22K-HCA-20 é de 400V [Fonte: GW_HCA-G2_Datasheet-PT.pdf, p. 2].",
+      "resposta_sem_citacoes": "A tensão nominal de saída do modelo GoodWe GW22K-HCA-20 é de 400V .",
+      "avaliacao_citacoes": {
+        "quantidade_citacoes": 1,
+        "quantidade_citacoes_presentes_no_contexto": 1,
+        "precisao_referencias": 1.0,
+        "citacoes": [
+          {
+            "documento": "gw_hca-g2_datasheet-pt.pdf",
+            "pagina": 2
+          }
+        ],
+        "fontes_contexto": [
+          {
+            "documento": "gw_hca-g2_datasheet-pt.pdf",
+            "pagina": 2
+          },
+          {
+            "documento": "gw_hca-g2_user-manual-pt.pdf",
+            "pagina": 33
+          },
+          {
+            "documento": "gw_hca-g2_user-manual-pt.pdf",
+            "pagina": 67
+          }
+        ]
+      },
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.6092196941
+    },
+    {
+      "id": "rag_04",
+      "tipo": "respondível",
+      "pergunta": "Qual é a corrente nominal de saída do GW22K-HCA-20?",
+      "resposta_original": "A corrente nominal de saída do modelo GoodWe GW22K-HCA-20 é de 32A.\n\n[Fonte: GW_HCA-G2_Datasheet-PT.pdf, p. 2] [Fonte: GW_HCA-G2_User-Manual-PT.pdf, p. 67]",
+      "resposta_sem_citacoes": "A corrente nominal de saída do modelo GoodWe GW22K-HCA-20 é de 32A.",
+      "avaliacao_citacoes": {
+        "quantidade_citacoes": 2,
+        "quantidade_citacoes_presentes_no_contexto": 2,
+        "precisao_referencias": 1.0,
+        "citacoes": [
+          {
+            "documento": "gw_hca-g2_datasheet-pt.pdf",
+            "pagina": 2
+          },
+          {
+            "documento": "gw_hca-g2_user-manual-pt.pdf",
+            "pagina": 67
+          }
+        ],
+        "fontes_contexto": [
+          {
+            "documento": "gw_hca-g2_datasheet-pt.pdf",
+            "pagina": 2
+          },
+          {
+            "documento": "gw_hca-g2_user-manual-pt.pdf",
+            "pagina": 67
+          }
+        ]
+      },
+      "faithfulness": 0.5,
+      "answer_relevancy": 0.6740889296
+    },
+    {
+      "id": "rag_05",
+      "tipo": "respondível",
+      "pergunta": "Qual protocolo de comunicação é indicado na documentação do carregador?",
+      "resposta_original": "O protocolo de comunicação indicado na documentação para o GoodWe HCA-G2 é o Modbus TCP.\n\n[Fonte: GW_HCA-G2_User-Manual-PT.pdf, p. 69]",
+      "resposta_sem_citacoes": "O protocolo de comunicação indicado na documentação para o GoodWe HCA-G2 é o Modbus TCP.",
+      "avaliacao_citacoes": {
+        "quantidade_citacoes": 1,
+        "quantidade_citacoes_presentes_no_contexto": 1,
+        "precisao_referencias": 1.0,
+        "citacoes": [
+          {
+            "documento": "gw_hca-g2_user-manual-pt.pdf",
+            "pagina": 69
+          }
+        ],
+        "fontes_contexto": [
+          {
+            "documento": "gw_hca-g2_datasheet-pt.pdf",
+            "pagina": 2
+          },
+          {
+            "documento": "gw_hca-g2_user-manual-pt.pdf",
+            "pagina": 21
+          },
+          {
+            "documento": "gw_hca-g2_user-manual-pt.pdf",
+            "pagina": 69
+          }
+        ]
+      },
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.6088987924
+    },
+    {
+      "id": "rag_09",
+      "tipo": "respondível",
+      "pergunta": "Qual é a potência máxima de carregamento do GW22K-HCA-20? Ela é necessariamente igual à potência nominal de saída?",
+      "resposta_original": "A potência nominal de saída do modelo GW22K-HCA-20 é de 22.000W [Fonte: GW_HCA-G2_Datasheet-PT.pdf, p. 2].\n\nNão, a potência máxima de carregamento não é necessariamente igual à potência nominal de saída, pois ela é limitada pela potência máxima de carregamento do carregador interno (OBC) dos veículos [Fonte: GW_HCA-G2_User-Manual-PT.pdf, p. 14].\n\nAlém disso, em carregadores trifásicos, a potência real é influenciada pelo tipo de carregamento aceito pelo veículo:\n*   **Veículos monofásicos:** a potência máxima de carregamento é 1/3 da potência nominal do carregador [Fonte: GW_HCA-G2_User-Manual-PT.pdf, p. 14].\n*   **Veículos bifásicos:** a potência máxima de carregamento é 2/3 da potência nominal do carregador [Fonte: GW_HCA-G2_User-Manual-PT.pdf, p. 14].",
+      "resposta_sem_citacoes": "A potência nominal de saída do modelo GW22K-HCA-20 é de 22.000W .\n\nNão, a potência máxima de carregamento não é necessariamente igual à potência nominal de saída, pois ela é limitada pela potência máxima de carregamento do carregador interno (OBC) dos veículos .\n\nAlém disso, em carregadores trifásicos, a potência real é influenciada pelo tipo de carregamento aceito pelo veículo:\n* **Veículos monofásicos:** a potência máxima de carregamento é 1/3 da potência nominal do carregador .\n* **Veículos bifásicos:** a potência máxima de carregamento é 2/3 da potência nominal do carregador .",
+      "avaliacao_citacoes": {
+        "quantidade_citacoes": 4,
+        "quantidade_citacoes_presentes_no_contexto": 4,
+        "precisao_referencias": 1.0,
+        "citacoes": [
+          {
+            "documento": "gw_hca-g2_datasheet-pt.pdf",
+            "pagina": 2
+          },
+          {
+            "documento": "gw_hca-g2_user-manual-pt.pdf",
+            "pagina": 14
+          },
+          {
+            "documento": "gw_hca-g2_user-manual-pt.pdf",
+            "pagina": 14
+          },
+          {
+            "documento": "gw_hca-g2_user-manual-pt.pdf",
+            "pagina": 14
+          }
+        ],
+        "fontes_contexto": [
+          {
+            "documento": "gw_hca-g2_datasheet-pt.pdf",
+            "pagina": 2
+          },
+          {
+            "documento": "gw_hca-g2_user-manual-pt.pdf",
+            "pagina": 14
+          },
+          {
+            "documento": "gw_hca-g2_user-manual-pt.pdf",
+            "pagina": 67
+          }
+        ]
+      },
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.5922855865
+    }
+  ]
+}

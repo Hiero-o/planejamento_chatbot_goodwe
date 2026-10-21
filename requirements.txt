@@ -19,3 +19,4 @@ tiktoken==0.14.0
 langchain-text-splitters==1.1.2
 chromadb==1.5.9
 langchain-chroma==1.1.0
+ragas==0.4.3

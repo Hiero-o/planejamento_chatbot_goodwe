@@ -29,6 +29,7 @@ teste_debug_tabela_potencia.py
 teste_avaliacao_base_principal.py
 teste_context_builder.py
 teste_respostas_com_citacoes.py
+.venv-ragas
 
 # Bancos vetoriais locais gerados pelo GurAI
 /data/chroma_db/

@@ -1,0 +1,162 @@
+{
+  "framework": "RAGAS",
+  "versao_ragas": "0.4.3",
+  "versao_prompt": "v2",
+  "arquivo_entrada": "prompt_v2_retriever_corrigido.json",
+  "modelo_avaliador": "llama3:latest",
+  "modelo_embeddings_avaliador": "nomic-embed-text:latest",
+  "provedor_avaliador": "Ollama local",
+  "temperature_avaliador": 0.0,
+  "max_workers": 1,
+  "seed": 42,
+  "quantidade_testes": 10,
+  "quantidade_faithfulness_validas": 10,
+  "quantidade_answer_relevancy_validas": 10,
+  "quantidade_falhas_faithfulness": 0,
+  "quantidade_falhas_answer_relevancy": 0,
+  "faithfulness_media": 0.68,
+  "answer_relevancy_media": 0.40752568224999997,
+  "metodo": "Avaliação automática RAGAS sobre respostas e contextos recuperados previamente. Falhas individuais de métricas não recebem nota e são excluídas das médias.",
+  "resultados": [
+    {
+      "id": "rag_01",
+      "tipo": "respondível",
+      "pergunta": "Qual é a potência nominal do GW22K-HCA-20?",
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.7863983934,
+      "resposta_avaliada": "A potência nominal de saída do modelo GoodWe GW22K-HCA-20 é de 22000W.\n\n[Fonte: GW_HCA-G2_Datasheet-PT.pdf, p. 2]",
+      "contextos_avaliados": [
+        "[Trecho 1]\nDocumento: GW_HCA-G2_Datasheet-PT.pdf\nPágina: 2\nConteúdo:\nGoodWe HCA-G2; Potência nominal de saída (W): GW7K-HCA-20=7000W; GW11K-HCA-20=11000W; GW22K-HCA-20=22000W",
+        "[Trecho 2]\nDocumento: GW_HCA-G2_User-Manual-PT.pdf\nPágina: 67\nConteúdo:\nGoodWe HCA-G2; Potência nominal de saída (W): GW7K-HCA-20=7000W; GW11K-HCA-20=11000W; GW22K-HCA-20=22000W",
+        "[Trecho 3]\nDocumento: GW_HCA-G2_Datasheet-PT.pdf\nPágina: 2\nConteúdo:\nDados técnicos\nGW7K-HCA-20\nGW11K-HCA-20\nGW22K-HCA-20\nEntrada\nTensão Nominal de Entrada (V)\n220, L / N / PE\n380, 3L / N / PE\n380, 3L / N / PE\nCorrente nominal de entrada (A)\n32\n16\n32\nFrequência nominal da rede CA (Hz)\n50 / 60\nSaída CA\nPotência nominal de saída (W)\n7000\n11000\n22000\nTensão nominal de saída (V)\n230\n400\n400\nCorrente nominal de saída (A)\n32\n16\n32\nFrequência nominal de saída (Hz)\n50 / 60\nProteção\nProteção contra corrente residual\nCA 30mA + CC 6mA \nProteção contra sobrecorrente\nIntegrado",
+        "[Trecho 4]\nDocumento: GW_HCA-G2_Datasheet-PT.pdf\nPágina: 2\nConteúdo:\nGoodWe HCA-G2; Tensão nominal de saída (V): GW7K-HCA-20=230V; GW11K-HCA-20=400V; GW22K-HCA-20=400V"
+      ]
+    },
+    {
+      "id": "rag_02",
+      "tipo": "respondível",
+      "pergunta": "Qual é a potência nominal do GW11K-HCA-20?",
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.7863983934,
+      "resposta_avaliada": "A potência nominal de saída do modelo GoodWe GW11K-HCA-20 é de 11000W.\n\n[Fonte: GW_HCA-G2_Datasheet-PT.pdf, p. 2]",
+      "contextos_avaliados": [
+        "[Trecho 1]\nDocumento: GW_HCA-G2_Datasheet-PT.pdf\nPágina: 2\nConteúdo:\nGoodWe HCA-G2; Potência nominal de saída (W): GW7K-HCA-20=7000W; GW11K-HCA-20=11000W; GW22K-HCA-20=22000W",
+        "[Trecho 2]\nDocumento: GW_HCA-G2_User-Manual-PT.pdf\nPágina: 67\nConteúdo:\nGoodWe HCA-G2; Potência nominal de saída (W): GW7K-HCA-20=7000W; GW11K-HCA-20=11000W; GW22K-HCA-20=22000W",
+        "[Trecho 3]\nDocumento: GW_HCA-G2_Datasheet-PT.pdf\nPágina: 2\nConteúdo:\nDados técnicos\nGW7K-HCA-20\nGW11K-HCA-20\nGW22K-HCA-20\nEntrada\nTensão Nominal de Entrada (V)\n220, L / N / PE\n380, 3L / N / PE\n380, 3L / N / PE\nCorrente nominal de entrada (A)\n32\n16\n32\nFrequência nominal da rede CA (Hz)\n50 / 60\nSaída CA\nPotência nominal de saída (W)\n7000\n11000\n22000\nTensão nominal de saída (V)\n230\n400\n400\nCorrente nominal de saída (A)\n32\n16\n32\nFrequência nominal de saída (Hz)\n50 / 60\nProteção\nProteção contra corrente residual\nCA 30mA + CC 6mA \nProteção contra sobrecorrente\nIntegrado",
+        "[Trecho 4]\nDocumento: GW_HCA-G2_Datasheet-PT.pdf\nPágina: 2\nConteúdo:\nGoodWe HCA-G2; Tensão nominal de saída (V): GW7K-HCA-20=230V; GW11K-HCA-20=400V; GW22K-HCA-20=400V"
+      ]
+    },
+    {
+      "id": "rag_03",
+      "tipo": "respondível",
+      "pergunta": "Qual é a tensão de saída do GW22K-HCA-20?",
+      "faithfulness": 0.6666666667,
+      "answer_relevancy": 0.6171273232,
+      "resposta_avaliada": "A tensão nominal de saída do modelo GoodWe GW22K-HCA-20 é de 400V [Fonte: GW_HCA-G2_Datasheet-PT.pdf, p. 2].",
+      "contextos_avaliados": [
+        "[Trecho 1]\nDocumento: GW_HCA-G2_Datasheet-PT.pdf\nPágina: 2\nConteúdo:\nGoodWe HCA-G2; Tensão nominal de saída (V): GW7K-HCA-20=230V; GW11K-HCA-20=400V; GW22K-HCA-20=400V",
+        "[Trecho 2]\nDocumento: GW_HCA-G2_User-Manual-PT.pdf\nPágina: 67\nConteúdo:\nGoodWe HCA-G2; Tensão nominal de saída (V): GW7K-HCA-20=230V; GW11K-HCA-20=400V; GW22K-HCA-20=400V",
+        "[Trecho 3]\nDocumento: GW_HCA-G2_Datasheet-PT.pdf\nPágina: 2\nConteúdo:\nDados técnicos\nGW7K-HCA-20\nGW11K-HCA-20\nGW22K-HCA-20\nEntrada\nTensão Nominal de Entrada (V)\n220, L / N / PE\n380, 3L / N / PE\n380, 3L / N / PE\nCorrente nominal de entrada (A)\n32\n16\n32\nFrequência nominal da rede CA (Hz)\n50 / 60\nSaída CA\nPotência nominal de saída (W)\n7000\n11000\n22000\nTensão nominal de saída (V)\n230\n400\n400\nCorrente nominal de saída (A)\n32\n16\n32\nFrequência nominal de saída (Hz)\n50 / 60\nProteção\nProteção contra corrente residual\nCA 30mA + CC 6mA \nProteção contra sobrecorrente\nIntegrado",
+        "[Trecho 4]\nDocumento: GW_HCA-G2_User-Manual-PT.pdf\nPágina: 33\nConteúdo:\nfrequência deve ser 50/60 Hz.\n3.\t Para GW22K-HCA-20: sua tensão deve ser 400 VCA, 3L/N/PE; a corrente deve ser 32 A; e a \nfrequência deve ser 50/60 Hz.\nEtapa 1 Prepare o cabo CA.\nEtapa 2 Insira o cabo de entrada CA nos terminais CA e aperte-o.\nEtapa 3 Aperte o terminal de entrada CA no carregador.\nA figura a seguir usa o cabo CA trifásico L1, L2, L3, N, PE como exemplo. Os cabos CA \nmonofásicos são L, N, PE.\n25-35mm\n25-35mm\nGW7K-HCA-20\nGW11K-HCA-20, GW22K-HCA-20\n17mm\n17mm\n1\n2\n3\nHPA10ELC0001\n1\n3\nL\nN\nPE\nL1"
+      ]
+    },
+    {
+      "id": "rag_04",
+      "tipo": "respondível",
+      "pergunta": "Qual é a corrente nominal de saída do GW22K-HCA-20?",
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.6920729424,
+      "resposta_avaliada": "A corrente nominal de saída do modelo GoodWe GW22K-HCA-20 é de 32A.\n\n[Fonte: GW_HCA-G2_Datasheet-PT.pdf, p. 2] [Fonte: GW_HCA-G2_User-Manual-PT.pdf, p. 67]",
+      "contextos_avaliados": [
+        "[Trecho 1]\nDocumento: GW_HCA-G2_Datasheet-PT.pdf\nPágina: 2\nConteúdo:\nGoodWe HCA-G2; Corrente nominal de saída (A): GW7K-HCA-20=32A; GW11K-HCA-20=16A; GW22K-HCA-20=32A",
+        "[Trecho 2]\nDocumento: GW_HCA-G2_User-Manual-PT.pdf\nPágina: 67\nConteúdo:\nGoodWe HCA-G2; Corrente nominal de saída (A): GW7K-HCA-20=32A; GW11K-HCA-20=16A; GW22K-HCA-20=32A",
+        "[Trecho 3]\nDocumento: GW_HCA-G2_Datasheet-PT.pdf\nPágina: 2\nConteúdo:\nDados técnicos\nGW7K-HCA-20\nGW11K-HCA-20\nGW22K-HCA-20\nEntrada\nTensão Nominal de Entrada (V)\n220, L / N / PE\n380, 3L / N / PE\n380, 3L / N / PE\nCorrente nominal de entrada (A)\n32\n16\n32\nFrequência nominal da rede CA (Hz)\n50 / 60\nSaída CA\nPotência nominal de saída (W)\n7000\n11000\n22000\nTensão nominal de saída (V)\n230\n400\n400\nCorrente nominal de saída (A)\n32\n16\n32\nFrequência nominal de saída (Hz)\n50 / 60\nProteção\nProteção contra corrente residual\nCA 30mA + CC 6mA \nProteção contra sobrecorrente\nIntegrado",
+        "[Trecho 4]\nDocumento: GW_HCA-G2_User-Manual-PT.pdf\nPágina: 67\nConteúdo:\n63\n10    Parâmetros técnicos\n10  Parâmetros técnicos\nDados técnicos\nGW7K-HCA-20\nGW11K-\nHCA-20\nGW22K-HCA-20\nEntrada\nTensão nominal de entrada \n(V)\n230*3, L/N/PE\n400*3, 3L/N/PE\n400*3, 3L/N/PE\nCorrente nominal de entrada \n(A)\n32\n16\n32\nFrequência nominal da rede \nCA (Hz)\n50/60\n50/60\n50/60\nSaída\nPotência nominal de saída \n(W)\n7000\n11000\n22000\nTensão nominal de saída (V)\n230\n400\n400\nCorrente nominal de saída (A)\n32\n16\n32\nFrequência nominal de saída \n(Hz)\n50/60\n50/60\n50/60\nProteção\nProteção de corrente residual"
+      ]
+    },
+    {
+      "id": "rag_05",
+      "tipo": "respondível",
+      "pergunta": "Qual protocolo de comunicação é indicado na documentação do carregador?",
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.6088987924,
+      "resposta_avaliada": "O protocolo de comunicação indicado na documentação para o GoodWe HCA-G2 é o Modbus TCP.\n\n[Fonte: GW_HCA-G2_User-Manual-PT.pdf, p. 69]",
+      "contextos_avaliados": [
+        "[Trecho 1]\nDocumento: GW_HCA-G2_User-Manual-PT.pdf\nPágina: 69\nConteúdo:\nGoodWe HCA-G2; protocolo de comunicação: Modbus TCP.",
+        "[Trecho 2]\nDocumento: GW_HCA-G2_Datasheet-PT.pdf\nPágina: 2\nConteúdo:\nIEC62311\nIEC62955\nAS / NZS 4268:2017\nIEC61008-1\nLinha HCA\nwww.goodwe.com\nGoodWe-Single page-20241121-PT-V2.1.As informações podem ser alteradas sem prévio aviso durante futuras atualizações do produto.\n*1: Faixa de temperatura operacional (°C): O carregador é de -30 ~ +55°C, e o plugue de carregamento é de 50°C.\n*2: Grau de Proteção IP: o plugue de carregamento IEC 2 é IP55.\n*: Por favor, consulte o site da GoodWe para verificar os certificados atualizados.",
+        "[Trecho 3]\nDocumento: GW_HCA-G2_User-Manual-PT.pdf\nPágina: 21\nConteúdo:\n17\n03    Apresentação do produto\nIndicador\nCor\nExplicação\nVerde LIGADO\nO carregador está em modo de espera.\nPisca em verde\nO sistema do carregador está sendo atualizado.\nAzul LIGADO\nO carregador está carregando.\nVermelho LIGADO\nOcorreu uma falha.\nStatus da luz indicadora quando a ativação do carregamento por cartão RFID está \nanormal\nLuz vermelha acesa \npor 2 segundos\nEncoste o cartão antes de conectar o plugue de \ncarregamento ao veículo elétrico.\nLuz vermelha pisca \nduas vezes",
+        "[Trecho 4]\nDocumento: GW_HCA-G2_User-Manual-PT.pdf\nPágina: 21\nConteúdo:\ncarregamento ao veículo elétrico.\nLuz vermelha pisca \nduas vezes\nO carregador e o cartão não correspondem.\n3.6.3 Descrição do indicador\n3.6.4 Placa de identificação\nParâmetros técnicos\nSímbolos de segurança e marcações de \ncertificação\nInformações de contato e número de série\nA placa de identificação é apenas para referência.\nMarca comercial GOODWE, tipo de produto \ne modelo do produto\n65mm\n50mm\n90mm\n72mm\n65mm\n50mm\n90mm\n36mm\n(Opcional) Medidor MID\n******"
+      ]
+    },
+    {
+      "id": "rag_06",
+      "tipo": "não_respondível",
+      "pergunta": "Qual é a velocidade de clock do processador interno do carregador GW22K-HCA-20?",
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.0,
+      "resposta_avaliada": "A informação sobre a velocidade de clock do processador interno do carregador GW22K-HCA-20 não foi encontrada na documentação disponível.",
+      "contextos_avaliados": [
+        "[Trecho 1]\nDocumento: GW_HCA-G2_User-Manual-PT.pdf\nPágina: 31\nConteúdo:\n27\n06    Conexão elétrica\nModelo do \ncarregador  \nTipo do \nRCBO\nCaracterística \nde disparo \ninstantâneo do \nRCBO\nCorrente de \ndisparo \n do RCBO\nCorrente \nnominal\ndo RCBO\nTensão \nnominal\ndo RCBO\nGW7K-\nHCA-20\nTIPO A\nC\n30 mA\n40 A\nCA 230 V \n(2P)\nGW11K-\nHCA-20\n25 A\nCA 400 V \n(4P)\nGW22K-\nHCA-20\n40 A\nCA 400 V \n(4P)\nEspecificações de fiação\nModelo\nCabo\nEspecificação\nGW7K-HCA-20\nCabo AC externo \nde três núcleos \ncom múltiplos fios\n•\t Cobre, 105 ℃, 1.000 V\n•\t Diâmetro externo: 13 a 14 mm",
+        "[Trecho 2]\nDocumento: GW_HCA-G2_User-Manual-PT.pdf\nPágina: 10\nConteúdo:\ncarregamento. Além disso, oferece proteção durante o carregamento, monitoramento de rede e \noutras funcionalidades.\nModelo\nDescrição do modelo\nEsse manual se aplica aos carregadores listados abaixo:\n•\t GW7K-HCA-20 \n•\t GW11K-HCA-20\n•\t GW22K-HCA-20\nGW11K-HCA-20",
+        "[Trecho 3]\nDocumento: GW_HCA-G2_User-Manual-PT.pdf\nPágina: 14\nConteúdo:\n10\n03    Apresentação do produto\n3.4  Status operacional do carregador\nOcioso\nCarregando\nCarregamento \ncompleto ou \nAlarme\nEm \npreparação\nEm espera\n3.5  Funcionalidades\nAVISO\n•\t A potência máxima de carregamento do carregador é limitada pela potência máxima de \ncarregamento do carregador interno (OBC) dos veículos.\n•\t A corrente mínima de partida por fase do carregador é de 6 A. Para carregamento \nmonofásico, a potência mínima é de 1,4 kW, e para carregamento trifásico, é de 4,2 kW.",
+        "[Trecho 4]\nDocumento: GW_HCA-G2_Datasheet-PT.pdf\nPágina: 2\nConteúdo:\nIEC62311\nIEC62955\nAS / NZS 4268:2017\nIEC61008-1\nLinha HCA\nwww.goodwe.com\nGoodWe-Single page-20241121-PT-V2.1.As informações podem ser alteradas sem prévio aviso durante futuras atualizações do produto.\n*1: Faixa de temperatura operacional (°C): O carregador é de -30 ~ +55°C, e o plugue de carregamento é de 50°C.\n*2: Grau de Proteção IP: o plugue de carregamento IEC 2 é IP55.\n*: Por favor, consulte o site da GoodWe para verificar os certificados atualizados."
+      ]
+    },
+    {
+      "id": "rag_07",
+      "tipo": "não_respondível",
+      "pergunta": "Qual é a potência nominal do modelo GW99K-HCA-20?",
+      "faithfulness": 0.0,
+      "answer_relevancy": 0.0,
+      "resposta_avaliada": "A informação sobre a potência nominal do modelo GW99K-HCA-20 não foi encontrada na documentação disponível.",
+      "contextos_avaliados": [
+        "[Trecho 1]\nDocumento: GW_HCA-G2_Datasheet-PT.pdf\nPágina: 2\nConteúdo:\nGoodWe HCA-G2; Potência nominal de saída (W): GW7K-HCA-20=7000W; GW11K-HCA-20=11000W; GW22K-HCA-20=22000W",
+        "[Trecho 2]\nDocumento: GW_HCA-G2_User-Manual-PT.pdf\nPágina: 67\nConteúdo:\nGoodWe HCA-G2; Potência nominal de saída (W): GW7K-HCA-20=7000W; GW11K-HCA-20=11000W; GW22K-HCA-20=22000W",
+        "[Trecho 3]\nDocumento: GW_HCA-G2_Datasheet-PT.pdf\nPágina: 2\nConteúdo:\nDados técnicos\nGW7K-HCA-20\nGW11K-HCA-20\nGW22K-HCA-20\nEntrada\nTensão Nominal de Entrada (V)\n220, L / N / PE\n380, 3L / N / PE\n380, 3L / N / PE\nCorrente nominal de entrada (A)\n32\n16\n32\nFrequência nominal da rede CA (Hz)\n50 / 60\nSaída CA\nPotência nominal de saída (W)\n7000\n11000\n22000\nTensão nominal de saída (V)\n230\n400\n400\nCorrente nominal de saída (A)\n32\n16\n32\nFrequência nominal de saída (Hz)\n50 / 60\nProteção\nProteção contra corrente residual\nCA 30mA + CC 6mA \nProteção contra sobrecorrente\nIntegrado",
+        "[Trecho 4]\nDocumento: GW_HCA-G2_User-Manual-PT.pdf\nPágina: 31\nConteúdo:\n27\n06    Conexão elétrica\nModelo do \ncarregador  \nTipo do \nRCBO\nCaracterística \nde disparo \ninstantâneo do \nRCBO\nCorrente de \ndisparo \n do RCBO\nCorrente \nnominal\ndo RCBO\nTensão \nnominal\ndo RCBO\nGW7K-\nHCA-20\nTIPO A\nC\n30 mA\n40 A\nCA 230 V \n(2P)\nGW11K-\nHCA-20\n25 A\nCA 400 V \n(4P)\nGW22K-\nHCA-20\n40 A\nCA 400 V \n(4P)\nEspecificações de fiação\nModelo\nCabo\nEspecificação\nGW7K-HCA-20\nCabo AC externo \nde três núcleos \ncom múltiplos fios\n•\t Cobre, 105 ℃, 1.000 V\n•\t Diâmetro externo: 13 a 14 mm"
+      ]
+    },
+    {
+      "id": "rag_08",
+      "tipo": "não_respondível",
+      "pergunta": "O que significa o código de erro 999999?",
+      "faithfulness": 0.0,
+      "answer_relevancy": 0.0,
+      "resposta_avaliada": "A informação referente ao código de erro 999999 não foi encontrada na documentação disponível.",
+      "contextos_avaliados": [
+        "[Trecho 1]\nDocumento: GW_HCA-G2_User-Manual-PT.pdf\nPágina: 66\nConteúdo:\no revendedor ou o serviço pós-\nvenda, se o problema persistir.\n10\nFalha do contator \nsoldado\nO componente interno \nestá com defeito.\nReinicie o carregador. Entre em \ncontato com o revendedor ou o \nserviço pós-venda se os problemas \nnão puderem ser resolvidos.\n11\nFalha no medidor\n12\nFalha de corrente \nde fuga \n13\nErro de leitura\n14\nErro EEPROM\n15\nErro de flash\n16\nFalha no detector \nde vazamento",
+        "[Trecho 2]\nDocumento: GW_HCA-G2_User-Manual-PT.pdf\nPágina: 54\nConteúdo:\n50\n08    Comissionamento do sistema\nRequisito de telefone celular:\n•\t Sistema operacional: Versões 4.3 ou posteriores para Android; versões 9.0 ou posteriores \npara iOS.\n•\t Compatível com conexão à internet e navegação online.\n•\t Suporta conexão WLAN/Bluetooth.\nMétodo 1 Pesquise SEMS Portal no Google Play (Android) ou na App Store (iOS) para baixar e \ninstalar;\nAplicativo SEMS Portal\nMétodo 2 Digitalize o código QR abaixo para baixar e instalar.",
+        "[Trecho 3]\nDocumento: GW_HCA-G2_User-Manual-PT.pdf\nPágina: 65\nConteúdo:\ndesconectado durante o \ncarregamento.\nReconecte o carregador.\n2\nParada de \nemergência\nO botão de parada de \nemergência está sendo \npressionado.\nSolte o botão.\n3\nErro de \naterramento\nO cabo de aterramento \nda entrada CA está \ndesconectado.\nVerifique e reconecte o cabo de \naterramento.\n4\nTemperatura \nambiente\nA temperatura do \ncarregador é superior a \n98 graus.\nO problema é removido após o \nresfriamento e o carregador entra no \nstatus de espera.\n5\nSobretensão\nA entrada CA está com \nsobretensão.",
+        "[Trecho 4]\nDocumento: GW_HCA-G2_User-Manual-PT.pdf\nPágina: 44\nConteúdo:\n40\n08    Comissionamento do sistema\n8.2.2 Login no carregador\nAVISO\n•\t\nFaça login usando a senha inicial pela primeira vez e altere a senha o quanto antes. \nPara garantir a segurança da conta, recomenda-se alterar a senha periodicamente e \nmemorizar a nova senha.\n•\t\nSe a senha for digitada incorretamente 3 vezes, a conta será bloqueada. Você pode \nentrar em contato com o serviço de pós -venda da GOODWE para obter a super senha. \nApós fazer login, altere a senha de login."
+      ]
+    },
+    {
+      "id": "rag_09",
+      "tipo": "respondível",
+      "pergunta": "Qual é a potência máxima de carregamento do GW22K-HCA-20? Ela é necessariamente igual à potência nominal de saída?",
+      "faithfulness": 0.8,
+      "answer_relevancy": 0.5843609777,
+      "resposta_avaliada": "A potência nominal de saída do modelo GW22K-HCA-20 é de 22.000W [Fonte: GW_HCA-G2_Datasheet-PT.pdf, p. 2].\n\nNão, a potência máxima de carregamento não é necessariamente igual à potência nominal de saída, pois ela é limitada pela potência máxima de carregamento do carregador interno (OBC) dos veículos [Fonte: GW_HCA-G2_User-Manual-PT.pdf, p. 14].\n\nAlém disso, em carregadores trifásicos, a potência real é influenciada pelo tipo de carregamento aceito pelo veículo:\n*   **Veículos monofásicos:** a potência máxima de carregamento é 1/3 da potência nominal do carregador [Fonte: GW_HCA-G2_User-Manual-PT.pdf, p. 14].\n*   **Veículos bifásicos:** a potência máxima de carregamento é 2/3 da potência nominal do carregador [Fonte: GW_HCA-G2_User-Manual-PT.pdf, p. 14].",
+      "contextos_avaliados": [
+        "[Trecho 1]\nDocumento: GW_HCA-G2_User-Manual-PT.pdf\nPágina: 14\nConteúdo:\n•\t Os carregadores trifásicos aceitam carregamento monofásico, bifásico e trifásico, mas a \npotência real de carregamento é influenciada pelo OBC. Quando um carregador trifásico \ncarrega um veículo que só aceita carregamento monofásico, sua potência máxima de \ncarregamento é 1/3 da potência nominal do carregador. Quando um carregador trifásico \ncarrega um veículo que só aceita carregamento bifásico, sua potência máxima de \ncarregamento é 2/3 da potência nominal do carregador.\nControle dinâmico de carga",
+        "[Trecho 2]\nDocumento: GW_HCA-G2_User-Manual-PT.pdf\nPágina: 14\nConteúdo:\n10\n03    Apresentação do produto\n3.4  Status operacional do carregador\nOcioso\nCarregando\nCarregamento \ncompleto ou \nAlarme\nEm \npreparação\nEm espera\n3.5  Funcionalidades\nAVISO\n•\t A potência máxima de carregamento do carregador é limitada pela potência máxima de \ncarregamento do carregador interno (OBC) dos veículos.\n•\t A corrente mínima de partida por fase do carregador é de 6 A. Para carregamento \nmonofásico, a potência mínima é de 1,4 kW, e para carregamento trifásico, é de 4,2 kW.",
+        "[Trecho 3]\nDocumento: GW_HCA-G2_Datasheet-PT.pdf\nPágina: 2\nConteúdo:\nGoodWe HCA-G2; Potência nominal de saída (W): GW7K-HCA-20=7000W; GW11K-HCA-20=11000W; GW22K-HCA-20=22000W",
+        "[Trecho 4]\nDocumento: GW_HCA-G2_User-Manual-PT.pdf\nPágina: 67\nConteúdo:\nGoodWe HCA-G2; Potência nominal de saída (W): GW7K-HCA-20=7000W; GW11K-HCA-20=11000W; GW22K-HCA-20=22000W"
+      ]
+    },
+    {
+      "id": "rag_10",
+      "tipo": "não_respondível",
+      "pergunta": "Qual é a potência nominal de saída do charger_01?",
+      "faithfulness": 0.3333333333,
+      "answer_relevancy": 0.0,
+      "resposta_avaliada": "A associação entre o `charger_01` e um modelo específico de carregador não está disponível na documentação fornecida. Portanto, não é possível informar a potência nominal de saída para este carregador específico.",
+      "contextos_avaliados": [
+        "[Trecho 1]\nDocumento: GW_HCA-G2_Datasheet-PT.pdf\nPágina: 2\nConteúdo:\nGoodWe HCA-G2; Potência nominal de saída (W): GW7K-HCA-20=7000W; GW11K-HCA-20=11000W; GW22K-HCA-20=22000W",
+        "[Trecho 2]\nDocumento: GW_HCA-G2_User-Manual-PT.pdf\nPágina: 67\nConteúdo:\nGoodWe HCA-G2; Potência nominal de saída (W): GW7K-HCA-20=7000W; GW11K-HCA-20=11000W; GW22K-HCA-20=22000W",
+        "[Trecho 3]\nDocumento: GW_HCA-G2_Datasheet-PT.pdf\nPágina: 2\nConteúdo:\nGoodWe HCA-G2; Tensão nominal de saída (V): GW7K-HCA-20=230V; GW11K-HCA-20=400V; GW22K-HCA-20=400V",
+        "[Trecho 4]\nDocumento: GW_HCA-G2_Datasheet-PT.pdf\nPágina: 2\nConteúdo:\nGoodWe HCA-G2; Corrente nominal de saída (A): GW7K-HCA-20=32A; GW11K-HCA-20=16A; GW22K-HCA-20=32A"
+      ]
+    }
+  ]
+}

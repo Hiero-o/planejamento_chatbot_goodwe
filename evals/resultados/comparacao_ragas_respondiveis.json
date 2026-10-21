@@ -1,0 +1,27 @@
+{
+  "metodo": "Comparação pareada dos resultados RAGAS",
+  "versao_ragas": "0.4.3",
+  "quantidade_ids_em_comum": 6,
+  "ids_comparados": [
+    "rag_01",
+    "rag_02",
+    "rag_03",
+    "rag_04",
+    "rag_05",
+    "rag_09"
+  ],
+  "medias": {
+    "faithfulness": {
+      "nome": "Faithfulness",
+      "v2": 0.9166666666666666,
+      "v3": 0.9666666666666667,
+      "diferenca_v3_menos_v2": 0.050000000000000044
+    },
+    "answer_relevancy": {
+      "nome": "Answer Relevancy",
+      "v2": 0.6762149649,
+      "v3": 0.6757057343666666,
+      "diferenca_v3_menos_v2": -0.0005092305333334046
+    }
+  }
+}
