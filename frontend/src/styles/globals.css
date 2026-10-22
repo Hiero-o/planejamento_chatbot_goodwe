@@ -130,6 +130,159 @@ body {
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+/* Preferências globais do GurAI */
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  --card: #141414;
+  --card-foreground: #ededed;
+  --popover: #141414;
+  --popover-foreground: #ededed;
+  --border: #292929;
+  --input: #292929;
+  --muted: #222222;
+  --muted-foreground: #b3b3b3;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --background: #f5f5f5;
+  --foreground: #171717;
+  --card: #ffffff;
+  --card-foreground: #171717;
+  --popover: #ffffff;
+  --popover-foreground: #171717;
+  --border: #dedede;
+  --input: #dedede;
+  --muted: #eeeeee;
+  --muted-foreground: #626262;
+}
+
+:root[data-font-size="small"] {
+  font-size: 14px;
+}
+
+:root[data-font-size="medium"] {
+  font-size: 16px;
+}
+
+:root[data-font-size="large"] {
+  font-size: 18px;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Ajustes para superfícies escuras já existentes no projeto. */
+:root[data-theme="light"] [class*="bg-[#0a0a0a]"],
+:root[data-theme="light"] [class*="bg-[#101010]"],
+:root[data-theme="light"] [class*="bg-[#111111]"] {
+  background-color: #ffffff !important;
+}
+
+/* Sobreposição translúcida da carteira */
+:root[data-theme="light"] [data-slot="drawer-overlay"] {
+  background-color: rgba(0, 0, 0, 0.60) !important;
+}
+
+:root[data-theme="light"] [class*="text-white"],
+:root[data-theme="light"] [class*="text-[#ededed]"] {
+  color: #171717 !important;
+}
+
+:root[data-theme="light"] [class*="text-[#b3b3b3]"],
+:root[data-theme="light"] [class*="text-gray-300"],
+:root[data-theme="light"] [class*="text-gray-400"] {
+  color: #626262 !important;
+}
+
+:root[data-theme="light"] [class*="border-[#1f1f1f]"],
+:root[data-theme="light"] [class*="border-[#292929]"] {
+  border-color: #dedede !important;
+}
+
+:root[data-theme="light"] input,
+:root[data-theme="light"] textarea,
+:root[data-theme="light"] select {
+  color: #171717;
+  background-color: #ffffff;
+  border-color: #dedede;
+}
+
+/* ===== Tema escuro ===== */
+:root[data-theme="dark"] {
+  --sidebar: #0a0a0a;
+  --sidebar-foreground: #ededed;
+  --sidebar-primary: #ededed;
+  --sidebar-primary-foreground: #171717;
+  --sidebar-accent: #252525;
+  --sidebar-accent-foreground: #ededed;
+  --sidebar-border: #292929;
+  --sidebar-ring: #888888;
+}
+
+/* ===== Tema claro ===== */
+:root[data-theme="light"] {
+  --sidebar: #ffffff;
+  --sidebar-foreground: #171717;
+  --sidebar-primary: #171717;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #eeeeee;
+  --sidebar-accent-foreground: #171717;
+  --sidebar-border: #dedede;
+  --sidebar-ring: #888888;
+}
+
+/* Texto e superfícies da sidebar no tema claro */
+:root[data-theme="light"] [data-sidebar="sidebar"],
+:root[data-theme="light"] [data-sidebar="content"] {
+  color: var(--sidebar-foreground);
+}
+
+/* Garante contraste nos títulos e textos da sidebar */
+:root[data-theme="light"] [data-sidebar="sidebar"] h1,
+:root[data-theme="light"] [data-sidebar="sidebar"] p {
+  color: var(--sidebar-foreground);
+}
+
+/* Corrige os botões da barra lateral no tema claro */
+:root[data-theme="light"] nav button[aria-label="Voltar ao mapa"],
+:root[data-theme="light"] nav button[aria-label="Abrir GurAI"],
+:root[data-theme="light"] nav button[aria-label="Nova conversa"],
+:root[data-theme="light"] nav button[aria-label="Expandir ou recolher a barra lateral"] {
+  background-color: #ffffff !important;
+  border-color: #d4d4d4 !important;
+  color: #171717 !important;
+}
+
+/* Botão selecionado */
+:root[data-theme="light"] nav button[aria-pressed="true"] {
+  background-color: #e5e7eb !important;
+  color: #171717 !important;
+}
+
+/* Ícones dentro dos botões */
+:root[data-theme="light"] nav button[aria-label="Voltar ao mapa"] svg,
+:root[data-theme="light"] nav button[aria-label="Abrir GurAI"] svg,
+:root[data-theme="light"] nav button[aria-label="Nova conversa"] svg,
+:root[data-theme="light"] nav button[aria-label="Expandir ou recolher a barra lateral"] svg {
+  color: #171717 !important;
+  stroke: #171717 !important;
+}
+
+/* Efeito ao passar o mouse */
+:root[data-theme="light"] nav button[aria-label="Voltar ao mapa"]:hover,
+:root[data-theme="light"] nav button[aria-label="Abrir GurAI"]:hover,
+:root[data-theme="light"] nav button[aria-label="Nova conversa"]:hover,
+:root[data-theme="light"] nav button[aria-label="Expandir ou recolher a barra lateral"]:hover {
+  background-color: #e5e7eb !important;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

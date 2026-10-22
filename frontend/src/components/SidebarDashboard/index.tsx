@@ -12,20 +12,77 @@ import {
 } from "@/components/ui/dropdown-menu";
 import ContainerChat from "../ContainerChat";
 import ContainerMonitoring from "../ContainerMonitoring";
-import { Zap, BatteryCharging, Battery, Gauge } from "lucide-react";
+import { signOut } from "next-auth/react";
+import {
+  Zap,
+  BatteryCharging,
+  Battery,
+  Gauge,
+  Clock,
+} from "lucide-react";
 import { useRouter } from "next/router";
 
 
 interface DashboardSummary {
-  totalPowerKw: number;
+  averagePowerKw: number;
+  accumulatedEnergyKwh: number;
+  totalDurationMinutes: number;
+  totalInstalledPowerKw: number;
   occupiedChargers: number;
   availableChargers: number;
-  accumulatedEnergyKwh: number;
 }
 
 
+function formatDuration(totalMinutes: number): string {
+  const total = Math.max(0, Math.floor(totalMinutes));
+  const hours = Math.floor(total / 60);
+  const minutes = total % 60;
+
+  return `${hours}h ${minutes.toString().padStart(2, "0")}min`;
+}
+
+
+interface SidebarProfile {
+  username: string;
+  email: string;
+}
+
 export function AppSidebar() {
   const router = useRouter();
+
+  const [profile, setProfile] = useState<SidebarProfile>({
+    username: "",
+    email: "",
+  });
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadProfile() {
+      try {
+        const response = await fetch("/api/profile");
+
+        if (!response.ok) return;
+
+        const data = await response.json();
+
+        if (active) {
+          setProfile({
+            username: data.username || "",
+            email: data.email || "",
+          });
+        }
+      } catch (error) {
+        console.error("Erro ao carregar perfil da sidebar:", error);
+      }
+    }
+
+    void loadProfile();
+
+    return () => {
+      active = false;
+    };
+  }, []);
 
   const [summary, setSummary] =
   useState<DashboardSummary | null>(null);
@@ -88,10 +145,10 @@ export function AppSidebar() {
                     />
                     <div>
                       <h1 className="text-[15px] mb-[3px] leading-none">
-                        Nome
+                        {profile.username || "Carregando perfil..."}
                       </h1>
                       <p className="text-[11px] text-[#b3b3b3] mt-[0px] leading-none">
-                        email@email.com
+                        {profile.email || "Carregando email..."}
                       </p>
                     </div>
                   </div>
@@ -110,12 +167,20 @@ export function AppSidebar() {
                 > 
                   Perfil
                 </DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer">
+                <DropdownMenuItem
+                  className="cursor-pointer"
+                  onClick={() => router.push("/settings")}
+                >
                   Configurações
                 </DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer">
-                  Ajuda
+
+                <DropdownMenuItem
+                  className="cursor-pointer"
+                  onClick={() => router.push("/help")}
+                >
+                  Ajuda e suporte
                 </DropdownMenuItem>
+
                 <DropdownMenuItem className="cursor-pointer" onClick={() => router.push("/vehicles")}>
                   Meus Veículos
                 </DropdownMenuItem>
@@ -128,10 +193,15 @@ export function AppSidebar() {
                   Registrar Carregamento
                 </DropdownMenuItem>
 
+                
+
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
-                <DropdownMenuItem className="cursor-pointer">
+                <DropdownMenuItem
+                  className="cursor-pointer"
+                  onClick={() => void signOut({ callbackUrl: "/auth/login" })}
+                >
                   Sair
                 </DropdownMenuItem>
               </DropdownMenuGroup>
@@ -148,12 +218,15 @@ export function AppSidebar() {
           </main>
           <div className="w-full flex flex-col items-center justify-center">
             <ContainerMonitoring
-              label="Potência total (kW)"
+              label="Potência média (kW)"
               value={
                 summaryLoading
                   ? "…"
                   : summary
-                    ? summary.totalPowerKw
+                    ? summary.averagePowerKw.toLocaleString("pt-BR", {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })
                     : "—"
               }
               icon={<Zap size={20} />}
@@ -189,13 +262,25 @@ export function AppSidebar() {
                 summaryLoading
                   ? "…"
                   : summary
-                    ? summary.accumulatedEnergyKwh.toLocaleString(
-                        "pt-BR",
-                        { maximumFractionDigits: 2 }
-                      )
+                    ? summary.accumulatedEnergyKwh.toLocaleString("pt-BR", {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })
                     : "—"
-          }
+              }
               icon={<Gauge size={20} />}
+            />
+            
+            <ContainerMonitoring
+              label="Tempo total de uso"
+              value={
+                summaryLoading
+                  ? "…"
+                  : summary
+                    ? formatDuration(summary.totalDurationMinutes)
+                    : "-"
+              }
+              icon={<Clock size={20} />}
             />
           </div>
         </SidebarContent>

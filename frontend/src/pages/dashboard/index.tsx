@@ -7,6 +7,8 @@ import {
   PanelLeftIcon,
 } from "lucide-react";
 
+import Header from "@/components/Header";
+
 import { AppSidebar } from "@/components/SidebarDashboard";
 import {
   useSidebar,
@@ -124,64 +126,74 @@ export default function Dashboard() {
           </nav>
 
           {/* Conteúdo principal */}
-          {page === "monitoramento" ? (
-            <div className="min-w-0 flex-1">
-              <MonitoringPage
-                onOpenChat={() => setPage("chat")}
-              />
-            </div>
-          ) : (
-            <main className="flex min-w-0 flex-1 flex-col">
-              <header className="border-b border-[#1f1f1f] p-4">
+          <div className="flex min-h-screen min-w-0 flex-1 flex-col">
+            {/* Barra superior compartilhada */}
+            <div className="flex h-[50px] shrink-0 items-center justify-between gap-3 border-b border-border px-3">
+              <div className="min-w-0">
                 <h1 className="text-sm font-medium">
-                  GurAI
+                  {page === "monitoramento" ? "Monitoramento" : "GurAI"}
                 </h1>
 
-                <p className="text-xs text-[#999]">
-                  Assistente virtual
-                </p>
-              </header>
+                {page === "chat" && (
+                  <p className="text-xs text-muted-foreground">
+                    Assistente virtual
+                  </p>
+                )}
+              </div>
 
-              <section className="flex flex-1 flex-col items-center justify-center p-6">
-                <div className="w-full max-w-3xl">
-                  <div className="mb-6 text-center">
-                    <MessageCircle
-                      size={36}
-                      className="mx-auto mb-3 text-[#999]"
-                    />
+              <Header variant="dashboard" />
+            </div>
 
-                    <h2 className="text-xl font-semibold">
-                      Como posso ajudar?
-                    </h2>
+            {/* Conteúdo da página selecionada */}
+            {page === "monitoramento" ? (
+              <div className="min-h-0 min-w-0 flex-1">
+                <MonitoringPage
+                  onOpenChat={() => setPage("chat")}
+                />
+              </div>
+            ) : (
+              <main className="flex min-h-0 min-w-0 flex-1 flex-col">
+                <section className="flex flex-1 flex-col items-center justify-center p-6">
+                  <div className="w-full max-w-3xl">
+                    <div className="mb-6 text-center">
+                      <MessageCircle
+                        size={36}
+                        className="mx-auto mb-3 text-[#999]"
+                      />
 
-                    <p className="mt-2 text-sm text-[#999]">
-                      Converse com o GurAI sobre seus carregadores
-                      e sua plataforma.
-                    </p>
+                      <h2 className="text-xl font-semibold">
+                        Como posso ajudar?
+                      </h2>
+
+                      <p className="mt-2 text-sm text-[#999]">
+                        Converse com o GurAI sobre seus carregadores
+                        e sua plataforma.
+                      </p>
+                    </div>
+
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        disabled
+                        placeholder="O envio de mensagens será implementado depois..."
+                        aria-label="Mensagem para o GurAI"
+                        className="min-w-0 flex-1 rounded-lg border border-[#333] bg-[#151515] px-4 py-3 text-sm outline-none disabled:cursor-not-allowed disabled:opacity-60"
+                      />
+
+                      <button
+                        type="button"
+                        disabled
+                        title="Integração com o backend ainda não implementada"
+                        className="rounded-lg bg-white px-4 text-black opacity-50"
+                      >
+                        Enviar
+                      </button>
+                    </div>
                   </div>
-
-                  <div className="flex gap-2">
-                    <input
-                      type="text"
-                      disabled
-                      placeholder="O envio de mensagens será implementado depois..."
-                      aria-label="Mensagem para o GurAI"
-                      className="min-w-0 flex-1 rounded-lg border border-[#333] bg-[#151515] px-4 py-3 text-sm outline-none disabled:cursor-not-allowed disabled:opacity-60"
-                    />
-
-                    <button
-                      type="button"
-                      disabled
-                      title="Integração com o backend ainda não implementada"
-                      className="rounded-lg bg-white px-4 text-black opacity-50"
-                    >
-                      Enviar
-                    </button>
-                  </div>
-                </div>
-              </section>
-            </main>
-          )}
+                </section>
+              </main>
+            )}
+          </div>
         </div>
       </TooltipProvider>
     </SidebarProvider>

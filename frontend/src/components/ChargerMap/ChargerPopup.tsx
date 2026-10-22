@@ -74,7 +74,27 @@ export default function ChargerPopup({
           </p>
 
           <p>
-            Tarifa: {charger.establishment.tarifa}
+            Preço-base demonstrativo:{" "}
+            {charger.establishment.basePricePerKwh.toLocaleString("pt-BR", {
+              style: "currency",
+              currency: "BRL",
+              minimumFractionDigits: 2,
+            })}/kWh
+          </p>
+
+          <p>
+            Taxa do estabelecimento: {charger.establishment.tarifa}
+          </p>
+
+          <p>
+            Adicional da bandeira:{" "}
+            {charger.establishment.passThroughEnergyFlag
+              ? "repassado no demonstrativo"
+              : "não repassado"}
+          </p>
+
+          <p className="text-xs text-gray-500">
+            A bandeira aplicada à fatura será consultada de acordo com o mês do carregamento.
           </p>
 
         </div>

@@ -1,3 +1,4 @@
+
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/services/authOptions";
@@ -10,6 +11,7 @@ export default async function handler(
 ) {
   if (req.method !== "GET") {
     res.setHeader("Allow", "GET");
+
     return res.status(405).json({
       error: "Método não permitido.",
     });
@@ -30,17 +32,46 @@ export default async function handler(
       .where("userId", "==", email)
       .get();
 
-    const accumulatedEnergyKwh = snapshot.docs.reduce(
-      (total, document) => {
-        const energy = Number(document.data().energyKwh ?? 0);
+    const totals = snapshot.docs.reduce(
+      (result, document) => {
+        const data = document.data();
 
-        return total +
-          (Number.isFinite(energy) && energy > 0 ? energy : 0);
+        const energy = Number(data.energyKwh ?? 0);
+        const duration = Number(data.durationMinutes ?? 0);
+
+        if (Number.isFinite(energy) && energy > 0) {
+          result.accumulatedEnergyKwh += energy;
+        }
+
+        // Para calcular a potência média, precisamos de
+        // energia e duração válidas na mesma sessão.
+        if (
+          Number.isFinite(energy) &&
+          energy > 0 &&
+          Number.isFinite(duration) &&
+          duration > 0
+        ) {
+          result.energyForAverageKwh += energy;
+          result.durationForAverageMinutes += duration;
+        }
+
+        return result;
       },
-      0
+      {
+        accumulatedEnergyKwh: 0,
+        energyForAverageKwh: 0,
+        durationForAverageMinutes: 0,
+      }
     );
 
-    const totalPowerKw = mockChargers.reduce(
+    const averagePowerKw =
+      totals.durationForAverageMinutes > 0
+        ? totals.energyForAverageKwh /
+          (totals.durationForAverageMinutes / 60)
+        : 0;
+
+    // Estes dois indicadores ainda usam carregadores simulados.
+    const totalInstalledPowerKw = mockChargers.reduce(
       (total, charger) => total + Number(charger.power || 0),
       0
     );
@@ -54,10 +85,14 @@ export default async function handler(
     ).length;
 
     return res.status(200).json({
-      totalPowerKw,
+      averagePowerKw: Number(averagePowerKw.toFixed(2)),
+      accumulatedEnergyKwh: Number(
+        totals.accumulatedEnergyKwh.toFixed(2)
+      ),
+      totalDurationMinutes: totals.durationForAverageMinutes,
+      totalInstalledPowerKw,
       occupiedChargers,
       availableChargers,
-      accumulatedEnergyKwh,
     });
   } catch (error) {
     console.error("Erro ao calcular indicadores:", error);
