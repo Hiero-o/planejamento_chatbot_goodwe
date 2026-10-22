@@ -1,4 +1,5 @@
 import { Sidebar, SidebarContent } from "@/components/ui/sidebar";
+import { useEffect, useState } from "react";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import {
   DropdownMenu,
@@ -14,8 +15,59 @@ import ContainerMonitoring from "../ContainerMonitoring";
 import { Zap, BatteryCharging, Battery, Gauge } from "lucide-react";
 import { useRouter } from "next/router";
 
+
+interface DashboardSummary {
+  totalPowerKw: number;
+  occupiedChargers: number;
+  availableChargers: number;
+  accumulatedEnergyKwh: number;
+}
+
+
 export function AppSidebar() {
   const router = useRouter();
+
+  const [summary, setSummary] =
+  useState<DashboardSummary | null>(null);
+
+  const [summaryLoading, setSummaryLoading] = useState(true);
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadSummary() {
+      try {
+        const response = await fetch("/api/dashboard/summary");
+
+        if (!response.ok) {
+          throw new Error("Falha ao consultar os indicadores.");
+        }
+
+        const data =
+          (await response.json()) as DashboardSummary;
+
+        if (active) {
+          setSummary(data);
+        }
+      } catch (error) {
+        console.error("Erro ao carregar indicadores:", error);
+
+        if (active) {
+          setSummary(null);
+        }
+      } finally {
+        if (active) {
+          setSummaryLoading(false);
+        }
+      }
+    }
+
+    void loadSummary();
+
+    return () => {
+      active = false;
+    };
+  }, []);
 
   return (
     
@@ -72,6 +124,10 @@ export function AppSidebar() {
                   Adicionar veículo
                 </DropdownMenuItem>
 
+                <DropdownMenuItem className="cursor-pointer" onClick={() => router.push("/charging-sessions")}>
+                  Registrar Carregamento
+                </DropdownMenuItem>
+
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
@@ -90,11 +146,57 @@ export function AppSidebar() {
             <ContainerChat content="Erro MODBUS 0x0001" />
             <ContainerChat content="Erro de tupla" />
           </main>
-          <div className=" w-full flex flex-col items-center justify-center">
-            <ContainerMonitoring label="Potência total" value={5} icon={<Zap size={20}/>} />
-            <ContainerMonitoring label="Carregadores em uso" value={5} icon={<BatteryCharging size={20}/>} />
-            <ContainerMonitoring label="Carregadores livres" value={5} icon={<Battery size={20}/>} />
-            <ContainerMonitoring label="Energia acumulada" value={5} icon={<Gauge size={20}/>} />
+          <div className="w-full flex flex-col items-center justify-center">
+            <ContainerMonitoring
+              label="Potência total (kW)"
+              value={
+                summaryLoading
+                  ? "…"
+                  : summary
+                    ? summary.totalPowerKw
+                    : "—"
+              }
+              icon={<Zap size={20} />}
+            />
+
+            <ContainerMonitoring
+              label="Carregadores em uso"
+              value={
+                summaryLoading
+                  ? "…"
+                  : summary
+                    ? summary.occupiedChargers
+                    : "—"
+              }
+              icon={<BatteryCharging size={20} />}
+            />
+
+            <ContainerMonitoring
+              label="Carregadores livres"
+              value={
+                summaryLoading
+                  ? "…"
+                  : summary
+                    ? summary.availableChargers
+                    : "—"
+              }
+              icon={<Battery size={20} />}
+            />
+
+            <ContainerMonitoring
+              label="Energia acumulada (kWh)"
+              value={
+                summaryLoading
+                  ? "…"
+                  : summary
+                    ? summary.accumulatedEnergyKwh.toLocaleString(
+                        "pt-BR",
+                        { maximumFractionDigits: 2 }
+                      )
+                    : "—"
+          }
+              icon={<Gauge size={20} />}
+            />
           </div>
         </SidebarContent>
       </Sidebar>

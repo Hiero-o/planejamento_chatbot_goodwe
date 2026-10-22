@@ -1,19 +1,31 @@
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 
 interface ContainerMonitoringProps {
-  label: string
-  value: number
-  icon: ReactNode
+  label: string;
+  value: number | string;
+  icon: ReactNode;
 }
 
-export default function ContainerMonitoring({ label, value, icon }: ContainerMonitoringProps) {
+export default function ContainerMonitoring({
+  label,
+  value,
+  icon,
+}: ContainerMonitoringProps) {
   return (
-    <article className="flex items-start justify-center flex-col border-b border-[#1f1f1f] w-full p-[18px] first:border-t first:border-[#1f1f1f]">
-      <header className="flex items-center justify-between flex-row w-full">
-        <p className="text-[14px] text-[#b3b3b3] mb-[15px] leading-[1.0]">{label}</p>
-        <p className="text-[#bebebe] font-extralight">{icon}</p>
+    <article className="flex w-full flex-col items-start justify-center border-b border-[#1f1f1f] p-[18px] first:border-t first:border-[#1f1f1f]">
+      <header className="flex w-full flex-row items-center justify-between">
+        <p className="mb-[15px] text-[14px] leading-[1.0] text-[#b3b3b3]">
+          {label}
+        </p>
+
+        <p className="font-extralight text-[#bebebe]">
+          {icon}
+        </p>
       </header>
-      <h1 className="text-[35px] text-[#fff] leading-[1.0] font-semibold">{value}</h1>
+
+      <h2 className="text-[35px] font-semibold leading-[1.0] text-white">
+        {value}
+      </h2>
     </article>
   );
 }
