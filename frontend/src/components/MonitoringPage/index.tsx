@@ -21,7 +21,7 @@ export default function MonitoringPage({
           <button
             type="button"
             onClick={onOpenChat}
-            className="flex items-center justify-center gap-2 rounded-lg border border-border bg-card px-6 py-3 text-sm text-card-foreground transition-colors hover:bg-muted"
+            className="flex items-center justify-center gap-2 rounded-lg border border-border bg-card px-6 py-3 text-sm text-card-foreground transition-colors duration-200 hover:bg-[#f0d941] hover:border-[#f0d941] hover:text-[#070707]"
           >
             <MessageCircle size={18} />
             Conversar com o GurAI

@@ -5,6 +5,7 @@ import {
   LineChart,
   Plus,
   PanelLeftIcon,
+  BatteryCharging,
 } from "lucide-react";
 
 import Header from "@/components/Header";
@@ -35,11 +36,15 @@ import {
 import WalletPage from "@/components/WalletComponent";
 import MonitoringPage from "@/components/MonitoringPage";
 
+import { useRouter } from "next/router";
+
 type DashboardPage = "monitoramento" | "chat";
 
 export default function Dashboard() {
   const [page, setPage] =
     useState<DashboardPage>("monitoramento");
+
+    const router = useRouter();
 
   return (
     <SidebarProvider>
@@ -60,13 +65,10 @@ export default function Dashboard() {
                 aria-label="Voltar ao mapa"
                 aria-pressed={page === "monitoramento"}
                 title="Voltar ao mapa"
-                style={{
-                  backgroundColor:
-                    page === "monitoramento"
-                      ? "#1f1f1f"
-                      : "transparent",
-                }}
-                className="mb-[8px] flex h-[35px] w-[35px] cursor-pointer items-center justify-center rounded-[8px] border border-[#1f1f1f] transition-colors hover:bg-[#1f1f1f]"
+                
+                className={`mb-[8px] flex h-[35px] w-[35px] cursor-pointer items-center justify-center rounded-[8px] border border-[#1f1f1f] transition-colors duration-200 hover:border-[#f0d941] hover:bg-[#f0d941] hover:text-[#070707] ${
+                  page === "monitoramento" ? "bg-[#1f1f1f]" : "bg-transparent"
+                }`}
               >
                 <LineChart size={16} />
               </TooltipTrigger>
@@ -84,13 +86,10 @@ export default function Dashboard() {
                 aria-label="Abrir GurAI"
                 aria-pressed={page === "chat"}
                 title="GurAI"
-                style={{
-                  backgroundColor:
-                    page === "chat"
-                      ? "#1f1f1f"
-                      : "transparent",
-                }}
-                className="mb-[8px] flex h-[35px] w-[35px] cursor-pointer items-center justify-center rounded-[8px] border border-[#1f1f1f] transition-colors hover:bg-[#1f1f1f]"
+                
+                className={`mb-[8px] flex h-[35px] w-[35px] cursor-pointer items-center justify-center rounded-[8px] border border-[#1f1f1f] transition-colors duration-200 hover:border-[#f0d941] hover:bg-[#f0d941] hover:text-[#070707] ${
+                  page === "chat" ? "bg-[#1f1f1f]" : "bg-transparent"
+                }`}
               >
                 <MessageCircle size={16} />
               </TooltipTrigger>
@@ -107,6 +106,23 @@ export default function Dashboard() {
               <WalletPage />
             </div>
 
+            {/* Registrar nova sessão de carregamento */}
+            <Tooltip>
+              <TooltipTrigger
+                type="button"
+                onClick={() => void router.push("/charging-sessions")}
+                aria-label="Registrar carregamento"
+                title="Registrar carregamento"
+                className="mb-[8px] flex h-[35px] w-[35px] cursor-pointer items-center justify-center rounded-[8px] border border-border text-foreground transition-colors duration-200 hover:border-[#f0d941] hover:bg-[#f0d941] hover:text-[#070707]"
+              >
+                <BatteryCharging size={16} />
+              </TooltipTrigger>
+
+              <TooltipContent side="right">
+                Adicionar sessão de carregamento
+              </TooltipContent>
+            </Tooltip>
+
             {/* Nova conversa */}
             <Tooltip>
               <TooltipTrigger
@@ -114,7 +130,7 @@ export default function Dashboard() {
                 onClick={() => setPage("chat")}
                 title="Nova conversa"
                 aria-label="Nova conversa"
-                className="mb-[8px] flex h-[35px] w-[35px] cursor-pointer items-center justify-center rounded-[8px] border border-[#1f1f1f] transition-colors hover:bg-[#1f1f1f]"
+                className="mb-[8px] flex h-[35px] w-[35px] cursor-pointer items-center justify-center rounded-[8px] border border-border text-foreground transition-colors duration-200 hover:border-[#f0d941] hover:bg-[#f0d941] hover:text-[#070707]"
               >
                 <Plus size={16} />
               </TooltipTrigger>
@@ -209,7 +225,7 @@ function ButtonToggleSideBar() {
       onClick={toggleSidebar}
       aria-label="Expandir ou recolher a barra lateral"
       title="Expandir ou recolher a barra lateral"
-      className="mb-[8px] flex h-[35px] w-[35px] cursor-pointer items-center justify-center rounded-[8px] border border-[#1f1f1f] transition-colors hover:bg-[#1f1f1f]"
+      className="mb-[8px] flex h-[35px] w-[35px] cursor-pointer items-center justify-center rounded-[8px] border border-border text-foreground transition-colors duration-200 hover:border-[#f0d941] hover:bg-[#f0d941] hover:text-[#070707]"
     >
       <PanelLeftIcon size={16} />
     </button>

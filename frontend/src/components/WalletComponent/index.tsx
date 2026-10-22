@@ -265,7 +265,7 @@ export default function WalletPage() {
               render={
                 <button
                   type="button"
-                  className="mb-[8px] flex h-[35px] w-[35px] cursor-pointer items-center justify-center rounded-lg border border-border text-foreground transition-colors hover:bg-muted"
+                  className="mb-[8px] flex h-[35px] w-[35px] cursor-pointer items-center justify-center rounded-[8px] border border-border text-foreground transition-colors duration-200 hover:border-[#f0d941] hover:bg-[#f0d941] hover:text-[#070707]"
                   data-sidebar="trigger"
                   data-slot="sidebar-trigger"
                   aria-label="Abrir carteira"

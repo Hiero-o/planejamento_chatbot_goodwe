@@ -134,20 +134,7 @@ export default function ChargerPopup({
           </Link>
         </div>
       </div>
-      <style jsx global>{`
-        .leaflet-popup-content-wrapper {
-          background: #0a0a0a;
-          color: white;
-        }
-
-        .leaflet-popup-tip {
-          background: #0a0a0a;
-        }
-
-        .leaflet-popup-close-button {
-          color: white !important;
-        }
-      `}</style>
+      
     </>
   );
 }
