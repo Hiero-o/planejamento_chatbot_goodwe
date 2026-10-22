@@ -12,9 +12,13 @@ import {
 import ContainerChat from "../ContainerChat";
 import ContainerMonitoring from "../ContainerMonitoring";
 import { Zap, BatteryCharging, Battery, Gauge } from "lucide-react";
+import { useRouter } from "next/router";
 
 export function AppSidebar() {
+  const router = useRouter();
+
   return (
+    
     <>
       <Sidebar>
         <SidebarContent className="p-[0px] mt-[0px] flex items-start justify-start bg-[#0a0a0a]">
@@ -49,7 +53,9 @@ export function AppSidebar() {
             >
               <DropdownMenuGroup>
                 <DropdownMenuLabel>Usuário</DropdownMenuLabel>
-                <DropdownMenuItem className="cursor-pointer">
+                <DropdownMenuItem className="cursor-pointer"
+                  onClick={() => router.push("/profile")}
+                > 
                   Perfil
                 </DropdownMenuItem>
                 <DropdownMenuItem className="cursor-pointer">
@@ -58,9 +64,14 @@ export function AppSidebar() {
                 <DropdownMenuItem className="cursor-pointer">
                   Ajuda
                 </DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer">
+                <DropdownMenuItem className="cursor-pointer" onClick={() => router.push("/vehicles")}>
+                  Meus Veículos
+                </DropdownMenuItem>
+
+                <DropdownMenuItem className="cursor-pointer" onClick={() => router.push("/vehicles")}>
                   Adicionar veículo
                 </DropdownMenuItem>
+
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>

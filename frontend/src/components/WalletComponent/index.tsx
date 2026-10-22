@@ -8,6 +8,13 @@ import {
     DrawerTitle,
     DrawerTrigger,
 } from "@/components/ui/drawer"
+
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+
 import { Wallet, Check, CreditCard, Landmark, QrCode } from "lucide-react";
 import { Button } from "@base-ui/react";
 import CardInvoice from "../CardInvoice";
@@ -27,11 +34,30 @@ export default function WalletPage() {
 
     return (
         <Drawer swipeDirection="right">
-            <DrawerTrigger render={
-                <button className="mb-[8px] rounded-[8px] flex items-center justify-center h-[35px] w-[35px] border border-[#1f1f1f] hover:bg-[#1f1f1f] transition-[0.2s] cursor-pointer" data-sidebar="trigger" data-slot="sidebar-trigger">
-                    <Wallet size={16} />
-                </button>
-            }></DrawerTrigger>
+            <Tooltip>
+            <TooltipTrigger
+                render={
+                <DrawerTrigger
+                    render={
+                    <button
+                        type="button"
+                        className="mb-[8px] flex h-[35px] w-[35px] items-center justify-center rounded-[8px] border border-[#1f1f1f] transition-[0.2s] hover:bg-[#1f1f1f] cursor-pointer"
+                        data-sidebar="trigger"
+                        data-slot="sidebar-trigger"
+                        aria-label="Abrir carteira"
+                    >
+                        <Wallet size={16} />
+                    </button>
+                    }
+                />
+                }
+            />
+
+            <TooltipContent side="right">
+                Carteira
+            </TooltipContent>
+            </Tooltip>
+
             <DrawerContent className="bg-[#0a0a0a] rounded-l">
                 {step === 'step1' && (
                     <>

@@ -12,12 +12,14 @@ import {
   useSidebar,
   SidebarProvider,
 } from "@/components/ui/sidebar";
+
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
   TooltipProvider,
 } from "@/components/ui/tooltip";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -34,7 +36,8 @@ import MonitoringPage from "@/components/MonitoringPage";
 type DashboardPage = "monitoramento" | "chat";
 
 export default function Dashboard() {
-  const [page, setPage] = useState<DashboardPage>("monitoramento");
+  const [page, setPage] =
+    useState<DashboardPage>("monitoramento");
 
   return (
     <SidebarProvider>
@@ -47,76 +50,75 @@ export default function Dashboard() {
             <SidebarCollapsedTrigger />
             <ButtonToggleSideBar />
 
-            {/* Botão para abrir o mapa */}
+            {/* Botão de monitoramento */}
             <Tooltip>
-              <TooltipTrigger>
-                <button
-                  type="button"
-                  onClick={() => setPage("monitoramento")}
-                  aria-label="Voltar ao mapa"
-                  aria-pressed={page === "monitoramento"}
-                  title="Voltar ao mapa"
-                  style={{
-                    backgroundColor:
-                      page === "monitoramento" ? "#1f1f1f" : "transparent",
-                  }}
-                  className="mb-[8px] flex h-[35px] w-[35px] cursor-pointer items-center justify-center rounded-[8px] border border-[#1f1f1f] transition-colors hover:bg-[#1f1f1f]"
-                >
-                  <LineChart size={16} />
-                </button>
+              <TooltipTrigger
+                type="button"
+                onClick={() => setPage("monitoramento")}
+                aria-label="Voltar ao mapa"
+                aria-pressed={page === "monitoramento"}
+                title="Voltar ao mapa"
+                style={{
+                  backgroundColor:
+                    page === "monitoramento"
+                      ? "#1f1f1f"
+                      : "transparent",
+                }}
+                className="mb-[8px] flex h-[35px] w-[35px] cursor-pointer items-center justify-center rounded-[8px] border border-[#1f1f1f] transition-colors hover:bg-[#1f1f1f]"
+              >
+                <LineChart size={16} />
               </TooltipTrigger>
+
               <TooltipContent side="right">
-                <p>Voltar ao mapa</p>
+                Monitoramento
               </TooltipContent>
             </Tooltip>
 
-            {/* Botão para abrir o GurAI */}
+            {/* Botão do GurAI */}
             <Tooltip>
-              <TooltipTrigger>
-                <button
-                  type="button"
-                  onClick={() => setPage("chat")}
-                  aria-label="Abrir GurAI"
-                  aria-pressed={page === "chat"}
-                  title="GurAI"
-                  style={{
-                    backgroundColor:
-                      page === "chat" ? "#1f1f1f" : "transparent",
-                  }}
-                  className="mb-[8px] flex h-[35px] w-[35px] cursor-pointer items-center justify-center rounded-[8px] border border-[#1f1f1f] transition-colors hover:bg-[#1f1f1f]"
-                >
-                  <MessageCircle size={16} />
-                </button>
+              <TooltipTrigger
+                type="button"
+                onClick={() => setPage("chat")}
+                aria-label="Abrir GurAI"
+                aria-pressed={page === "chat"}
+                title="GurAI"
+                style={{
+                  backgroundColor:
+                    page === "chat"
+                      ? "#1f1f1f"
+                      : "transparent",
+                }}
+                className="mb-[8px] flex h-[35px] w-[35px] cursor-pointer items-center justify-center rounded-[8px] border border-[#1f1f1f] transition-colors hover:bg-[#1f1f1f]"
+              >
+                <MessageCircle size={16} />
               </TooltipTrigger>
+
               <TooltipContent side="right">
-                <p>GurAI</p>
+                GurAI
               </TooltipContent>
             </Tooltip>
 
-            {/* Carteira */}
-            <Tooltip>
-              <TooltipTrigger>
-                <WalletPage />
-              </TooltipTrigger>
-              <TooltipContent side="right">
-                <p>Carteira</p>
-              </TooltipContent>
-            </Tooltip>
+            {/* Carteira
+                O componente é renderizado diretamente para evitar
+                um possível botão dentro do TooltipTrigger. */}
+            <div className="mb-[8px]">
+              <WalletPage />
+            </div>
 
-            {/* Nova conversa: a funcionalidade será implementada depois */}
+            {/* Nova conversa */}
             <Tooltip>
-              <TooltipTrigger>
-                <button
-                  type="button"
-                  title="Nova conversa"
-                  aria-label="Nova conversa"
-                  className="mb-[8px] flex h-[35px] w-[35px] cursor-pointer items-center justify-center rounded-[8px] border border-[#1f1f1f] transition-colors hover:bg-[#1f1f1f]"
-                >
-                  <Plus size={16} />
-                </button>
+              <TooltipTrigger
+                type="button"
+                onClick={() => setPage("chat")}
+                title="Nova conversa"
+                aria-label="Nova conversa"
+                className="mb-[8px] flex h-[35px] w-[35px] cursor-pointer items-center justify-center rounded-[8px] border border-[#1f1f1f] transition-colors hover:bg-[#1f1f1f]"
+              >
+                <Plus size={16} />
               </TooltipTrigger>
+
               <TooltipContent side="right">
-                <p>Nova conversa</p>
+                Nova conversa
               </TooltipContent>
             </Tooltip>
           </nav>
@@ -124,12 +126,17 @@ export default function Dashboard() {
           {/* Conteúdo principal */}
           {page === "monitoramento" ? (
             <div className="min-w-0 flex-1">
-              <MonitoringPage onOpenChat={() => setPage("chat")} />
+              <MonitoringPage
+                onOpenChat={() => setPage("chat")}
+              />
             </div>
           ) : (
             <main className="flex min-w-0 flex-1 flex-col">
               <header className="border-b border-[#1f1f1f] p-4">
-                <h1 className="text-sm font-medium">GurAI</h1>
+                <h1 className="text-sm font-medium">
+                  GurAI
+                </h1>
+
                 <p className="text-xs text-[#999]">
                   Assistente virtual
                 </p>
@@ -148,8 +155,8 @@ export default function Dashboard() {
                     </h2>
 
                     <p className="mt-2 text-sm text-[#999]">
-                      Converse com o GurAI sobre seus carregadores e sua
-                      plataforma.
+                      Converse com o GurAI sobre seus carregadores
+                      e sua plataforma.
                     </p>
                   </div>
 
@@ -206,13 +213,20 @@ function SidebarCollapsedTrigger() {
     <DropdownMenu>
       <DropdownMenuTrigger
         render={
-          <img
-            className="mb-[8px] cursor-pointer rounded-[8px]"
-            height={35}
-            width={35}
-            src="/imageuser.jpg"
-            alt="Perfil do usuário"
-          />
+          <button
+            type="button"
+            aria-label="Abrir menu do usuário"
+            title="Menu do usuário"
+            className="mb-[8px] flex h-[35px] w-[35px] cursor-pointer items-center justify-center rounded-[8px] border border-[#1f1f1f]"
+          >
+            <img
+              height={35}
+              width={35}
+              src="/imageuser.jpg"
+              alt=""
+              className="rounded-[8px]"
+            />
+          </button>
         }
       />
 
@@ -222,15 +236,19 @@ function SidebarCollapsedTrigger() {
       >
         <DropdownMenuGroup>
           <DropdownMenuLabel>Usuário</DropdownMenuLabel>
+
           <DropdownMenuItem className="cursor-pointer">
             Perfil
           </DropdownMenuItem>
+
           <DropdownMenuItem className="cursor-pointer">
             Configurações
           </DropdownMenuItem>
+
           <DropdownMenuItem className="cursor-pointer">
             Ajuda
           </DropdownMenuItem>
+
           <DropdownMenuItem className="cursor-pointer">
             Adicionar veículo
           </DropdownMenuItem>

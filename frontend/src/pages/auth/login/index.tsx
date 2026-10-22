@@ -1,8 +1,6 @@
 import { useState } from "react"
 import { useRouter } from "next/router"
 import { toast } from "@/components/ui/toast"
-import { doc, getDoc, setDoc } from 'firebase/firestore';
-import { db } from '@/services/firebaseConnection';
 import { FormEvent } from "react";
 import { signIn } from 'next-auth/react'
 
@@ -15,75 +13,116 @@ export default function Login() {
     const [loading, setLoading] = useState(false)
 
     async function handleRequestCode(event: FormEvent) {
-        event.preventDefault()
+    event.preventDefault();
+    setLoading(true);
 
-        setLoading(true)
+    const normalizedEmail = email.trim().toLowerCase();
 
-        const userRef = doc(db, 'users', email)
-        const userDoc = await getDoc(userRef)
+    try {
+        const response = await fetch("/api/sendCode", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: normalizedEmail }),
+        });
 
-        if (!userDoc.exists()) {
-            toast.add({
-                title: "E-mail não encontrado",
-                description: "Não localizamos uma conta com este e-mail.",
-            })
-            setLoading(false)
-            router.push("/auth/register")
-            return
+        const data = await response.json();
+
+        if (response.status === 404) {
+        toast.add({
+            title: "E-mail não encontrado",
+            description: "Não localizamos uma conta com este e-mail.",
+        });
+
+        router.push("/auth/register");
+        return;
         }
 
-        const response = await fetch('/api/sendCode', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ email })
-        })
-
-        if (response.ok) {
-            setCodeSent(true)
-            toast.add({
-                title: "Código enviado",
-                description: "Verifique sua caixa de entrada e informe o código recebido.",
-            })
-        } else {
-            toast.add({
-                title: "Falha no envio",
-                description: "Não foi possível enviar o código. Tente novamente em instantes.",
-            })
+        if (response.status === 429) {
+        toast.add({
+            title: "Aguarde um momento",
+            description: data.error,
+        });
+        return;
         }
 
-        setLoading(false)
+        if (!response.ok) {
+        throw new Error(data.error || "Falha no envio do código.");
+        }
+
+        setEmail(normalizedEmail);
+        setCodeSent(true);
+
+        toast.add({
+        title: "Código enviado",
+        description: "Verifique sua caixa de entrada.",
+        });
+    } catch (error) {
+        console.error("Erro ao solicitar código:", error);
+
+        toast.add({
+        title: "Falha no envio",
+        description: "Não foi possível enviar o código. Tente novamente.",
+        });
+    } finally {
+        setLoading(false);
+    }
     }
 
+    
     async function handleLoginUser(event: FormEvent) {
-        event.preventDefault()
+        event.preventDefault();
+        setLoading(true);
 
-        setLoading(true)
-
-        const result = await signIn('credentials', {
+        try {
+            const result = await signIn("credentials", {
             redirect: false,
-            email,
-            code
-        })
+            email: email.trim().toLowerCase(),
+            code: code.trim(),
+            });
 
-        console.log(result)
+            if (result?.ok && !result.error) {
+            setInputColor("#7bd4641e");
 
-        if (!result?.error) {
-            setInputColor('#7bd4641e')
-            router.push('/dashboard')
-            setLoading(false)
-        } else {
-            console.error(result.error)
+            const callbackUrl = (router.query.callbackUrl);
+            
+            const destino =
+                typeof callbackUrl === "string" && callbackUrl.startsWith("/") &&
+                !callbackUrl.startsWith("//")
+                ? callbackUrl
+                : "/dashboard";
+            await router.push(destino);
+            return;
+            }
+
+            setInputColor("#cd35353f");
+
             toast.add({
-                title: "Código inválido",
-                description: "O código informado é inválido ou expirou. Solicite um novo código.",
-            })
-            setInputColor('#cd35353f')
-        }
+            title: "Não foi possível entrar",
+            description:
+                result?.error === "CredentialsSignin"
+                ? "Código inválido ou expirado. Solicite outro código."
+                : "A autenticação falhou. Confira o terminal para identificar o motivo.",
+            });
 
-        setLoading(false)
+            console.error("Falha no NextAuth:", {
+            error: result?.error,
+            status: result?.status,
+            ok: result?.ok,
+            });
+        } catch (error) {
+            console.error("Erro durante o login:", error);
+
+            toast.add({
+            title: "Erro de autenticação",
+            description: "Não foi possível concluir o login. Tente novamente.",
+            });
+        } finally {
+            setLoading(false);
+        }
     }
+
 
     return (
         <>
