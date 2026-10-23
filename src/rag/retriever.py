@@ -68,9 +68,11 @@ def _tokenize(text: str) -> list[str]:
 
 
 def _find_numeric_identifiers(text: str) -> list[str]:
+    """Localiza endereços numéricos e códigos de exceção MODBUS em hexadecimal."""
     return re.findall(
-        r"(?<!\d)\d{5,6}(?!\d)",
+        r"\b0x[0-9a-f]{4}\b|(?<!\d)\d{5,6}(?!\d)",
         text,
+        flags=re.IGNORECASE,
     )
 
 
@@ -232,6 +234,16 @@ class GurAIHybridRetriever:
             and query_tokens & PROTOCOL_QUERY_TERMS
         ):
             return True
+
+        # Prioriza o contexto que reconstrói as linhas da tabela
+        # Modbus Exception Codes quando a pergunta contém um código hexadecimal.
+        if content_type == "derived_table_modbus_exception_codes":
+            query_text = " ".join(query_tokens)
+            return re.search(
+                r"\b0x[0-9a-f]{4}\b",
+                query_text,
+                flags=re.IGNORECASE,
+            ) is not None
 
         return False
 

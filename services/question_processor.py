@@ -331,45 +331,6 @@ def process_question(
     print("Intent detectada:", intent)
 
     # ---------------------------------------------------------
-    # Códigos Modbus determinísticos
-    # ---------------------------------------------------------
-
-    RESPOSTAS_MODBUS = {
-        "0x0001": """
-        0x0001 - Illegal Function
-
-        Este código Modbus indica que o dispositivo recebeu uma
-        função ou comando que não suporta.
-
-        Normalmente ocorre quando um sistema tenta executar uma
-        operação não implementada pelo carregador.
-        """,
-
-        "0x0002": """
-        0x0002 - Illegal Data Address
-
-        O endereço Modbus solicitado não existe ou não está
-        disponível no equipamento.
-        """,
-
-        "0x0003": """
-        0x0003 - Illegal Data Value
-
-        O valor enviado ao registrador é inválido ou está fora da faixa permitida.
-        """,
-
-        "0x0004": """
-        0x0004 - Slave Device Failure
-
-        O carregador encontrou uma falha interna ao processar a solicitação Modbus.
-        """,
-    }
-
-    for codigo, resposta in RESPOSTAS_MODBUS.items():
-        if codigo in texto:
-            return resposta
-
-    # ---------------------------------------------------------
     # Seleção do contexto e do schema
     # ---------------------------------------------------------
 
@@ -378,6 +339,22 @@ def process_question(
 
     if charger_id and intent == "CHARGER_INFO":
         contexto = get_charger_context(charger_id)
+
+        # Se o carregador não existe nos dados operacionais, não tente
+        # extrair uma ConsultaRecarga vazia com o modelo estruturado.
+        # Isso evita ValidationError quando o schema exige "carregador".
+        if not contexto:
+            logging.info(
+                "Não há dados operacionais disponíveis para o carregador %s",
+                charger_id,
+            )
+            return (
+                f"Não encontrei dados operacionais para o carregador {charger_id}. "
+                "Por isso, não consigo confirmar sua potência, corrente, tensão ou "
+                "outros dados específicos. Verifique se o identificador está correto "
+                "ou consulte os dados disponíveis na plataforma."
+            )
+
         structured_chain = structured_recarga
 
     elif intent == "TOTAL_POWER":

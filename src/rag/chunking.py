@@ -28,7 +28,54 @@ def _extract_table_contexts(
 
     contexts = []
 
-    # 1. Detecta o protocolo de comunicação independentemente
+    # 1. Reconstrói a tabela de códigos de exceção MODBUS.
+    # O PyMuPDF pode extrair as colunas separadamente (primeiro os códigos,
+    # depois os nomes), embora o PDF visualmente apresente cada par na mesma linha.
+    # Só criamos o contexto derivado quando todos os códigos e nomes esperados
+    # aparecem na página original. A fonte e o número da página são preservados
+    # pelos metadados adicionados em split_pages_into_chunks().
+    modbus_exception_rows = [
+        ("0x0001", "Illegal Function"),
+        ("0x0002", "Illegal Data Address"),
+        ("0x0003", "Illegal Data Value"),
+        ("0x0004", "Slave Device Falture"),
+    ]
+
+    normalized_lower = normalized_text.casefold()
+    has_exception_table = (
+        "modbus exception codes" in normalized_lower
+        and all(
+            code.casefold() in normalized_lower
+            and name.casefold() in normalized_lower
+            for code, name in modbus_exception_rows
+        )
+    )
+
+    if has_exception_table:
+        exception_mapping = "; ".join(
+            f"{code} = {name}"
+            for code, name in modbus_exception_rows
+        )
+        context_text = (
+            "Tabela Modbus Exception Codes do protocolo MODBUS: "
+            + exception_mapping
+        )
+        start_index = page_text.casefold().find(
+            "modbus exception codes".casefold()
+        )
+        if start_index < 0:
+            start_index = 0
+
+        contexts.append(
+            (
+                context_text,
+                start_index,
+                "derived_table_modbus_exception_codes",
+                "table_modbus_exception_codes",
+            )
+        )
+
+    # 2. Detecta o protocolo de comunicação independentemente
     # da presença dos três nomes dos modelos na mesma página.
     protocol_pattern = re.compile(
         r"\bProtocolo\s+de\s+comunicação\s+"
@@ -60,7 +107,7 @@ def _extract_table_contexts(
             )
         )
 
-    # 2. As três especificações seguintes precisam dos três modelos.
+    # 3. As três especificações seguintes precisam dos três modelos.
     model_pattern = re.compile(
         r"\bGW(?:7K|11K|22K)-\s*HCA-20\b",
         re.IGNORECASE,

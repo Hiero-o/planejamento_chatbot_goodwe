@@ -68,18 +68,46 @@ def _contem_termo(texto: str, termo: str) -> bool:
         'processado' não deve corresponder a 'processador'.
     """
     termo_normalizado = normalizar(termo)
-
     padrao = rf"\b{re.escape(termo_normalizado)}\b"
 
     return re.search(padrao, texto) is not None
 
 
-
 def validar_escopo(question: str):
     texto = normalizar(question)
 
-    # Perguntas sobre códigos de erro dos equipamentos fazem
-    # parte do domínio do GurAI e devem chegar ao RAG.
+    # Perguntas sobre códigos de exceção MODBUS pertencem
+    # ao domínio técnico do GurAI e devem poder chegar ao RAG.
+    possui_codigo_modbus = (
+        "modbus" in texto
+        and re.search(r"\b0x[0-9a-f]{4}\b", texto) is not None
+    )
+
+    pergunta_tecnica_modbus = (
+        possui_codigo_modbus
+        and any(
+            _contem_termo(texto, termo)
+            for termo in [
+                "codigo",
+                "erro",
+                "excecao",
+                "exception",
+                "nome",
+                "name",
+                "significa",
+                "significado",
+            ]
+        )
+    )
+
+    if pergunta_tecnica_modbus:
+        return {
+            "permitido": True,
+            "motivo": None,
+        }
+
+    # Preserva a exceção anterior para perguntas sobre códigos
+    # de erro, inclusive quando não mencionam MODBUS explicitamente.
     pergunta_sobre_codigo_de_erro = re.search(
         r"\b(o que significa|qual o significado|"
         r"significado de|como interpretar|"
