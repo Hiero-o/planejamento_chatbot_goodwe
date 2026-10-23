@@ -606,8 +606,14 @@ Qual a corrente nominal do modelo GW22K-HCA-20?
 ---
 
 
-# Objetivo Final
+# Salvaguardas
 
-O GurAI busca melhorar a experiência de operação de eletropostos, reduzir o tempo de consulta técnica e apoiar o gerenciamento de informações operacionais por meio de IA.
+## Embeddings e decisões arquiteturais
 
-A evolução planejada inclui integração com infraestrutura real de recarga, protocolos de comunicação, persistência de dados e ferramentas avançadas de monitoramento, mantendo como princípios a segurança, o controle de escopo e a utilização de informações documentadas.
+Para a geração dos embeddings, o GurAI utiliza o modelo nomic-embed-text, executado por meio do Ollama local. Já a geração das respostas conversacionais utiliza o modelo Gemma 4 disponibilizado pelo Ollama Cloud, mantendo os componentes de vetorização e geração independentes.
+
+A adoção de embeddings locais ocorreu após dificuldades na utilização do serviço Cloud para essa finalidade. A decisão também considerou as orientações discutidas com o professor durante o desenvolvimento, que destacou os problemas que podem surgir quando os projetos dependem exclusivamente de APIs remotas e recomendou o uso do Ollama local.
+
+Essa arquitetura permite realizar a vetorização e a recuperação semântica no ambiente local do grupo, reduzindo a dependência de um serviço remoto para essa etapa. O ChromaDB mantém os vetores persistidos para consultas posteriores.
+
+Embora o enunciado mencione embeddings via Ollama Cloud, a implementação final utiliza o Ollama local. Essa diferença é documentada como uma decisão técnica do projeto, e não como um requisito atendido integralmente pela configuração Cloud.

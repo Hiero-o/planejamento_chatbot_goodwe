@@ -21,7 +21,7 @@ load_dotenv()
 def load_system_prompt():
     nome_arquivo = os.getenv(
         "GURAI_SYSTEM_PROMPT",
-        "system_prompt_v2.md",
+        "system_prompt_v3.md",
     )
 
     caminho = os.path.join(
