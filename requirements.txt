@@ -1,3 +1,6 @@
+#Versão recomendada python: 3.13.x
+#Consulte o .python-version antes de instalar as dependências.
+
 Faker==40.15.0
 fonttools==4.62.1
 matplotlib==3.10.9
