@@ -1,23 +1,26 @@
+import logging
 import re
-
 import time
+
+from unidecode import unidecode
 
 from src.guardrails.scope_validator import validar_escopo
 from services.charger_parser import extract_charger_id
-from unidecode import unidecode
 from src.rag.context_builder import build_documentation_context
 from services.dynamic_queries import (
     get_charger_context,
     get_total_power_context,
     get_available_charger_context,
     get_active_charger_context,
-    get_total_energy_context
+    get_total_energy_context,
 )
 from services.help import get_help_message
 from services.intents import detect_intent
-from src.guardrails.moderation import detectar_jailbreak, detectar_seguranca_eletrica
+from src.guardrails.moderation import (
+    detectar_jailbreak,
+    detectar_seguranca_eletrica,
+)
 from src.chain.builder import build_chain, build_structured_chain
-
 from src.schemas.consultas import (
     ConsultaRecarga,
     ConsultaPotenciaTotal,
@@ -25,8 +28,18 @@ from src.schemas.consultas import (
     ConsultaCarregadoresAtivos,
     ConsultaEnergiaTotal,
 )
+from services.user_sessions import (
+    is_personal_session_question,
+    build_user_sessions_context,
+)
+
+
+# ---------------------------------------------------------
+# Construção das chains
+# ---------------------------------------------------------
 
 chain, chain_completa = build_chain()
+
 
 structured_recarga = build_structured_chain(
     ConsultaRecarga,
@@ -44,96 +57,169 @@ structured_recarga = build_structured_chain(
     - carregador → carregador
 
     Extraia somente os campos necessários para responder à pergunta.
-    Não invente valores."""
+    Não invente valores.""",
 )
+
 
 structured_potencia = build_structured_chain(
     ConsultaPotenciaTotal,
-    "Extraia a potência total atual da planta em kW. O campo potencia_total_kw deve receber somente o valor numérico."
+    "Extraia a potência total atual da planta em kW. "
+    "O campo potencia_total_kw deve receber somente o valor numérico.",
 )
+
 
 structured_disponiveis = build_structured_chain(
     ConsultaCarregadoresDisponiveis,
     """
-    Extraia a lista de identificadores dos carregadores que estão atualmente disponíveis.
+    Extraia a lista de identificadores dos carregadores
+    que estão atualmente disponíveis.
 
     O campo OBRIGATÓRIO do resultado deve se chamar exatamente:
     carregadores_disponiveis
 
     Exemplo:
     {"carregadores_disponiveis": ["charger_02", "charger_03"]}
-    """
+    """,
 )
+
 
 structured_ativos = build_structured_chain(
     ConsultaCarregadoresAtivos,
     """
-    Extraia a lista de identificadores dos carregadores que estão atualmente em uso.
+    Extraia a lista de identificadores dos carregadores
+    que estão atualmente em uso.
 
     O campo OBRIGATÓRIO do resultado deve se chamar exatamente:
     carregadores_ativos
 
     Exemplo:
     {"carregadores_ativos": ["charger_01", "charger_04"]}
-    """
+    """,
 )
+
 
 structured_energia = build_structured_chain(
     ConsultaEnergiaTotal,
-    "Extraia a energia total utilizada pela planta em kWh. O campo energia_total_kwh deve receber somente o valor numérico."
+    "Extraia a energia total utilizada pela planta em kWh. "
+    "O campo energia_total_kwh deve receber somente o valor numérico.",
 )
 
 
+# ---------------------------------------------------------
+# Dados estruturados
+# ---------------------------------------------------------
+
 def criar_dados_estruturados(contexto, intent):
+    contexto = contexto or ""
+
     if intent == "TOTAL_POWER":
-        valor = float(re.search(r"[\d.]+", contexto).group())
-        return ConsultaPotenciaTotal(potencia_total_kw=valor)
+        match = re.search(r"[\d.]+", contexto)
+
+        if not match:
+            return None
+
+        valor = float(match.group())
+
+        return ConsultaPotenciaTotal(
+            potencia_total_kw=valor
+        )
 
     if intent == "TOTAL_ENERGY":
-        valor = float(re.search(r"[\d.]+", contexto).group())
-        return ConsultaEnergiaTotal(energia_total_kwh=valor)
+        match = re.search(r"[\d.]+", contexto)
+
+        if not match:
+            return None
+
+        valor = float(match.group())
+
+        return ConsultaEnergiaTotal(
+            energia_total_kwh=valor
+        )
 
     if intent == "AVAILABLE_CHARGERS":
-        encontrados = re.findall(r"charger_\d+", contexto)
+        encontrados = re.findall(
+            r"charger_\d+",
+            contexto,
+        )
+
         return ConsultaCarregadoresDisponiveis(
             carregadores_disponiveis=encontrados
         )
 
     if intent == "ACTIVE_CHARGERS":
-        encontrados = re.findall(r"charger_\d+", contexto)
+        encontrados = re.findall(
+            r"charger_\d+",
+            contexto,
+        )
+
         return ConsultaCarregadoresAtivos(
             carregadores_ativos=encontrados
         )
 
     return None
 
+
 def formatar_resposta_estruturada(dados):
     if isinstance(dados, ConsultaPotenciaTotal):
-        return f"A potência total da planta é de {dados.potencia_total_kw} kW."
+        return (
+            f"A potência total da planta é de "
+            f"{dados.potencia_total_kw} kW."
+        )
 
     if isinstance(dados, ConsultaEnergiaTotal):
-        return f"A energia total utilizada pela planta é de {dados.energia_total_kwh} kWh."
+        return (
+            f"A energia total utilizada pela planta é de "
+            f"{dados.energia_total_kwh} kWh."
+        )
 
     if isinstance(dados, ConsultaCarregadoresDisponiveis):
-        carregadores = ", ".join(dados.carregadores_disponiveis)
-        return f"Os carregadores disponíveis são: {carregadores}."
+        carregadores = ", ".join(
+            dados.carregadores_disponiveis
+        )
+
+        return (
+            f"Os carregadores disponíveis são: "
+            f"{carregadores}."
+        )
 
     if isinstance(dados, ConsultaCarregadoresAtivos):
-        carregadores = ", ".join(dados.carregadores_ativos)
-        return f"Os carregadores em uso são: {carregadores}."
+        carregadores = ", ".join(
+            dados.carregadores_ativos
+        )
+
+        return (
+            f"Os carregadores em uso são: "
+            f"{carregadores}."
+        )
 
     return None
 
-def process_question(question, session_id, retornar_metricas=False):
+
+# ---------------------------------------------------------
+# Processamento principal
+# ---------------------------------------------------------
+
+def process_question(
+    question,
+    session_id,
+    retornar_metricas=False,
+    user_sessions=None,
+    user_sessions_summary=None,
+):
     contexto = None
+
     texto = unidecode(question.lower())
     texto = re.sub(r"[^\w\s]", "", texto)
 
     # ---------------------------------------------------------
     # Guardrail de escopo
     # ---------------------------------------------------------
-    
+
     resultado_escopo = validar_escopo(question)
+
+    # ---------------------------------------------------------
+    # Proteção contra jailbreak
+    # ---------------------------------------------------------
 
     if detectar_jailbreak(question):
         return (
@@ -142,6 +228,10 @@ def process_question(question, session_id, retornar_metricas=False):
             "ou alterar configurações críticas sem autorização."
         )
 
+    # ---------------------------------------------------------
+    # Segurança elétrica
+    # ---------------------------------------------------------
+
     if detectar_seguranca_eletrica(question):
         return (
             "Por razões de segurança, não forneço instruções passo a passo "
@@ -149,6 +239,80 @@ def process_question(question, session_id, retornar_metricas=False):
             "manutenção do carregador. Essas intervenções devem ser realizadas "
             "por profissional habilitado e qualificado."
         )
+
+    # ---------------------------------------------------------
+    # Consultas às sessões pessoais do usuário autenticado
+    # ---------------------------------------------------------
+
+    if is_personal_session_question(question):
+        try:
+            sessoes = user_sessions or []
+            resumo_sessoes = user_sessions_summary or {}
+
+            if user_sessions_summary is None:
+                logging.warning(
+                    "O resumo das sessões não foi recebido pela API. "
+                    "Tentando montar o contexto com os dados disponíveis."
+                )
+
+            contexto_usuario = build_user_sessions_context(
+                sessoes,
+                resumo_sessoes,
+            )
+
+            inicio = time.perf_counter()
+
+            resposta_llm = chain_completa.invoke(
+                {
+                    "context": contexto_usuario,
+                    "question": question,
+                },
+                config={
+                    "configurable": {
+                        "session_id": session_id,
+                    }
+                },
+            )
+
+            print(
+                "[TEMPO] Consulta de sessões pessoais: "
+                f"{time.perf_counter() - inicio:.3f}s"
+            )
+
+            if retornar_metricas:
+                metricas = (
+                    getattr(resposta_llm, "usage_metadata", None)
+                    or {}
+                )
+
+                return {
+                    "resposta": resposta_llm.content,
+                    "input_tokens": metricas.get(
+                        "input_tokens", 0
+                    ),
+                    "output_tokens": metricas.get(
+                        "output_tokens", 0
+                    ),
+                    "total_tokens": metricas.get(
+                        "total_tokens", 0
+                    ),
+                }
+
+            return resposta_llm.content
+
+        except Exception:
+            logging.exception(
+                "Erro ao consultar as sessões do usuário no GurAI"
+            )
+
+            return (
+                "Não consegui consultar os dados das suas sessões "
+                "de carregamento neste momento. Tente novamente."
+            )
+
+    # ---------------------------------------------------------
+    # Validação de escopo para as demais perguntas
+    # ---------------------------------------------------------
 
     if not resultado_escopo["permitido"]:
         return (
@@ -164,7 +328,7 @@ def process_question(question, session_id, retornar_metricas=False):
     charger_id = extract_charger_id(question)
     intent = detect_intent(texto)
 
-    print("intent detectada:", intent)
+    print("Intent detectada:", intent)
 
     # ---------------------------------------------------------
     # Códigos Modbus determinísticos
@@ -198,9 +362,9 @@ def process_question(question, session_id, retornar_metricas=False):
         0x0004 - Slave Device Failure
 
         O carregador encontrou uma falha interna ao processar a solicitação Modbus.
-    """
+        """,
     }
-    
+
     for codigo, resposta in RESPOSTAS_MODBUS.items():
         if codigo in texto:
             return resposta
@@ -218,19 +382,35 @@ def process_question(question, session_id, retornar_metricas=False):
 
     elif intent == "TOTAL_POWER":
         contexto = get_total_power_context()
-        dados_estruturados = criar_dados_estruturados(contexto, intent)
+
+        dados_estruturados = criar_dados_estruturados(
+            contexto,
+            intent,
+        )
 
     elif intent == "AVAILABLE_CHARGERS":
         contexto = get_available_charger_context()
-        dados_estruturados = criar_dados_estruturados(contexto, intent)
+
+        dados_estruturados = criar_dados_estruturados(
+            contexto,
+            intent,
+        )
 
     elif intent == "ACTIVE_CHARGERS":
         contexto = get_active_charger_context()
-        dados_estruturados = criar_dados_estruturados(contexto, intent)
+
+        dados_estruturados = criar_dados_estruturados(
+            contexto,
+            intent,
+        )
 
     elif intent == "TOTAL_ENERGY":
         contexto = get_total_energy_context()
-        dados_estruturados = criar_dados_estruturados(contexto, intent)
+
+        dados_estruturados = criar_dados_estruturados(
+            contexto,
+            intent,
+        )
 
     elif intent == "HELP":
         return get_help_message()
@@ -244,25 +424,31 @@ def process_question(question, session_id, retornar_metricas=False):
 
         if trecho:
             contexto = trecho
+
         else:
-            contexto= (
-                "Nenhum trecho relavante na documentação "
-                "foi recuperado para esta pergunta. "
-                "Não invente informações sem fontes. "
-                "Se não houver evidências suficiente no contexto "
-                "ou no histórico relevante, informe que a informação "
-                "não foi encointrada na documentação disponível."
+            contexto = (
+                "Nenhum trecho relevante na documentação foi recuperado "
+                "para esta pergunta. Não invente informações sem fontes. "
+                "Se não houver evidências suficientes no contexto ou no "
+                "histórico relevante, informe que a informação não foi "
+                "encontrada na documentação disponível."
             )
-    
+
+    # ---------------------------------------------------------
+    # Respostas estruturadas determinísticas
+    # ---------------------------------------------------------
+
     if dados_estruturados:
-        resposta = formatar_resposta_estruturada(dados_estruturados)
+        resposta = formatar_resposta_estruturada(
+            dados_estruturados
+        )
 
         if retornar_metricas:
             return {
                 "resposta": resposta,
                 "input_tokens": 0,
                 "output_tokens": 0,
-                "total_tokens": 0
+                "total_tokens": 0,
             }
 
         return resposta
@@ -274,19 +460,17 @@ def process_question(question, session_id, retornar_metricas=False):
     if structured_chain:
         inicio = time.perf_counter()
 
-        dados = structured_chain.invoke({
-            "context": contexto,
-            "question": question
-        })
-
-        print(
-            f"[TEMPO] structured_chain: "
-            f"{time.perf_counter() - inicio:.3f}s"
+        dados = structured_chain.invoke(
+            {
+                "context": contexto,
+                "question": question,
+            }
         )
 
-        # -----------------------------------------------------
-        # Respostas que podem ser geradas diretamente
-        # -----------------------------------------------------
+        print(
+            "[TEMPO] structured_chain: "
+            f"{time.perf_counter() - inicio:.3f}s"
+        )
 
         if isinstance(dados, ConsultaPotenciaTotal):
             return (
@@ -320,11 +504,8 @@ def process_question(question, session_id, retornar_metricas=False):
                 f"{carregadores}."
             )
 
-        # -----------------------------------------------------
-        # ConsultaRecarga continua usando a LLM para resposta
-        # natural
-        # -----------------------------------------------------
-
+        # ConsultaRecarga continua usando a LLM
+        # para produzir uma resposta em linguagem natural.
         contexto = dados.model_dump_json()
 
     # ---------------------------------------------------------
@@ -336,17 +517,17 @@ def process_question(question, session_id, retornar_metricas=False):
     resposta_llm = chain_completa.invoke(
         {
             "context": contexto,
-            "question": question
+            "question": question,
         },
         config={
             "configurable": {
-                "session_id": session_id
+                "session_id": session_id,
             }
-        }
+        },
     )
 
     print(
-        f"[TEMPO] chain final: "
+        "[TEMPO] chain final: "
         f"{time.perf_counter() - inicio:.3f}s"
     )
 
@@ -355,13 +536,16 @@ def process_question(question, session_id, retornar_metricas=False):
     # ---------------------------------------------------------
 
     if retornar_metricas:
-        metricas = resposta_llm.usage_metadata
+        metricas = (
+            getattr(resposta_llm, "usage_metadata", None)
+            or {}
+        )
 
         return {
             "resposta": resposta_llm.content,
-            "input_tokens": metricas["input_tokens"],
-            "output_tokens": metricas["output_tokens"],
-            "total_tokens": metricas["total_tokens"]
+            "input_tokens": metricas.get("input_tokens", 0),
+            "output_tokens": metricas.get("output_tokens", 0),
+            "total_tokens": metricas.get("total_tokens", 0),
         }
 
     return resposta_llm.content

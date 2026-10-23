@@ -63,7 +63,7 @@ def build_chain():
     ])
 
     llm = ChatOllama(
-        model="gemma4:31b-cloud",
+        model="gemma4:31b",
         base_url="https://ollama.com",
         client_kwargs={
             "headers": {
@@ -140,7 +140,7 @@ def build_structured_chain(schema, instrucoes):
     ])
 
     llm = ChatOllama(
-        model="gemma4:31b-cloud",
+        model="gemma4:31b",
         base_url="https://ollama.com",
         client_kwargs={
             "headers": {

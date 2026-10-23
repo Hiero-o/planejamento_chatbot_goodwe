@@ -1,35 +1,38 @@
-import os
-
-from dotenv import load_dotenv
-from langchain_ollama import ChatOllama
-from langchain_classic.memory import ConversationTokenBufferMemory
-
-load_dotenv()
+from langchain_core.chat_history import InMemoryChatMessageHistory
 
 
-def criar_memoria():
-    llm = ChatOllama(
-        model="gemma4:31b-cloud",
-        base_url="https://ollama.com",
-        client_kwargs={
-            "headers": {
-                "Authorization": f"Bearer {os.getenv('OLLAMA_API_KEY')}"
-            }
-        },
-        temperature=0.3,
-        num_predict=1200
-    )
+historicos: dict[str, InMemoryChatMessageHistory] = {}
 
-    return ConversationTokenBufferMemory(
-        llm=llm,
-        max_token_limit=1000,
-        return_messages=True
-    )
 
-memorias = {}
+def get_session_history(
+    session_id: str,
+) -> InMemoryChatMessageHistory:
+    if session_id not in historicos:
+        historicos[session_id] = InMemoryChatMessageHistory()
 
-def get_session_history(session_id):
-    if session_id not in memorias:
-        memorias[session_id] = criar_memoria()
+    return historicos[session_id]
 
-    return memorias[session_id].chat_memory
+
+def set_session_history(
+    session_id: str,
+    messages: list[dict[str, str]],
+) -> None:
+    """
+    Sincroniza a memória da conversa com o histórico
+    persistido pelo frontend no Firestore.
+    """
+    history = get_session_history(session_id)
+    history.clear()
+
+    # Mantém no máximo as últimas 20 mensagens.
+    for message in messages[-20:]:
+        role = message.get("role")
+        content = message.get("content", "")
+
+        if not isinstance(content, str) or not content.strip():
+            continue
+
+        if role == "user":
+            history.add_user_message(content)
+        elif role == "assistant":
+            history.add_ai_message(content)

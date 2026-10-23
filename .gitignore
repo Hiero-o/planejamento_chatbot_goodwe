@@ -30,6 +30,7 @@ teste_avaliacao_base_principal.py
 teste_context_builder.py
 teste_respostas_com_citacoes.py
 .venv-ragas
+test_cloud.py
 
 # Bancos vetoriais locais gerados pelo GurAI
 /data/chroma_db/
@@ -43,6 +44,7 @@ node_modules/
 # Next.js
 .next/
 out/
+node_modules/
 
 # Environment variables
 .env
@@ -61,3 +63,12 @@ build/
 # OS
 .DS_Store
 Thumbs.db
+
+
+# credenciais privadas
+*.pem
+*.key
+*service-account.json
+**/firebase-admin.json
+
+

@@ -13,110 +13,122 @@ export default function Login() {
     const [loading, setLoading] = useState(false)
 
     async function handleRequestCode(event: FormEvent) {
-    event.preventDefault();
-    setLoading(true);
+        event.preventDefault();
+        setLoading(true);
 
-    const normalizedEmail = email.trim().toLowerCase();
+        const normalizedEmail = email.trim().toLowerCase();
 
-    try {
-        const response = await fetch("/api/sendCode", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email: normalizedEmail }),
-        });
+        try {
+            const response = await fetch("/api/sendCode", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ email: normalizedEmail }),
+            });
 
-        const data = await response.json();
+            const data = await response.json();
 
-        if (response.status === 404) {
-        toast.add({
-            title: "E-mail não encontrado",
-            description: "Não localizamos uma conta com este e-mail.",
-        });
+            if (response.status === 404) {
+                toast.add({
+                    title: "E-mail não encontrado",
+                    description: "Não localizamos uma conta com este e-mail.",
+                });
 
-        router.push("/auth/register");
-        return;
+                router.push("/auth/register");
+                return;
+            }
+
+            if (response.status === 429) {
+                toast.add({
+                    title: "Aguarde um momento",
+                    description: data.error,
+                });
+                return;
+            }
+
+            if (!response.ok) {
+                console.error("[sendCode] Erro da API:", {
+                    status: response.status,
+                    error: data.error,
+                });
+
+                toast.add({
+                    title: "Falha no envio",
+                    description:
+                        data.error ||
+                        `Erro HTTP ${response.status} ao solicitar o código.`,
+                });
+
+                return;
+            }
+
+            setEmail(normalizedEmail);
+            setCodeSent(true);
+
+            toast.add({
+                title: "Código enviado",
+                description: "Verifique sua caixa de entrada.",
+            });
+        } catch (error) {
+            console.error("Erro ao solicitar código:", error);
+
+            toast.add({
+                title: "Falha no envio",
+                description: "Não foi possível enviar o código. Tente novamente.",
+            });
+        } finally {
+            setLoading(false);
         }
-
-        if (response.status === 429) {
-        toast.add({
-            title: "Aguarde um momento",
-            description: data.error,
-        });
-        return;
-        }
-
-        if (!response.ok) {
-        throw new Error(data.error || "Falha no envio do código.");
-        }
-
-        setEmail(normalizedEmail);
-        setCodeSent(true);
-
-        toast.add({
-        title: "Código enviado",
-        description: "Verifique sua caixa de entrada.",
-        });
-    } catch (error) {
-        console.error("Erro ao solicitar código:", error);
-
-        toast.add({
-        title: "Falha no envio",
-        description: "Não foi possível enviar o código. Tente novamente.",
-        });
-    } finally {
-        setLoading(false);
     }
-    }
 
-    
+
     async function handleLoginUser(event: FormEvent) {
         event.preventDefault();
         setLoading(true);
 
         try {
             const result = await signIn("credentials", {
-            redirect: false,
-            email: email.trim().toLowerCase(),
-            code: code.trim(),
+                redirect: false,
+                email: email.trim().toLowerCase(),
+                code: code.trim(),
             });
 
             if (result?.ok && !result.error) {
-            setInputColor("#7bd4641e");
+                setInputColor("#7bd4641e");
 
-            const callbackUrl = (router.query.callbackUrl);
-            
-            const destino =
-                typeof callbackUrl === "string" && callbackUrl.startsWith("/") &&
-                !callbackUrl.startsWith("//")
-                ? callbackUrl
-                : "/dashboard";
-            await router.push(destino);
-            return;
+                const callbackUrl = (router.query.callbackUrl);
+
+                const destino =
+                    typeof callbackUrl === "string" && callbackUrl.startsWith("/") &&
+                        !callbackUrl.startsWith("//")
+                        ? callbackUrl
+                        : "/dashboard";
+                await router.push(destino);
+                return;
             }
 
             setInputColor("#cd35353f");
 
             toast.add({
-            title: "Não foi possível entrar",
-            description:
-                result?.error === "CredentialsSignin"
-                ? "Código inválido ou expirado. Solicite outro código."
-                : "A autenticação falhou. Confira o terminal para identificar o motivo.",
+                title: "Não foi possível entrar",
+                description:
+                    result?.error === "CredentialsSignin"
+                        ? "Código inválido ou expirado. Solicite outro código."
+                        : "A autenticação falhou. Confira o terminal para identificar o motivo.",
             });
 
             console.error("Falha no NextAuth:", {
-            error: result?.error,
-            status: result?.status,
-            ok: result?.ok,
+                error: result?.error,
+                status: result?.status,
+                ok: result?.ok,
             });
         } catch (error) {
             console.error("Erro durante o login:", error);
 
             toast.add({
-            title: "Erro de autenticação",
-            description: "Não foi possível concluir o login. Tente novamente.",
+                title: "Erro de autenticação",
+                description: "Não foi possível concluir o login. Tente novamente.",
             });
         } finally {
             setLoading(false);
