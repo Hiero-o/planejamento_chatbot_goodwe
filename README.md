@@ -1,9 +1,8 @@
 # GurAI
 
-> o site ficará aqui nesse endereço, qualquer mudança, será atualizada por aqui! 
+> o site ficará aqui nesse endereço, qualquer mudança de endereço, será atualizada por aqui! 
 # site
-https://informative-biz-races-hawaii.trycloudflare.com/dashboard
-
+https://desktops-meetings-grocery-traditional.trycloudflare.com
 # Integrantes
 
 * 569089 - JÚLIA LEMOS SOUZA
