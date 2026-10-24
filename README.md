@@ -2,7 +2,7 @@
 
 > o site ficará aqui nesse endereço, qualquer mudança de endereço, será atualizada por aqui! 
 # site
-https://intended-uncle-housewives-heather.trycloudflare.com
+https://want-memphis-photographer-structure.trycloudflare.com
 # Integrantes
 
 * 569089 - JÚLIA LEMOS SOUZA
