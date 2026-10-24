@@ -1,4 +1,8 @@
-# planejamento_chatbot_goodwe
+# GurAI
+
+> o site ficará aqui nesse endereço, qualquer mudança, será atualizada por aqui! 
+# site
+https://informative-biz-races-hawaii.trycloudflare.com/dashboard
 
 # Integrantes
 

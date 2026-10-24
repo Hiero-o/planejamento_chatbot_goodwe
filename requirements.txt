@@ -1,5 +1,5 @@
-#Versão recomendada python: 3.13.x
-#Consulte o .python-version antes de instalar as dependências.
+# Versão recomendada do Python: 3.13.17
+# Consulte o arquivo .python-version antes de instalar as dependências.
 
 Faker==40.15.0
 fonttools==4.62.1
@@ -25,5 +25,5 @@ langchain-chroma==1.1.0
 ragas==0.4.3
 fastapi
 uvicorn[standard]
-python-dotenv
 langchain-core==1.6.3
+nomic-embed-text
